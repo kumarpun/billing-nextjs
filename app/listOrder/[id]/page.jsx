@@ -21,9 +21,9 @@ export default async function ListOrder({ params }) {
     try {
     const { orderbyTableId } = await getOrdersByTableId(id);
     // const { order_title, order_description } = orderbyTableId;
-    if (!orderbyTableId || Object.keys(orderbyTableId).length === 0) {
-        return <div>No orders found for this table.</div>;
-    }
+    // if (!orderbyTableId || Object.keys(orderbyTableId).length === 0) {
+    //     return <div>No orders found for this table.</div>;
+    // }
     const { order_title, order_description } = orderbyTableId;
     return (
         <>
@@ -32,10 +32,14 @@ export default async function ListOrder({ params }) {
         <Link className="text-white font-bold" href={"/"}>
       MiZone
       </Link>
-        <Link className="bg-white p-2" href={"/addOrder/66064f1e1d5eef3693831563"}>
+        <Link className="bg-white p-2" href={`/addOrder/${id}`}>
         Place Order
       </Link>
         </nav>
+   
+    {
+        !orderbyTableId || Object.keys(orderbyTableId).length === 0 ? 'No orders found for this table.' : ''
+    }
         {orderbyTableId.map(order => (
 
 

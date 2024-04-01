@@ -1,5 +1,8 @@
 import EditTableForm from "../../components/EditTableForm";
 import Link from "next/link";
+import RemoveOrderBtn from "../../components/RemoveOrderBtn";
+import EditOrderStatus from  "../../components/EditOrderStatus";
+import { HiPencilAlt } from "react-icons/hi";
 
 const getOrdersByTableId = async(id) => {
     try {
@@ -48,10 +51,16 @@ export default async function ListOrder({ params }) {
         <h2 className="font-bold text-2xl">{order.order_title}</h2>
         <div>{order.order_description}</div>
         </div>
+        <div>
+        <RemoveOrderBtn id={order._id} />
+        <Link href={`/editOrder/${order._id}`}>
+        <HiPencilAlt size={24} />
+        </Link>
+        </div>
+        
     </div> 
-                    ))}
-
-
+    
+      ))}
 
         </div>
         </>

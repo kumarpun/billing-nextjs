@@ -58,5 +58,12 @@ export async function GET(request, response) {
     }
 }
 
+export async function DELETE(request) {
+    const id = request.nextUrl.searchParams.get("id");
+    await connectMongoDB();
+    await CustomerOrder.findByIdAndDelete(id);
+    return NextResponse.json({ message: "Order deleted." });
+}
+
 
 

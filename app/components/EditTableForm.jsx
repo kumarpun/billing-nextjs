@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function EditTableForm({ id, title, description }) {
     const [newTitle, setNewTitle] = useState(title);
@@ -32,6 +33,12 @@ export default function EditTableForm({ id, title, description }) {
         };
 
     return (
+        <>
+          <nav className="flex justify-between items-center bg-slate-800 px-8 py-3">
+      <Link className="text-white font-bold" href={"/"}>
+      MiZone
+      </Link>
+        </nav>
         <form onSubmit={handleSubmit} className="flex flex-col gap-3">
         <input
          onChange={(e) => setNewTitle(e.target.value)}
@@ -45,5 +52,6 @@ export default function EditTableForm({ id, title, description }) {
     Update table
     </button>
     </form>
+    </>
     );
 }

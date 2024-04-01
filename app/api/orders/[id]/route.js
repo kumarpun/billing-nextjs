@@ -22,3 +22,11 @@ export async function GET(request, { params }) {
         return NextResponse.json({ error: 'Error fetching order' }, { status: 500 });
     }
 }
+
+export async function PUT(request, {params}) {
+    const { id } = params;
+    const { newOrderTitle: order_title, newOrderDescription: order_description } = await request.json();
+    await connectMongoDB();
+    await CustomerOrder.findByIdAndUpdate(id, { order_title, order_description });
+    return NextResponse.json({ message: "Order status updated" }, { status: 200 });
+}

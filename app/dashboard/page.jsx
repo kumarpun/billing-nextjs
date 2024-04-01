@@ -6,6 +6,7 @@ export default function Dashboard() {
   return (
     <div>
       <Navbar />
+      {/* <UserInfoForm /> */}
       <TableList />
     </div>
   );

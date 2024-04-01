@@ -72,6 +72,9 @@ export default function AddOrder({ params }) {
                         <Link className="text-white font-bold" href={"/"}>
                             MiZone
                         </Link>
+                        <Link className="bg-white px-6 py-2 mt-3" href={`/listOrder/${id}`}>
+                            Back
+                        </Link>
                     </nav>
                     <form onSubmit={handleSubmit} className="flex flex-col gap-3">
                         <div>

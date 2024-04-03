@@ -25,8 +25,8 @@ export async function GET(request, { params }) {
 
 export async function PUT(request, {params}) {
     const { id } = params;
-    const { newOrderTitle: order_title, newOrderDescription: order_description } = await request.json();
+    const { newOrderTitle: order_title, newOrderDescription: order_description, newOrderStatus: order_status } = await request.json();
     await connectMongoDB();
-    await CustomerOrder.findByIdAndUpdate(id, { order_title, order_description });
+    await CustomerOrder.findByIdAndUpdate(id, { order_title, order_description, order_status });
     return NextResponse.json({ message: "Order status updated" }, { status: 200 });
 }

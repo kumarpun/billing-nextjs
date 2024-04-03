@@ -50,6 +50,7 @@ export default async function ListOrder({ params }) {
         <div>
         <h2 className="font-bold text-2xl">{order.order_title}</h2>
         <div>{order.order_description}</div>
+        <div>{order.order_status}</div>
         </div>
         <div>
         <RemoveOrderBtn id={order._id} />

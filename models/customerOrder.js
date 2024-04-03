@@ -8,7 +8,8 @@ const customerOrderSchema = new Schema(
     },
     order_title: String,
     order_description: String,
-    order_test: String
+    order_test: String,
+    order_status: String
   },
   {
     timestamps: true,

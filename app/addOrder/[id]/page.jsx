@@ -24,12 +24,13 @@ export default function AddOrder({ params }) {
     const [order_title, setTitle] = useState("");
     const [order_description, setDescription] = useState("");
     const [table_id, setTableId] = useState("");
+    const [order_status, setOrderStatus] = useState("Order accepted");
 
     const router = useRouter();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!order_title || !order_description) {
+        if (!order_title || !order_description || !order_status) {
             alert("Title and description are required.");
             return;
           }
@@ -43,7 +44,9 @@ export default function AddOrder({ params }) {
               body: JSON.stringify({ 
                 table_id: id, 
                 order_title, 
-                order_description }),
+                order_description,
+                order_status
+             }),
             });
       
             if (res.ok) {
@@ -103,6 +106,16 @@ export default function AddOrder({ params }) {
                                 className="border border-slate-500 px-8 py-2"
                                 type="text"
                                 placeholder="Order description"
+                            />
+                        </div>
+                        <div>
+                        <input
+                            onChange={(e) => setOrderStatus(e.target.value)} 
+                             value={order_status}
+                                className="border border-slate-500 px-8 py-2"
+                                type="text"
+                                placeholder="Order status"
+                                disabled
                             />
                         </div>
                         <button

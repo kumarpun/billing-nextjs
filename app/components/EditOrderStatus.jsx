@@ -3,10 +3,19 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { toast } from "react-hot-toast";
+import Select from 'react-select';
 
-export default function EditOrderStatus({ id, order_title, order_description }) {
+export default function EditOrderStatus({ id, order_title, order_description, order_status }) {
     const [newOrderTitle, setNewOrderTitle] = useState(order_title);
     const [newOrderDescription, setNewOrderDescription] = useState(order_description);
+    const [newOrderStatus, setNewOrderStatus] = useState(order_status);
+
+    const options = [
+      { value: 'Order accepted', label: 'Order accepted' },
+      { value: 'Order cooking', label: 'Order cooking' },
+      { value: 'Order delivered', label: 'Order delivered' },
+    ];
 
     const router = useRouter();
 
@@ -19,47 +28,63 @@ export default function EditOrderStatus({ id, order_title, order_description }) 
               headers: {
                 "Content-type": "application/json",
               },
-              body: JSON.stringify({ newOrderTitle, newOrderDescription }),
+              body: JSON.stringify({ newOrderTitle, newOrderDescription, newOrderStatus }),
             });
       
             if (!res.ok) {
-              throw new Error("Failed to update orderr status");
+              throw new Error("Failed to update order status");
             }
-      
-            // router.push(`/`);
+            
+            // Show toast message on successful update
+            toast.success("Order status updated!");
+
             router.refresh();
-          } catch (error) {
+        } catch (error) {
             console.log(error);
-          }
-        };
+        }
+    };
 
-        const handleBack = () => {
-            router.back(); // Go back one step in browser history
-        };
+    const handleBack = () => {
+        router.back(); // Go back one step in browser history
+    };
 
+      const Dropdown = (selectedOption) => {
+        console.log('Selected:', selectedOption)
+        setNewOrderStatus(selectedOption.value)
+      }
+    
     return (
         <>
             <nav className="flex justify-between items-center bg-slate-800 px-8 py-3">
-    <Link className="text-white font-bold" href={"/"}>
-    MiZone
-    </Link>
-    <Link href="#" onClick={handleBack} className="bg-white px-6 py-2 mt-3">
-        Back
-     </Link>
-      </nav>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-      {/* <input
-       onChange={(e) => setNewOrderTitle(e.target.value)}
-       value={newOrderTitle}
-       className="border border-slate-500 px-8 py-2" type="text" placeholder="Order Name" /> */}
-      <input
-       onChange={(e) => setNewOrderDescription(e.target.value)}
-       value={newOrderDescription}
-      className="border border-slate-500 px-8 py-2" type="text" placeholder="Order description" />
-  <button className="bg-green-600 font-bold text-white py-3 px-6 w-fit">
-  Update Order
-  </button>
-  </form>
-  </>
+                <Link className="text-white font-bold" href={"/"}>
+                    MiZone
+                </Link>
+                <Link href="#" onClick={handleBack} className="bg-white px-6 py-2 mt-3">
+                    Back
+                </Link>
+            </nav>
+            <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+                {/* <input
+                    onChange={(e) => setNewOrderDescription(e.target.value)}
+                    value={newOrderDescription}
+                    className="border border-slate-500 px-8 py-2" type="text" placeholder="Order description" /> */}
+
+<Select
+      options={options}
+      onChange={Dropdown}
+      value={{ value: newOrderStatus, label: newOrderStatus }}      
+      styles={{ control: (provided) => ({ ...provided, width: 400 }),
+      menu: (provided) => ({ ...provided, width: 400 })
+     }}
+      placeholder="Select an option"
+    />
+
+                <div>
+                    <button type="submit" className="bg-green-600 font-bold text-white py-3 px-6 w-fit">
+                        Update Order
+                    </button>
+                </div>
+            </form>
+        </>
     )
 }

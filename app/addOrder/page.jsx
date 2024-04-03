@@ -28,7 +28,8 @@ export default function AddOrder() {
               body: JSON.stringify({ 
                 table_id: id, 
                 order_title, 
-                order_description }),
+                order_description,
+               }),
             });
       
             if (res.ok) {
@@ -62,6 +63,7 @@ export default function AddOrder() {
              onChange={(e) => setDescription(e.target.value)} 
              value={order_description}
             className="border border-slate-500 px-8 py-2" type="text" placeholder="Order description" />
+            
         <button type="submit" className="bg-green-600 font-bold text-white py-3 px-6 w-fit">
         Add Order
         </button>

@@ -17,9 +17,9 @@ import Table from "../../../models/table";
 // }
 
 export async function POST(request) {
-    const { table_id,order_title, order_description, order_test } = await request.json();
+    const { table_id,order_title, order_description, order_test, order_status } = await request.json();
     await connectMongoDB();
-    await CustomerOrder.create({table_id, order_title, order_description, order_test });
+    await CustomerOrder.create({table_id, order_title, order_description, order_test, order_status});
     return NextResponse.json({ message: "Order created." }, { status: 201 });
 }
 

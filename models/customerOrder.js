@@ -9,7 +9,8 @@ const customerOrderSchema = new Schema(
     order_title: String,
     order_description: String,
     order_test: String,
-    order_status: String
+    order_status: String,
+    customer_status: String
   },
   {
     timestamps: true,

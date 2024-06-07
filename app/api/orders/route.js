@@ -17,10 +17,10 @@ import Table from "../../../models/table";
 // }
 
 export async function POST(request) {
-    const { table_id,order_title, order_description, order_test, order_status } = await request.json();
+    const { table_id,order_title, order_description, order_test, order_status, customer_status } = await request.json();
     await connectMongoDB();
-    await CustomerOrder.create({table_id, order_title, order_description, order_test, order_status});
-    return NextResponse.json({ message: "Order created." }, { status: 201 });
+    await CustomerOrder.create({table_id, order_title, order_description, order_test, order_status, customer_status});
+    return NextResponse.json({ message: "Order created successfully." }, { status: 201 });
 }
 
 // export async function GET(request, {params}) {
@@ -64,6 +64,5 @@ export async function DELETE(request) {
     await CustomerOrder.findByIdAndDelete(id);
     return NextResponse.json({ message: "Order deleted." });
 }
-
 
 

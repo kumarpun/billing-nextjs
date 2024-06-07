@@ -25,13 +25,14 @@ export default function AddOrder({ params }) {
     const [order_description, setDescription] = useState("");
     const [table_id, setTableId] = useState("");
     const [order_status, setOrderStatus] = useState("Order accepted");
+    const [customer_status, setCustomerStatus] = useState("Customer accepted");
 
     const router = useRouter();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!order_title || !order_description || !order_status) {
-            alert("Title and description are required.");
+        if (!order_title || !order_status || !customer_status) {
+            alert("Title is required.");
             return;
           }
       
@@ -45,7 +46,8 @@ export default function AddOrder({ params }) {
                 table_id: id, 
                 order_title, 
                 order_description,
-                order_status
+                order_status,
+                customer_status
              }),
             });
       
@@ -118,6 +120,16 @@ export default function AddOrder({ params }) {
                                 disabled
                             />
                         </div>
+                        <di>
+                            <input
+                            onChange={(e) => setCustomerStatus(e.target.value)} 
+                             value={customer_status}
+                            className="border border-slate-500 px-8 py-2"
+                            type="text"
+                            placeholder="Customer status"
+                            disabled
+                            />
+                        </di>
                         <button
                             type="submit"
                             className="bg-green-600 font-bold text-white py-3 px-6 w-fit" >

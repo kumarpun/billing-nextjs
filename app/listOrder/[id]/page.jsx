@@ -3,6 +3,7 @@ import Link from "next/link";
 import RemoveOrderBtn from "../../components/RemoveOrderBtn";
 import EditOrderStatus from  "../../components/EditOrderStatus";
 import { HiPencilAlt } from "react-icons/hi";
+import EditCustomerForm from "../../components/EditCustomerForm";
 
 const getOrdersByTableId = async(id) => {
     try {
@@ -20,7 +21,7 @@ const getOrdersByTableId = async(id) => {
 
 export default async function ListOrder({ params }) {
     const { id } = params;
-    
+
     try {
     const { orderbyTableId } = await getOrdersByTableId(id);
     // const { order_title, order_description } = orderbyTableId;
@@ -39,7 +40,15 @@ export default async function ListOrder({ params }) {
         Place Order
       </Link>
         </nav>
-   
+        {/* <form>
+        <input
+         className="border border-slate-500 px-8 py-2" type="text" placeholder="Customer status" />
+        <button type="submit" className="bg-green-600 font-bold text-white py-3 px-6 w-fit">
+                        Update Customer
+                    </button>
+        </form> */}
+        <EditCustomerForm id={id} />
+
     {
         !orderbyTableId || Object.keys(orderbyTableId).length === 0 ? 'No orders found for this table.' : ''
     }
@@ -51,6 +60,7 @@ export default async function ListOrder({ params }) {
         <h2 className="font-bold text-2xl">{order.order_title}</h2>
         <div>{order.order_description}</div>
         <div>{order.order_status}</div>
+        <div>{order.customer_status}</div>
         </div>
         <div>
         <RemoveOrderBtn id={order._id} />
@@ -58,7 +68,6 @@ export default async function ListOrder({ params }) {
         <HiPencilAlt size={24} />
         </Link>
         </div>
-        
     </div> 
     
       ))}

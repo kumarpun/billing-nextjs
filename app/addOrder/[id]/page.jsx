@@ -15,6 +15,7 @@ export default function AddOrder({ params }) {
     const [customer_status, setCustomerStatus] = useState("Customer accepted");
     const [newOrdertitle, setnewOrdertitle] = useState(order_title);
     const [order_price, setOrderPrice] = useState("");
+    const [order_quantity, setOrderQuantity] = useState(1);
 
     const options = [
         { value: 'Momo fry', label: 'Momo fry - NRs 200', price: 200 },
@@ -42,7 +43,8 @@ export default function AddOrder({ params }) {
                 order_description,
                 order_status,
                 customer_status,
-                order_price
+                order_price,
+                order_quantity
              }),
             });
       
@@ -67,14 +69,20 @@ export default function AddOrder({ params }) {
         return (
             <>
                 <div>
-                    <nav className="flex justify-between items-center bg-slate-800 px-8 py-3 w-full navbar">
-                        <Link className="text-white font-bold" href={"/"}>
-                        Vivid Cafe & Booze
+                    <nav className="flex justify-between items-center bg-slate-800 px-8 py-3 w-full navbar nav-color">
+                    <div style={{ flex: 0 }}></div>
+                    <Link className="page-title font-bold" href={"/"}>
+                        {Array.from("VIVID CAFE & BOOZE").map((char, index) => (
+            <span key={index} className={`char-${index}`}>{char}</span>
+           ))}
                         </Link>
-                        <Link className="bg-white px-6 py-2 mt-3" href={`/listOrder/${id}`}>
+                        <Link className="add-table px-6 py-2 mt-3" href={`/listOrder/${id}`}>
                             Back
                         </Link>
                     </nav>
+                    <hr className="separator" />
+                    <br/>
+                    <div className="bg-page">
                     <form onSubmit={handleSubmit} className="flex flex-col gap-3">
                         <div>
                             
@@ -107,6 +115,16 @@ export default function AddOrder({ params }) {
                             disabled
                         />
                     </div>
+
+                    <div>
+                            <input
+                              onChange={(e) => setOrderQuantity(e.target.value)} 
+                              value={order_quantity}
+                                className="border border-slate-500 px-8 py-2"
+                                type="number"
+                                placeholder="Order quantity"
+                            />
+                        </div>
                     
                         <div>
                             <input
@@ -143,6 +161,7 @@ export default function AddOrder({ params }) {
                             Add Order
                         </button>
                     </form>
+                      </div>
                 </div>
             </>
         );

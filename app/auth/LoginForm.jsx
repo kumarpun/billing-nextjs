@@ -40,7 +40,7 @@ export default function LoginForm() {
         {/* <h1 className="text-xl font-bold my-4">Enter the details</h1> */}
         {/* <form onSubmit={handleSubmit} className="flex flex-col gap-3"> */}
         <form onSubmit={handleSubmit}>
-        <h2>Login</h2>
+        <h2>Vivid Login</h2>
         <div className="input-field">
         <input 
             onChange={(e) => setEmail(e.target.value)} type="text" placeholder="Email"/>
@@ -58,7 +58,7 @@ export default function LoginForm() {
             {/* <input
             onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Password"/> */}
             {/* <button className="bg-green-600 text-white font-bold cursor-pointer px-6 py-2"> */}
-            <button>
+            <button className="login-btn">
             Login
           </button>
           {error && (

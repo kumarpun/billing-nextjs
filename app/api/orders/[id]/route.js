@@ -16,12 +16,19 @@ export async function GET(request, { params }) {
 
         if (!orderbyTableId) {
             // return NextResponse.json({ error: 'Order not found' }, { status: 404 });
-            return NextResponse.json({ message: 'No order placed for this table' }, { status: 200 });
-            
+            return NextResponse.json({ message: 'No order placed for this table' }, { status: 200 });       
         }
-        const totalPrice = orderbyTableId.reduce((total, order) => total + order.order_price, 0);
+
+        const ordersWithFinalPrice = orderbyTableId.map(order => ({
+            ...order._doc,
+            final_price: order.order_price * order.order_quantity
+        }));
+
+        // const totalPrice = orderbyTableId.reduce((total, order) => total + order.order_price, 0);
+        const totalPrice = ordersWithFinalPrice.reduce((total, order) => total + order.final_price, 0);
+        
         const response = {
-            orderbyTableId,
+            orderbyTableId: ordersWithFinalPrice,
             total_price: totalPrice
         };
 

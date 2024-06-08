@@ -37,14 +37,28 @@ export default function AddTable() {
             console.log(error);
           }
         };
-      
+
+        const handleBack = () => {
+          router.back(); // Go back one step in browser history
+      };
 
     return (
         <div>
- <nav className="flex justify-between items-center bg-slate-800 px-8 py-3 navbar">
-      <Link className="text-white font-bold" href={"/"}>
-      Vivid Cafe & Booze
-      </Link></nav>
+ <nav className="flex justify-between items-center bg-slate-800 px-8 py-3 navbar nav-color">
+ <div style={{ flex: 0 }}></div>
+ <Link className="page-title font-bold" href={"/"}>
+      {Array.from("VIVID CAFE & BOOZE").map((char, index) => (
+            <span key={index} className={`char-${index}`}>{char}</span>
+           ))}
+      </Link>
+      <Link href="#" onClick={handleBack} className="bg-white px-6 py-2 mt-3 add-table">
+                    Back
+                </Link>
+      </nav>
+      <hr className="separator" />
+                    <br/>
+                    <div className="bg-page">
+
               <form onSubmit={handleSubmit} className="flex flex-col gap-3">
             <input
             onChange={(e) => setTitle(e.target.value)} 
@@ -58,6 +72,7 @@ export default function AddTable() {
         Add table
         </button>
         </form>
+           </div>
         </div>
     )
 }

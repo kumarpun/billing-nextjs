@@ -32,11 +32,14 @@ export default async function ListOrder({ params }) {
     return (
         <>
         <div>
-        <nav className="flex justify-between items-center bg-slate-800 px-8 py-3 navbar">
-        <Link className="text-white font-bold" href={"/"}>
-        Vivid Cafe & Booze
+        <nav className="flex justify-between items-center bg-slate-800 px-8 py-3 navbar nav-color">
+        <div style={{ flex: 0 }}></div>
+        <Link className="page-title font-bold" href={"/"}>
+        {Array.from("VIVID CAFE & BOOZE").map((char, index) => (
+        <span key={index} className={`char-${index}`}>{char}</span>
+    ))}
       </Link>
-        <Link className="bg-white p-2" href={`/addOrder/${id}`}>
+        <Link className="bg-white px-6 py-2 mt-3 add-table" href={`/addOrder/${id}`}>
         Place Order
       </Link>
         </nav>
@@ -47,6 +50,9 @@ export default async function ListOrder({ params }) {
                         Update Customer
                     </button>
         </form> */}
+        <div>
+        <hr className="separator" />
+
         <EditCustomerForm id={id} />
 
     {
@@ -57,22 +63,25 @@ export default async function ListOrder({ params }) {
 
         <div className="p-4 border border-slate-300 my-3 flex justify-between gap-5 items-start">
         <div>
-        <h2 className="font-bold text-2xl">{order.order_title}</h2>
+        <h3 className="font-bold text-2xl">{order.order_title}</h3>
         <div>{order.order_description}</div>
         <div>{order.order_status}</div>
         <div>{order.customer_status}</div>
-        <div>NRs. {order.order_price}</div>
+        <div>Order price: NRs. {order.order_price}</div>
+        <div>Order quantity: {order.order_quantity}</div>
+        <div>Sum: NRs. {order.final_price}</div>
         </div>
         <div>
         <RemoveOrderBtn id={order._id} />
         <Link href={`/editOrder/${order._id}`}>
-        <HiPencilAlt size={24} />
+        <HiPencilAlt className="edit-icon" size={24} />
         </Link>
         </div>
     </div> 
     
       ))}
-      <p className="p-4 border border-slate-300 my-3 flex justify-between gap-5 items-start">Total: NRs. {total_price}</p>
+      <p className="p-4 border border-slate-300 my-3 flex justify-between gap-5 items-start font-bold">Total bill: NRs. {total_price}</p>
+      </div>
       </div>
         </>
         // <EditTableForm id={id} title={order_title} description={order_description} />

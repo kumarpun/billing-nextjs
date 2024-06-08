@@ -26,7 +26,8 @@ input {
 }
 .card:hover,
 .card.color1 {
-  background: linear-gradient(150deg, #c2a8e6, #85aed5 100%);
+  border: 1px solid #7a7777;
+  box-shadow: 10px 20px 20px 20px rgba(206, 17, 17, 0.1);
 }
 .icon {
   color: #343432;
@@ -69,7 +70,7 @@ h2 {
   top: 10px;
   transform: translateY(-120%);
 }
-button {
+.login-btn {
   background: #fff;
   color: #000;
   font-weight: 600;
@@ -104,6 +105,34 @@ button:hover {
   background-position: center;
   background-size: cover;
 }
+.logo{
+  content: "";
+  position: absolute;
+  width: 10%;
+  height: 10%;
+  background-image: url('assets/vivid-logo.jpg');
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+.bg-page{
+  content: "";
+  position: absolute;
+  background-image: url('assets/bg2.jpg');
+  width: 100%;
+  height: 90%;
+  background-position: center;
+  background-size: cover;
+}
+.bg-page3{
+  content: "";
+  position: absolute;
+  background-image: url('assets/bg2.jpg');
+  width: 100%;
+  height: 90%;
+  background-position: center;
+  background-size: cover;
+}
 .wrapper {
   width: 400px;
   border-radius: 8px;
@@ -124,4 +153,40 @@ form {
 }
 .navbar{
 margin-top: -32px;
+}
+.edit-icon{
+  color: #100f0f;
+}
+.nav-color{
+  background: #fff;
+}
+.page-title{
+  font-size: 1.2rem;
+}
+.char-0 { color: #12043a; } /* V */
+.char-1 { color: #12043a; } /* i */
+.char-2 { color: #12043a; } /* v */
+.char-3 { color: #12043a; } /* i */
+.char-4 { color: #12043a; } /* d */
+.char-5 { color: #89971e; } /* (space) */
+.char-6 { color: #4b530e; } /* C */
+.char-7 { color: #4b530e; } /* a */
+.char-8 { color: #4b530e; } /* f */
+.char-9 { color: #4b530e; } /* e */
+.char-10 { color: #FF0088; } /* (space) */
+.char-11 { color: #65042c; } /* & */
+.char-12 { color: #AAFF00; } /* (space) */
+.char-13 { color: #12043a; } /* B */
+.char-14 { color: #12043a; } /* o */
+.char-15 { color: #12043a; } /* o */
+.char-16 { color: #12043a; } /* z */
+.char-17 { color: #12043a; } /* e */
+
+.separator {
+  height: 0.8px;
+  background-color: rgb(214, 207, 207);
+  border: none;
+}
+.add-table{
+  border: 1px solid #000;
 }

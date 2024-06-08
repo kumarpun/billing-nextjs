@@ -51,7 +51,7 @@ export default function EditCustomerForm({ id, customer_status }) {
          onChange={(e) => setNewCustomerStatus(e.target.value)}
          value={newCustomerStatus}
          className="border border-slate-500 px-8 py-2" type="text" placeholder="Customer Status" /> */}
-
+<br/>
 <Select
       options={options}
       onChange={Dropdown}

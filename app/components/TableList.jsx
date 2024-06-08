@@ -21,12 +21,14 @@ export default async function TableList() {
     const { tables } = await getTables();
     return (
         <>
+         <hr className="separator" />
+         <div className="bg-page">
         {tables.map(t => (
         // <div className="p-4 border border-slate-300 my-3 flex justify-between gap-5 items-start">
             <div className="dashboard">
                 <div className="card color1">
             <div>
-                <h2 className="font-bold text-2xl">{t.title}</h2>
+                <div className="font-bold text-2xl">{t.title}</div>
                 <div>{t.description}</div>
             </div>
         <div>
@@ -34,13 +36,14 @@ export default async function TableList() {
         <Link className="icon" href={`/listOrder/${t._id}`}>
         <ActionBtn />
         </Link>
-        <Link className= "icon" href={`/editTable/${t._id}`}>
+        {/* <Link className= "icon" href={`/editTable/${t._id}`}>
         <HiPencilAlt size={24} />
-        </Link>
+        </Link> */}
         </div>
         </div>
         </div>
         ))}
+        </div>
         </>
     )
 }

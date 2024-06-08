@@ -4,20 +4,7 @@ import Link from "next/link";
 import Navbar from "../../components/Navbar";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-
-// const getOrdersByTableId = async (id) => {
-//     try {
-//         const res = await fetch(`http://localhost:3000/api/orders/${id}`, {
-//             cache: 'no-store',
-//         });
-//         if (!res.ok) {
-//             throw new Error("Failed to fetch orders");
-//         }
-//         return res.json();
-//     } catch (error) {
-//         console.error("Error loading orders: ", error);
-//     }
-// }
+import Select from 'react-select';
 
 export default function AddOrder({ params }) {
     const { id } = params;
@@ -26,12 +13,19 @@ export default function AddOrder({ params }) {
     const [table_id, setTableId] = useState("");
     const [order_status, setOrderStatus] = useState("Order accepted");
     const [customer_status, setCustomerStatus] = useState("Customer accepted");
+    const [newOrdertitle, setnewOrdertitle] = useState(order_title);
+    const [order_price, setOrderPrice] = useState("");
+
+    const options = [
+        { value: 'Momo fry', label: 'Momo fry - NRs 200', price: 200 },
+        { value: 'Chicken chilly', label: 'Chicken chilly - NRs 300', price: 300 }
+      ];
 
     const router = useRouter();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!order_title || !order_status || !customer_status) {
+        if (!newOrdertitle || !order_status || !customer_status) {
             alert("Title is required.");
             return;
           }
@@ -44,10 +38,11 @@ export default function AddOrder({ params }) {
               },
               body: JSON.stringify({ 
                 table_id: id, 
-                order_title, 
+                order_title: newOrdertitle, 
                 order_description,
                 order_status,
-                customer_status
+                customer_status,
+                order_price
              }),
             });
       
@@ -61,15 +56,14 @@ export default function AddOrder({ params }) {
             console.log(error);
           }
         };
-      
+        const Dropdown = (selectedOption) => {
+            console.log('Selected:', selectedOption)
+            setnewOrdertitle(selectedOption.value)
+            setOrderPrice(selectedOption.price);
+          }
 
     try {
-        // const { orderbyTableId } =  getOrdersByTableId(id);
-        // if (!orderbyTableId || orderbyTableId.length === 0) {
-        //     return <div>No orders found for this table.</div>;
-        // }
 
-        
         return (
             <>
                 <div>
@@ -93,14 +87,27 @@ export default function AddOrder({ params }) {
                             />
                         </div>
                         <div>
-                            <input
-                            onChange={(e) => setTitle(e.target.value)} 
-                            value={order_title}
-                                className="border border-slate-500 px-8 py-2"
-                                type="text"
-                                placeholder="Order name"
-                            />
+                        <Select
+                        options={options}
+                        onChange={Dropdown}
+                        value={{ value: newOrdertitle, label: newOrdertitle }}      
+                        styles={{ control: (provided) => ({ ...provided, width: 400 }),
+                        menu: (provided) => ({ ...provided, width: 400 })
+                        }}
+                        placeholder="Select an option"
+                        />
                         </div>
+
+                        <div>
+                        <input
+                            value={`NRs. ${order_price}`}
+                            className="border border-slate-500 px-8 py-2"
+                            type="text"
+                            placeholder="Order price"
+                            disabled
+                        />
+                    </div>
+                    
                         <div>
                             <input
                               onChange={(e) => setDescription(e.target.value)} 

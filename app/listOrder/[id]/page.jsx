@@ -23,7 +23,7 @@ export default async function ListOrder({ params }) {
     const { id } = params;
 
     try {
-    const { orderbyTableId } = await getOrdersByTableId(id);
+    const { orderbyTableId, total_price } = await getOrdersByTableId(id);
     // const { order_title, order_description } = orderbyTableId;
     // if (!orderbyTableId || Object.keys(orderbyTableId).length === 0) {
     //     return <div>No orders found for this table.</div>;
@@ -61,6 +61,7 @@ export default async function ListOrder({ params }) {
         <div>{order.order_description}</div>
         <div>{order.order_status}</div>
         <div>{order.customer_status}</div>
+        <div>NRs. {order.order_price}</div>
         </div>
         <div>
         <RemoveOrderBtn id={order._id} />
@@ -71,8 +72,8 @@ export default async function ListOrder({ params }) {
     </div> 
     
       ))}
-
-        </div>
+      <p className="p-4 border border-slate-300 my-3 flex justify-between gap-5 items-start">Total: NRs. {total_price}</p>
+      </div>
         </>
         // <EditTableForm id={id} title={order_title} description={order_description} />
     )

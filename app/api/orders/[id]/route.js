@@ -17,9 +17,15 @@ export async function GET(request, { params }) {
         if (!orderbyTableId) {
             // return NextResponse.json({ error: 'Order not found' }, { status: 404 });
             return NextResponse.json({ message: 'No order placed for this table' }, { status: 200 });
+            
         }
+        const totalPrice = orderbyTableId.reduce((total, order) => total + order.order_price, 0);
+        const response = {
+            orderbyTableId,
+            total_price: totalPrice
+        };
 
-        return NextResponse.json({ orderbyTableId }, { status: 200 });
+        return NextResponse.json(response, { status: 200 });
     } catch (error) {
         console.error('Error fetching order:', error);
         return NextResponse.json({ error: 'Error fetching order' }, { status: 500 });
@@ -61,9 +67,18 @@ export async function PUT(request, { params }) {
         }
 
         if (newCustomerStatus) {
+            // const orders = await CustomerOrder.find({ table_id: id });
+            const invalidStatusOrder = await CustomerOrder.find({ table_id: id, customer_status: "Customer left" });
+            console.log("Checking for invalid status 'Customer left':", invalidStatusOrder);
+            console.log("Table ID of orders checked for 'Customer left' status:", invalidStatusOrder.table_id);
+            if (invalidStatusOrder && invalidStatusOrder.table_id) {
+                console.log("Checking for invalid status 'Customer left':", invalidStatusOrder);
+                console.log("Table ID of orders checked for 'Customer left' status:", invalidStatusOrder.table_id);
+                return NextResponse.json({ message: 'Order(s) cannot be updated as they are in the final state' }, { status: 400 });
+            }
             // Update customer status for all orders with the given table_id
             const updateResult = await CustomerOrder.updateMany(
-                { table_id: id },
+                { table_id: id, customer_status: { $in: ["Customer accepted", "Bill paid"] } },
                 { $set: { customer_status: newCustomerStatus } }
             );
 

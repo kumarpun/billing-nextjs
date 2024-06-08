@@ -8,9 +8,10 @@ export default function Navbar() {
     const { data: session } = useSession();
 
     return (
-        <nav className="flex justify-between items-center bg-slate-800 px-8 py-3">
+        // <nav className="flex justify-between items-center bg-slate-800 px-8 py-3">
+        <nav className="flex justify-between items-center bg-slate-800 px-8 py-3 navbar">
       <Link className="text-white font-bold" href={"/"}>
-      MiZone
+      Vivid Cafe & Booze
       </Link>
       <div style={{ display: 'flex', gap: '12px' }}>
       <Link className="bg-white px-6 py-2 mt-3" href={"/addTable"}>

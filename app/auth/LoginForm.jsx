@@ -32,15 +32,33 @@ export default function LoginForm() {
     }
   }
 
-  return( <div className="grid place-items-center h-screen">
-      <div className="shadow-lg p-5 rounded-lg border-t-4 border-green-400">
-        <h1 className="text-xl font-bold my-4">Enter the details</h1>
-        <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-            <input
+  return( 
+    <div className="body">
+        <div className="wrapper">
+  {/* <div className="grid place-items-center h-screen"> */}
+      {/* <div className="shadow-lg p-5 rounded-lg border-t-4 border-green-400"> */}
+        {/* <h1 className="text-xl font-bold my-4">Enter the details</h1> */}
+        {/* <form onSubmit={handleSubmit} className="flex flex-col gap-3"> */}
+        <form onSubmit={handleSubmit}>
+        <h2>Login</h2>
+        <div className="input-field">
+        <input 
             onChange={(e) => setEmail(e.target.value)} type="text" placeholder="Email"/>
-            <input
+            {/* <label>Enter your email</label> */}
+      </div>
+
+      <div className="input-field">
+        <input 
             onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Password"/>
-            <button className="bg-green-600 text-white font-bold cursor-pointer px-6 py-2">
+            {/* <label>Enter your password</label> */}
+      </div>
+
+            {/* <input
+            onChange={(e) => setEmail(e.target.value)} type="text" placeholder="Email"/> */}
+            {/* <input
+            onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Password"/> */}
+            {/* <button className="bg-green-600 text-white font-bold cursor-pointer px-6 py-2"> */}
+            <button>
             Login
           </button>
           {error && (
@@ -48,12 +66,15 @@ export default function LoginForm() {
               {error}
             </div>
           )}  
-         <Link className="text-sm mt-3 text-right" href={"/auth/register"}>
+         {/* <Link className="text-sm mt-3 text-right" href={"/auth/register"}> */}
+         <Link className="register" href={"/auth/register"}>
             Don't have an account? <span className="underline">Register</span>
             </Link>
 
         </form>
     </div>
   </div>
+// {/* </div> */}
+// </div>
   )
 }

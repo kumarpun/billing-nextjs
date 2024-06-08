@@ -46,9 +46,9 @@ export default function AddOrder() {
 
     return (
         <div>
- <nav className="flex justify-between items-center bg-slate-800 px-8 py-3">
+ <nav className="flex justify-between items-center bg-slate-800 px-8 py-3 navbar">
       <Link className="text-white font-bold" href={"/"}>
-    MiZone
+    Vivid Cafe & Booze
       </Link></nav>
               <form onSubmit={handleSubmit} className="flex flex-col gap-3">
               <input

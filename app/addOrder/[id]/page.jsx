@@ -67,9 +67,9 @@ export default function AddOrder({ params }) {
         return (
             <>
                 <div>
-                    <nav className="flex justify-between items-center bg-slate-800 px-8 py-3 w-full">
+                    <nav className="flex justify-between items-center bg-slate-800 px-8 py-3 w-full navbar">
                         <Link className="text-white font-bold" href={"/"}>
-                            MiZone
+                        Vivid Cafe & Booze
                         </Link>
                         <Link className="bg-white px-6 py-2 mt-3" href={`/listOrder/${id}`}>
                             Back

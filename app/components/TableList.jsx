@@ -22,19 +22,22 @@ export default async function TableList() {
     return (
         <>
         {tables.map(t => (
-        <div className="p-4 border border-slate-300 my-3 flex justify-between gap-5 items-start">
+        // <div className="p-4 border border-slate-300 my-3 flex justify-between gap-5 items-start">
+            <div className="dashboard">
+                <div className="card color1">
             <div>
                 <h2 className="font-bold text-2xl">{t.title}</h2>
                 <div>{t.description}</div>
             </div>
         <div>
         {/* <RemoveBtn id={t._id} /> */}
-        <Link href={`/listOrder/${t._id}`}>
+        <Link className="icon" href={`/listOrder/${t._id}`}>
         <ActionBtn />
         </Link>
-        <Link href={`/editTable/${t._id}`}>
+        <Link className= "icon" href={`/editTable/${t._id}`}>
         <HiPencilAlt size={24} />
         </Link>
+        </div>
         </div>
         </div>
         ))}

@@ -52,7 +52,7 @@ export default async function ListOrder({ params }) {
         </form> */}
         <div>
         <hr className="separator" />
-
+        {/* <div className="report-bg"></div> */}
         <EditCustomerForm id={id} />
 
     {

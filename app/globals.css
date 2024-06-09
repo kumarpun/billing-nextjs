@@ -124,6 +124,15 @@ button:hover {
   background-position: center;
   background-size: cover;
 }
+.report-bg{
+  position: absolute;
+  background-image: url('assets/vivid-logo.jpg');
+  width: 100%;
+  height: 90%;
+  background-position: center;
+  background-size: cover;
+  opacity: 0.1;
+}
 .bg-page3{
   content: "";
   position: absolute;
@@ -189,4 +198,115 @@ margin-top: -32px;
 }
 .add-table{
   border: 1px solid #000;
+}
+main.table {
+  width: 82vw;
+  height: 90vh;
+  background-color: #fff5;
+
+  backdrop-filter: blur(7px);
+  box-shadow: 0 .4rem .8rem #0005;
+  border-radius: .8rem;
+
+  overflow: hidden;
+}
+
+.table-body {
+  width: 95%;
+  max-height: calc(89% - 1.6rem);
+  background-color: #fffb;
+
+  margin: .8rem auto;
+  border-radius: .6rem;
+
+  overflow: auto;
+  overflow: overlay;
+}
+table {
+  width: 100%;
+}
+table, th, td {
+  border-collapse: collapse;
+  padding: 1rem;
+  text-align: left;
+}
+thead th {
+  position: sticky;
+  top: 0;
+  left: 0;
+  background-color: #d5d1defe;
+  cursor: pointer;
+  text-transform: capitalize;
+}
+.sales-body{
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.table-body::-webkit-scrollbar{
+  width: 0.5rem;
+  height: 0.5rem;
+}
+.table-body::-webkit-scrollbar{
+  width: 0.5rem;
+  height: 0.5rem;
+}
+
+.table-body::-webkit-scrollbar-thumb{
+  border-radius: .5rem;
+  background-color: #0004;
+  visibility: hidden;
+}
+
+.table-body:hover::-webkit-scrollbar-thumb{ 
+  visibility: visible;
+}
+tbody tr:nth-child(even) {
+  background-color: #0000000b;
+}
+tbody tr {
+  --delay: .1s;
+  transition: .5s ease-in-out var(--delay), background-color 0s;
+}
+tbody tr.hide {
+  opacity: 0;
+  transform: translateX(100%);
+}
+
+tbody tr:hover {
+  background-color: #d5d1defe;
+}
+
+tbody tr td,
+tbody tr td p,
+tbody tr td {
+  transition: .2s ease-in-out;
+}
+
+tbody tr.hide td,
+tbody tr.hide td p {
+  padding: 0;
+  font: 0 / 0 sans-serif;
+  transition: .2s ease-in-out .5s;
+}
+
+tbody tr.hide td img {
+  width: 0;
+  height: 0;
+  transition: .2s ease-in-out .5s;
+}
+@media (max-width: 1000px) {
+  td:not(:first-of-type) {
+      min-width: 12.1rem;
+  }
+}
+thead th:hover {
+  color: #6c00bd;
+}
+thead th.active,tbody td.active {
+  color: #6c00bd;
+}
+tbody tr {
+  background-color: rgb(224, 235, 235);
 }

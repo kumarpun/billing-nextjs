@@ -48,6 +48,25 @@ export async function GET(request, response) {
                     foreignField: "_id",
                     as: "table"
                 }
+            },
+            {
+                $addFields: {
+                    total_price: { $multiply: ["$order_price", "$order_quantity"] }
+                }
+            },
+            {
+                $group: {
+                    _id: null,
+                    total_bill: { $sum: "$total_price" },
+                    orders: { $push: "$$ROOT" }
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    total_bill: 1,
+                    orders: 1
+                }
             }
         ]);
 

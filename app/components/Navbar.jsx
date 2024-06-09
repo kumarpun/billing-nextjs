@@ -10,7 +10,7 @@ export default function Navbar() {
     return (
         // <nav className="flex justify-between items-center bg-slate-800 px-8 py-3">
         <nav className="flex justify-between items-center bg-slate-800 px-8 py-3 navbar nav-color">
-            <div style={{ flex: 0.2 }}></div>
+            <div style={{ flex: 0.4 }}></div>
       <div className="font-bold page-title" href={"/"}>
         {Array.from("VIVID CAFE & BOOZE").map((char, index) => (
         <span key={index} className={`char-${index}`}>{char}</span>
@@ -19,6 +19,9 @@ export default function Navbar() {
       <div style={{ display: 'flex', gap: '12px' }}>
       <Link className="px-6 py-2 mt-3 add-table" href={"/addTable"}>
         Add Table
+      </Link>
+      <Link className="px-6 py-2 mt-3 add-table" href={"/listSales"}>
+        Sales Report
       </Link>
       <button
         onClick={() => signOut()} className="bg-red-500 text-white font-bold px-6 py-2 mt-3">

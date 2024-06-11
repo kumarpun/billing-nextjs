@@ -4,6 +4,7 @@ import RemoveOrderBtn from "../../components/RemoveOrderBtn";
 import EditOrderStatus from  "../../components/EditOrderStatus";
 import { HiPencilAlt } from "react-icons/hi";
 import EditCustomerForm from "../../components/EditCustomerForm";
+import AddBillForm from  "../../components/AddBillForm";
 
 const getOrdersByTableId = async(id) => {
     try {
@@ -81,6 +82,8 @@ export default async function ListOrder({ params }) {
     
       ))}
       <p className="p-4 border border-slate-300 my-3 flex justify-between gap-5 items-start font-bold">Total bill: NRs. {total_price}</p>
+
+      <AddBillForm initialOriginalPrice={total_price} />
       </div>
       </div>
         </>

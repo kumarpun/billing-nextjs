@@ -5,6 +5,7 @@ import EditOrderStatus from  "../../components/EditOrderStatus";
 import { HiPencilAlt } from "react-icons/hi";
 import EditCustomerForm from "../../components/EditCustomerForm";
 import AddBillForm from  "../../components/AddBillForm";
+import OrderListClient from "../../components/OrderListClient";
 
 const getOrdersByTableId = async(id) => {
     try {
@@ -55,8 +56,14 @@ export default async function ListOrder({ params }) {
         <hr className="separator" />
         {/* <div className="report-bg"></div> */}
         <EditCustomerForm id={id} />
+        <OrderListClient orderbyTableId={orderbyTableId} total_price={total_price} tableId={id} />
+        {/* <div style={{ display: 'flex', gap: '12px' }}>
+        <button className="px-6 py-2 mt-3 add-table">
+               Generate Bill
+               </button>
+        </div> */}
 
-    {
+    {/* {
         !orderbyTableId || Object.keys(orderbyTableId).length === 0 ? 'No orders found for this table.' : ''
     }
         {orderbyTableId.map(order => (
@@ -78,12 +85,12 @@ export default async function ListOrder({ params }) {
         <HiPencilAlt className="edit-icon" size={24} />
         </Link>
         </div>
-    </div> 
+    </div>  */}
     
-      ))}
-      <p className="p-4 border border-slate-300 my-3 flex justify-between gap-5 items-start font-bold">Total bill: NRs. {total_price}</p>
+      {/* ))} */}
+      {/* <p className="p-4 border border-slate-300 my-3 flex justify-between gap-5 items-start font-bold">Total bill: NRs. {total_price}</p>
 
-      <AddBillForm initialOriginalPrice={total_price} />
+      <AddBillForm initialOriginalPrice={total_price} /> */}
       </div>
       </div>
         </>

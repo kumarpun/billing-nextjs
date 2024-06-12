@@ -3,7 +3,7 @@ import { connectMongoDB } from "../../../lib/mongodb";
 import Bill from "../../../models/bill";
 
 export async function POST(request) {
-    const { originalPrice, finalPrice } = await request.json();
+    const { originalPrice, finalPrice, discountPercent, remarks } = await request.json();
     await connectMongoDB();
     await Bill.create({ originalPrice, discountPercent, remarks, finalPrice});
     return NextResponse.json({ message: "Bill created successfully." }, { status: 201 });

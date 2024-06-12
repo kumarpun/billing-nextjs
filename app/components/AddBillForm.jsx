@@ -2,8 +2,9 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { toast } from "react-hot-toast";
 
-export default function AddBillForm({ initialOriginalPrice }) {
+export default function AddBillForm({ initialOriginalPrice, onBillAdded }) {
     const [originalPrice, setOriginalPrice] = useState(initialOriginalPrice || "");
     const [finalPrice, setFinalPrice] = useState("");
     const [discountPercent, setDiscountPercent] = useState("");
@@ -28,8 +29,14 @@ export default function AddBillForm({ initialOriginalPrice }) {
             });
       
             if (res.ok) {
-            //   router.push("/");
+              // router.push("/");
+              toast.success("Bill added!");
               router.refresh();
+              // Clear all fields except originalPrice
+              setFinalPrice("");
+              setDiscountPercent("");
+              setRemarks("");
+              onBillAdded(finalPrice);
             } else {
               throw new Error("Failed to create a bill");
             }

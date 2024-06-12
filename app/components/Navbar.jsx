@@ -20,7 +20,7 @@ export default function Navbar() {
       <Link className="px-6 py-2 mt-3 add-table" href={"/addTable"}>
         Add Table
       </Link>
-      <Link className="px-6 py-2 mt-3 add-table" href={"/listSales"}>
+      <Link className="px-6 py-2 mt-3 add-table" href={"/listReport"}>
         Sales Report
       </Link>
       <button

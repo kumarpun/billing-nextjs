@@ -1,8 +1,8 @@
 import Link from "next/link";
 
-const getSalesReport = async () => {
+const getFinalSalesReport = async () => {
     try {
-        const res = await fetch('http://localhost:3000/api/orders', {
+        const res = await fetch('http://localhost:3000/api/bill', {
             cache: 'no-store',
         });
         if (!res.ok) {
@@ -11,17 +11,16 @@ const getSalesReport = async () => {
         return res.json();
     } catch (error) {
         console.error("Error loading report:", error);
-        return { ordersWithTables: [] }; // Return an empty array in case of error
+        return { bill: [], totalFinalPrice: 0 }; // Return an empty array and zero total in case of error
     }
 }
 
-export default async function ListSales() {
-    const { ordersWithTables } = await getSalesReport() || { ordersWithTables: [] }; // Handle undefined case
-
+export default async function ListReport() {
+    const { bill, totalFinalPrice } = await getFinalSalesReport() || { bill: [], totalFinalPrice: 0 }; // Handle undefined case
     return (
         <>
             <nav className="flex justify-between items-center bg-slate-800 px-8 py-3 navbar nav-color">
-                <div style={{ flex: 0.07 }}></div>
+                <div style={{ flex: 0.25 }}></div>
                 <Link className="page-title font-bold" href="/">
                     {Array.from("VIVID CAFE & BOOZE").map((char, index) => (
                         <span key={index} className={`char-${index}`}>{char}</span>
@@ -29,7 +28,10 @@ export default async function ListSales() {
                 </Link>
 
                 <div style={{ display: 'flex', gap: '12px' }}>
-                    <Link className="px-6 py-2 mt-3 add-table" href="/listReport">
+                <Link className="px-6 py-2 mt-3 add-table" href={"/listSales"}>
+        Order Report
+        </Link>
+                    <Link className="px-6 py-2 mt-3 add-table" href="/">
                         Back
                     </Link>
                 </div>
@@ -37,11 +39,10 @@ export default async function ListSales() {
             <hr className="separator" />
             <div className="report-bg"></div>
             <div>
-                <br />
+                <br/>
                 <div>
-                    {ordersWithTables.map((sales, index) => (
-                        <div key={index}>
-                            <div className="font-bold text-center">Total Sales this month: NRs. {sales.total_bill}</div>
+                        <div>
+                        <div className="font-bold text-center">Total Sales this month: NRs. {totalFinalPrice}</div>
                             <div className="sales-body">
                                 <main className="table" id="customers_table">
                                     <section className="table-body">
@@ -49,22 +50,20 @@ export default async function ListSales() {
                                             <thead>
                                                 <tr>
                                                     <th>Sn</th>
-                                                    <th>Order name</th>
-                                                    <th>Price</th>
-                                                    <th>Quantity</th>
-                                                    <th>Status</th>
-                                                    <th>Total price</th>
+                                                    <th>Original Bill</th>
+                                                    <th>Discount %</th>
+                                                    <th>Final Bill</th>
+                                                    <th>Remarks</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {sales.orders.map((order, orderIndex) => (
-                                                    <tr key={orderIndex}>
-                                                        <td>{orderIndex + 1}</td>
-                                                        <td>{order.order_title}</td>
-                                                        <td>{order.order_price}</td>
-                                                        <td>{order.order_quantity}</td>
-                                                        <td>{order.order_status}</td>
-                                                        <td>{order.total_price}</td>
+                                                {bill.map((sales, index) => (
+                                                    <tr key={index}>
+                                                        <td>{index + 1}</td>
+                                                        <td>{sales.originalPrice}</td>
+                                                        <td>{sales.discountPercent}</td>
+                                                        <td>{sales.finalPrice}</td>
+                                                        <td>{sales.remarks}</td>
                                                     </tr>
                                                 ))}
                                             </tbody>
@@ -73,7 +72,8 @@ export default async function ListSales() {
                                 </main>
                             </div>
                         </div>
-                    ))}
+
+
                 </div>
             </div>
         </>

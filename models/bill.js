@@ -4,6 +4,8 @@ const billSchema = new Schema(
   {
     originalPrice: Number,
     finalPrice: Number,
+    discountPercent: Number,
+    remarks: String,
   },
   {
     timestamps: true,

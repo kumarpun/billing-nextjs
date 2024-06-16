@@ -4,17 +4,20 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { toast } from "react-hot-toast";
 
-export default function AddBillForm({ initialOriginalPrice, onBillAdded }) {
+export default function AddBillForm({ initialOriginalPrice, initialBillId, onBillAdded }) {
     const [originalPrice, setOriginalPrice] = useState(initialOriginalPrice || "");
     const [finalPrice, setFinalPrice] = useState("");
     const [discountPercent, setDiscountPercent] = useState("");
     const [remarks, setRemarks] = useState("");
+    const [tablebill_id, setTableBillId] = useState(initialBillId || "");
+    const [billStatus, setBillStatus] = useState("pending");
 
     const router = useRouter();
 
     useEffect(() => {
         setOriginalPrice(initialOriginalPrice);
-    }, [initialOriginalPrice]);
+        setTableBillId(initialBillId);
+    }, [initialOriginalPrice, initialBillId]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -25,7 +28,7 @@ export default function AddBillForm({ initialOriginalPrice, onBillAdded }) {
               headers: {
                 "Content-type": "application/json",
               },
-              body: JSON.stringify({ originalPrice, finalPrice, discountPercent, remarks}),
+              body: JSON.stringify({ originalPrice, finalPrice, discountPercent, remarks, tablebill_id, billStatus}),
             });
       
             if (res.ok) {
@@ -48,6 +51,11 @@ export default function AddBillForm({ initialOriginalPrice, onBillAdded }) {
     return (
         <div>       
                 <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+                <input
+                   onChange={(e) => setTableBillId(e.target.value)} 
+                   value={tablebill_id}
+                   className="border border-slate-500 px-8 py-2" type="text" placeholder="Table id" readOnly />
+
                    <input
                    onChange={(e) => setOriginalPrice(e.target.value)} 
                    value={originalPrice}
@@ -67,6 +75,11 @@ export default function AddBillForm({ initialOriginalPrice, onBillAdded }) {
                     onChange={(e) => setRemarks(e.target.value)}
                     value={remarks}
                     className="border border-slate-500 px-8 py-2" type="text" placeholder="Remarks" />
+
+                    <input
+                    onChange={(e) => setBillStatus(e.target.value)}
+                    value={billStatus}
+                    className="border border-slate-500 px-8 py-2" type="text" placeholder="Bill Status" readOnly />
 
                <button type="submit" className="bg-green-600 font-bold text-white py-3 px-6 w-fit">
                Add Bill

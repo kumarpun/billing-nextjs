@@ -29,7 +29,8 @@ export async function GET(request, { params }) {
         
         const response = {
             orderbyTableId: ordersWithFinalPrice,
-            total_price: totalPrice
+            total_price: totalPrice,
+            tablebill_id: id, // Adding the new field with table_id
         };
 
         return NextResponse.json(response, { status: 200 });

@@ -6,6 +6,8 @@ const billSchema = new Schema(
     finalPrice: Number,
     discountPercent: Number,
     remarks: String,
+    tablebill_id: String,
+    billStatus: String
   },
   {
     timestamps: true,

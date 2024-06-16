@@ -7,29 +7,38 @@ import RemoveOrderBtn from "./RemoveOrderBtn";
 import EditCustomerForm from "./EditCustomerForm";
 import AddBillForm from "./AddBillForm";
 import Modal from "./ModalForm";
+import EditBillForm from "./EditBillForm";
 
-export default function OrderListClient({ orderbyTableId, total_price, tableId }) {
+export default function OrderListClient({ orderbyTableId, total_price, tablebill_id, tableId, billById, totalFinalbill, billFinalStatus }) {
     const [isModalOpen, setModalOpen] = useState(false);
-    const [finalBill, setFinalBill] = useState(null); // Manage final bill state
+    // const [finalBill, setFinalBill] = useState(null); // Manage final bill state
+    // const [finalBill, setFinalBill] = useState(finalBillFromAPI); // Initialize with the value from API
+    const [modalContent, setModalContent] = useState(null); // to track which form to display
 
-    const handleOpenModal = () => {
+
+    const handleOpenModal = (content) => {
+        setModalContent(content);
         setModalOpen(true);
     }
 
     const handleCloseModal = () => {
         setModalOpen(false);
+        setModalContent(null);
     }
 
-    const handleBillAdded = (finalPrice) => {
-        setFinalBill(finalPrice); // Update final bill when the bill is added
+    const handleBillAdded = () => {
+        // setFinalBill(finalPrice); // Update final bill when the bill is added
         setModalOpen(false); // Close modal after adding the bill
     }
 
     return (
         <>
             <div style={{ display: 'flex', gap: '12px' }}>
-                <button className="px-6 py-2 mt-3 add-table" onClick={handleOpenModal}>
+            <button className="px-6 py-2 mt-3 add-table" onClick={() => handleOpenModal('add')}>
                     Generate Bill
+                </button>
+                <button className="px-6 py-2 mt-3 add-table" onClick={() => handleOpenModal('edit')}>
+                    Update Bill
                 </button>
             </div>
 
@@ -55,11 +64,20 @@ export default function OrderListClient({ orderbyTableId, total_price, tableId }
                     </div>
                 </div>
             ))}
+
             <p className="p-4 border border-slate-300 my-3 flex justify-between gap-5 items-start font-bold">Total bill: NRs. {total_price}</p>  
-            <p className="p-4 border border-slate-300 my-3 flex justify-between gap-5 items-start font-bold">Final bill: NRs. {finalBill}</p>  
+
+        
+             <p className="p-4 border border-slate-300 my-3 flex justify-between gap-5 items-start font-bold">Final bill: NRs. {totalFinalbill} status: {billFinalStatus}</p>                
 
             <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
-                <AddBillForm initialOriginalPrice={total_price} onBillAdded={handleBillAdded} />
+                {/* <AddBillForm initialOriginalPrice={total_price} initialBillId={tablebill_id} onBillAdded={handleBillAdded} /> */}
+                {modalContent === 'add' && (
+                    <AddBillForm initialOriginalPrice={total_price} initialBillId={tablebill_id} onBillAdded={handleBillAdded} />
+                )}
+                {modalContent === 'edit' && (
+                    <EditBillForm id={tablebill_id} onBillAdded={handleBillAdded} />
+                )}
             </Modal>
         </>
     );

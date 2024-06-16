@@ -9,13 +9,27 @@ import OrderListClient from "../../components/OrderListClient";
 
 const getOrdersByTableId = async(id) => {
     try {
-        const res = await fetch(`http://localhost:3000/api/orders/${id}`, {
-            cache: 'no-store',
-        });
-        if(!res.ok) {
+        // const res = await fetch(`http://localhost:3000/api/orders/${id}`, {
+        //     cache: 'no-store',
+        // });
+        const [ordersRes, billRes] = await Promise.all([
+            fetch(`http://localhost:3000/api/orders/${id}`, {
+                cache: 'no-store',
+            }),
+            fetch(`http://localhost:3000/api/bill/${id}`, {
+                cache: 'no-store',
+            })
+        ]);
+
+        const ordersData = await ordersRes.json();
+        const billData = await billRes.json();
+
+        if(!ordersRes.ok || !billRes.ok) {
             throw new Error("Failed to fetch orders");
         }
-        return res.json();
+        return { ...ordersData, billById: billData.billById,
+             totalFinalbill:billData.totalFinalbill, 
+             billFinalStatus: billData.billFinalStatus};
     } catch (error) {
         console.error("Error loading orders: ", error);
     }
@@ -25,11 +39,8 @@ export default async function ListOrder({ params }) {
     const { id } = params;
 
     try {
-    const { orderbyTableId, total_price } = await getOrdersByTableId(id);
-    // const { order_title, order_description } = orderbyTableId;
-    // if (!orderbyTableId || Object.keys(orderbyTableId).length === 0) {
-    //     return <div>No orders found for this table.</div>;
-    // }
+    const { orderbyTableId, total_price, tablebill_id, billById, totalFinalbill, billFinalStatus } = await getOrdersByTableId(id);
+ 
     const { order_title, order_description } = orderbyTableId;
     return (
         <>
@@ -45,56 +56,15 @@ export default async function ListOrder({ params }) {
         Place Order
       </Link>
         </nav>
-        {/* <form>
-        <input
-         className="border border-slate-500 px-8 py-2" type="text" placeholder="Customer status" />
-        <button type="submit" className="bg-green-600 font-bold text-white py-3 px-6 w-fit">
-                        Update Customer
-                    </button>
-        </form> */}
+  
         <div>
         <hr className="separator" />
-        {/* <div className="report-bg"></div> */}
         <EditCustomerForm id={id} />
-        <OrderListClient orderbyTableId={orderbyTableId} total_price={total_price} tableId={id} />
-        {/* <div style={{ display: 'flex', gap: '12px' }}>
-        <button className="px-6 py-2 mt-3 add-table">
-               Generate Bill
-               </button>
-        </div> */}
+        <OrderListClient orderbyTableId={orderbyTableId} total_price={total_price} tablebill_id={tablebill_id} tableId={id} billById={billById} totalFinalbill={totalFinalbill} billFinalStatus={billFinalStatus} />
 
-    {/* {
-        !orderbyTableId || Object.keys(orderbyTableId).length === 0 ? 'No orders found for this table.' : ''
-    }
-        {orderbyTableId.map(order => (
-
-
-        <div className="p-4 border border-slate-300 my-3 flex justify-between gap-5 items-start">
-        <div>
-        <h3 className="font-bold text-2xl">{order.order_title}</h3>
-        <div>{order.order_description}</div>
-        <div>{order.order_status}</div>
-        <div>{order.customer_status}</div>
-        <div>Order price: NRs. {order.order_price}</div>
-        <div>Order quantity: {order.order_quantity}</div>
-        <div>Sum: NRs. {order.final_price}</div>
-        </div>
-        <div>
-        <RemoveOrderBtn id={order._id} />
-        <Link href={`/editOrder/${order._id}`}>
-        <HiPencilAlt className="edit-icon" size={24} />
-        </Link>
-        </div>
-    </div>  */}
-    
-      {/* ))} */}
-      {/* <p className="p-4 border border-slate-300 my-3 flex justify-between gap-5 items-start font-bold">Total bill: NRs. {total_price}</p>
-
-      <AddBillForm initialOriginalPrice={total_price} /> */}
       </div>
       </div>
         </>
-        // <EditTableForm id={id} title={order_title} description={order_description} />
     )
     } catch (error) {
         return <div>Error loading orders. Please try again later.</div>;

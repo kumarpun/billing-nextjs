@@ -185,7 +185,7 @@ margin-top: -32px;
 .char-9 { color: #4b530e; } /* e */
 .char-10 { color: #FF0088; } /* (space) */
 .char-11 { color: #65042c; } /* & */
-.char-12 { color: #AAFF00; } /* (space) */
+.char-12 { color: #090d02; } /* (space) */
 .char-13 { color: #12043a; } /* B */
 .char-14 { color: #12043a; } /* o */
 .char-15 { color: #12043a; } /* o */
@@ -339,4 +339,28 @@ tbody tr {
   border: none;
   font-size: 20px;
   cursor: pointer;
+}
+
+@media print {
+  .add-table { 
+      display: none; /* Hide buttons during printing */
+  }
+  .print-hide {
+    display: none !important;
+  }
+  .order-table th, .order-table td {
+      border: 1px solid #000; /* Darker border for better visibility */
+  }
+  /* Additional print-specific styles */
+}
+
+/* Receipt.css */
+.receipt-container {
+  text-align: center;
+  margin: 20px;
+}
+
+.receipt-text {
+  font-family: monospace; /* Use a monospaced font to keep alignment */
+  white-space: pre; /* Preserve whitespace and line breaks */
 }

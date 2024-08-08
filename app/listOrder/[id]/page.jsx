@@ -48,7 +48,7 @@ export default async function ListOrder({ params }) {
         <nav className="flex justify-between items-center bg-slate-800 px-8 py-3 navbar nav-color">
         <div style={{ flex: 0 }}></div>
         <Link className="page-title font-bold" href={"/"}>
-        {Array.from("VIVID CAFE & BOOZE").map((char, index) => (
+        {Array.from("HYBE Food & Drinks").map((char, index) => (
         <span key={index} className={`char-${index}`}>{char}</span>
     ))}
       </Link>

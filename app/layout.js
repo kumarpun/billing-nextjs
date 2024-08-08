@@ -6,8 +6,8 @@ import { Toaster } from "react-hot-toast";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Vivid Cafe",
-  description: "Vivid Cafe & Booze",
+  title: "HYBE",
+  description: "HYBE Food & Drinks",
 };
 
 export default function RootLayout({ children }) {

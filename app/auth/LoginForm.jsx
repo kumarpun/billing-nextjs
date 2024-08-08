@@ -40,7 +40,7 @@ export default function LoginForm() {
         {/* <h1 className="text-xl font-bold my-4">Enter the details</h1> */}
         {/* <form onSubmit={handleSubmit} className="flex flex-col gap-3"> */}
         <form onSubmit={handleSubmit}>
-        <h2>Vivid Login</h2>
+        <h2>HYBE Login</h2>
         <div className="input-field">
         <input 
             onChange={(e) => setEmail(e.target.value)} type="text" placeholder="Email"/>

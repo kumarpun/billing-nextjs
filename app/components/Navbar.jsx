@@ -12,7 +12,7 @@ export default function Navbar() {
         <nav className="flex justify-between items-center bg-slate-800 px-8 py-3 navbar nav-color">
             <div style={{ flex: 0.4 }}></div>
       <div className="font-bold page-title" href={"/"}>
-        {Array.from("VIVID CAFE & BOOZE").map((char, index) => (
+        {Array.from("HYBE Food & Drinks").map((char, index) => (
         <span key={index} className={`char-${index}`}>{char}</span>
     ))}    
       </div>

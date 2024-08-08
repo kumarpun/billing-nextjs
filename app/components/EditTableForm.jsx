@@ -36,7 +36,7 @@ export default function EditTableForm({ id, title, description }) {
         <>
           <nav className="flex justify-between items-center bg-slate-800 px-8 py-3 navbar">
       <Link className="text-white font-bold" href={"/"}>
-      Vivid Cafe & Booze
+      HYBE Food & Drinks
       </Link>
         </nav>
         <form onSubmit={handleSubmit} className="flex flex-col gap-3">

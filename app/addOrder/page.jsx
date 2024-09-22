@@ -26,7 +26,8 @@ export default function AddOrder() {
                 "Content-type": "application/json",
               },
               body: JSON.stringify({ 
-                table_id: id, 
+                // table_id: id, 
+                table_id,
                 order_title, 
                 order_description,
                }),
@@ -53,7 +54,7 @@ export default function AddOrder() {
               <form onSubmit={handleSubmit} className="flex flex-col gap-3">
               <input
             onChange={(e) => setTableId(e.target.value)} 
-            value={id}
+            value={table_id}
             className="border border-slate-500 px-8 py-2" type="text" placeholder="Order id" />
             <input
             onChange={(e) => setTitle(e.target.value)} 

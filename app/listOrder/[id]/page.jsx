@@ -6,18 +6,33 @@ import { HiPencilAlt } from "react-icons/hi";
 import EditCustomerForm from "../../components/EditCustomerForm";
 import AddBillForm from  "../../components/AddBillForm";
 import OrderListClient from "../../components/OrderListClient";
+import { cookies } from 'next/headers';
 
 const getOrdersByTableId = async(id) => {
     try {
         // const res = await fetch(`http://localhost:3000/api/orders/${id}`, {
         //     cache: 'no-store',
         // });
+        // const authToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjA1MDI5MmQ4MWZmYjQ0YjU4OTI2ZmEiLCJuYW1lIjoia3VtYXIgcHVuIiwiZW1haWwiOiJ0ZXN0QGdtYWlsLmNvbSIsImlhdCI6MTcyNjk4Njg2OH0.BApSb0f4wdBm6RQLMasmIfWQk14BSuUq2AZIavl47ik';
+        const cookieStore = cookies(); // Access the cookie store
+
+        const authToken = cookieStore.get("authToken")?.value; 
+        console.log('Auth token:', authToken);
+
         const [ordersRes, billRes] = await Promise.all([
             fetch(`http://localhost:3000/api/orders/${id}`, {
                 cache: 'no-store',
-            }),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Cookie': `authToken=${authToken}`, // Manually set the Cookie header
+                },              
+                 }),
             fetch(`http://localhost:3000/api/bill/${id}`, {
                 cache: 'no-store',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Cookie': `authToken=${authToken}`, // Manually set the Cookie header
+                },
             })
         ]);
 

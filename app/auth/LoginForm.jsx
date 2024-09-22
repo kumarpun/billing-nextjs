@@ -17,16 +17,30 @@ export default function LoginForm() {
     e.preventDefault();
 
     try {
-      const res = await signIn('credentials', {
-        email,
-        password,
-        redirect: false,      
-      });
-      if (res.error) {
-        setError("Invalid Credentials");
+      // const res = await signIn('credentials', {
+      //   email,
+      //   password,
+      //   redirect: false,      
+      // });
+      // if (res.error) {
+      //   setError("Invalid Credentials");
+      //   return;
+      // }
+      const res = await fetch("/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ 
+            name, email, password
+         }),
+    })
+     if (res.ok) {
+      router.replace("/dashboard");
         return;
       }
-      router.replace("/dashboard");
+      setError("Invalid Credentials");
+      // router.replace("/dashboard");
     } catch (error) {
       setError(error.message);
     }

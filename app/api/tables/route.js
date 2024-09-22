@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { connectMongoDB } from "../../../lib/mongodb";
 import Table from "../../../models/table";
+import jwt from "jsonwebtoken";
 
 export async function POST(request) {
     const { title, description } = await request.json();
@@ -11,8 +12,15 @@ export async function POST(request) {
 
 export async function GET() {
     await connectMongoDB();
-    const tables = await Table.find();
-    return NextResponse.json({tables});
+    try {
+  
+        const tables = await Table.find();
+        return NextResponse.json({tables});
+    } catch (error) {
+        console.error("Error fetching tables:", error);
+        return NextResponse.json({ error: "Error fetching tables" }, { status: 500 });
+    }
+
 }
 
 export async function DELETE(request) {

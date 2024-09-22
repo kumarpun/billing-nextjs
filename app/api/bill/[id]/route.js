@@ -1,19 +1,32 @@
 import { NextResponse } from "next/server";
 import { connectMongoDB } from "../../../../lib/mongodb";
 import Bill from "../../../../models/bill";
+import jwt from "jsonwebtoken";
 
 export async function GET(request, { params }) {
     const { id } = params;
-    await connectMongoDB();
 
+    // Extract and verify the token
     try {
+        console.log('Request body:', request);
+        const authToken = request.cookies.get("authToken")?.value; 
+        console.log('Auth token:', authToken);
+
+        try {
+            const decoded = jwt.verify(authToken, process.env.NEXTAUTH_SECRET);
+        } catch (error) {
+            return NextResponse.json({ error: 'Error verifying token' }, { status: 500 });
+        }
+
+        await connectMongoDB();
+
         // Fetch the bill using tablebill_id
-        const billById = await Bill.find({ 
+        const billById = await Bill.find({
             tablebill_id: id,
             billStatus: ["pending"]
-         });
+        });
 
-         if (!billById || billById.length === 0) {
+        if (!billById || billById.length === 0) {
             return NextResponse.json({
                 billById: [],
                 totalFinalbill: 0,
@@ -42,6 +55,16 @@ export async function PUT(request, { params }) {
     const { id } = params;
     
     try {
+        console.log('Request body:', request);
+        const authToken = request.cookies.get("authToken")?.value; 
+        console.log('Auth token:', authToken);
+
+        try {
+            const decoded = jwt.verify(authToken, process.env.NEXTAUTH_SECRET);
+        } catch (error) {
+            return NextResponse.json({ error: 'Error verifying token' }, { status: 500 });
+        }
+
         const { billStatus, finalPrice } = await request.json();
         
         await connectMongoDB();

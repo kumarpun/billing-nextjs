@@ -1,9 +1,24 @@
 import Link from "next/link";
+import { getSession } from "next-auth/react";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "../api/auth/[...nextauth]/route";
+import { Cookie } from "next/font/google";
+
 
 const getSalesReport = async () => {
     try {
+        // const session = await getServerSession(authOptions);
+        // console.log("Session:", session); // Log the session object
+        // if (!session) {
+        //     throw new Error("User not authenticated");
+        // }
+        // const token = session?.token;
+
         const res = await fetch('http://localhost:3000/api/orders', {
-            cache: 'no-store',
+            // cache: 'no-store',
+            // Cookies: {
+            //     Cookie: `authToken=${token}`, // Include the token in the Authorization header
+            // }
         });
         if (!res.ok) {
             throw new Error("Failed to fetch report");

@@ -2,19 +2,9 @@ import { NextResponse } from "next/server";
 import { connectMongoDB } from "../../../lib/mongodb";
 import CustomerOrder from "../../../models/customerOrder";
 import Table from "../../../models/table";
-
-// export async function POST(request) {
-//     const { order_title, order_description } = await request.json();
-//     await connectMongoDB();
-//     await Order.create({ order_title, order_description });
-//     return NextResponse.json({ message: "Order created." }, { status: 201 });
-// }
-
-// export async function GET() {
-//     await connectMongoDB();
-//     const orders = await Order.find();
-//     return NextResponse.json({orders});
-// }
+import { getToken } from "next-auth/jwt";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../../api/auth/[...nextauth]/route";
 
 export async function POST(request) {
     const { table_id,order_title, order_description, order_test, order_status, customer_status, order_quantity, order_price } = await request.json();
@@ -23,20 +13,12 @@ export async function POST(request) {
     return NextResponse.json({ message: "Order created successfully." }, { status: 201 });
 }
 
-// export async function GET(request, {params}) {
-//     try{
-//     const { id } = params;
-//     await connectMongoDB();
-//     const orders = await Order.findOne({ _id: id });
-//     return NextResponse.json({ orders }, { status: 200 });
-//     } catch (error) {
-//         console.log("Error: ", error);
-//     }
-// }
-
 export async function GET(request, response) {
     try {
-        // Connect to MongoDB
+        // const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
+        // if (!token) {
+        //     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+        // }
         await connectMongoDB();
 
         // Perform aggregation or $lookup operation to join CustomerOrder with Table

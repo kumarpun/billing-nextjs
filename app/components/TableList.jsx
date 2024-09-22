@@ -18,7 +18,7 @@ const getTables = async() => {
 }
 
 export default async function TableList() {
-    const { tables } = await getTables();
+    const { tables  } = await getTables();
     return (
         <>
          <hr className="separator" />

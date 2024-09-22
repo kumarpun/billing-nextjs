@@ -3,9 +3,32 @@
 import Link from "next/link";
 import { signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function Navbar() {
     const { data: session } = useSession();
+
+    const router = useRouter();
+
+    const handleLogout = async (e) => {
+      e.preventDefault();
+  
+      try {
+      
+        const res = await fetch("/api/logout", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          }
+      })
+       if (res.ok) {
+        router.replace("/");
+          return;
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
 
     return (
         // <nav className="flex justify-between items-center bg-slate-800 px-8 py-3">
@@ -24,7 +47,7 @@ export default function Navbar() {
         Sales Report
       </Link>
       <button
-        onClick={() => signOut()} className="bg-red-500 text-white font-bold px-6 py-2 mt-3">
+        onClick={(e) => handleLogout(e)} className="bg-red-500 text-white font-bold px-6 py-2 mt-3">
             Logout
         </button>
       </div>

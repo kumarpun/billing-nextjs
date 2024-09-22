@@ -20,14 +20,14 @@ const getOrdersByTableId = async(id) => {
         console.log('Auth token:', authToken);
 
         const [ordersRes, billRes] = await Promise.all([
-            fetch(`http://localhost:3000/api/orders/${id}`, {
+            fetch(`https://billing-nextjs.vercel.app/api/orders/${id}`, {
                 cache: 'no-store',
                 headers: {
                     'Content-Type': 'application/json',
                     'Cookie': `authToken=${authToken}`, // Manually set the Cookie header
                 },              
                  }),
-            fetch(`http://localhost:3000/api/bill/${id}`, {
+            fetch(`https://billing-nextjs.vercel.app/api/bill/${id}`, {
                 cache: 'no-store',
                 headers: {
                     'Content-Type': 'application/json',

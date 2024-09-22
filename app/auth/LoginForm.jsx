@@ -82,7 +82,7 @@ export default function LoginForm() {
           )}  
          {/* <Link className="text-sm mt-3 text-right" href={"/auth/register"}> */}
          <Link className="register" href={"/auth/register"}>
-            Don't have an account? <span className="underline">Register</span>
+            Dont have an account? <span className="underline">Register</span>
             </Link>
 
         </form>

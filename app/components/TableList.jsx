@@ -18,14 +18,14 @@ const getTables = async() => {
 }
 
 export default async function TableList() {
-    const { tables  } = await getTables();
+    const { tables } = await getTables();
     return (
         <>
          <hr className="separator" />
          <div className="bg-page">
         {tables.map(t => (
         // <div className="p-4 border border-slate-300 my-3 flex justify-between gap-5 items-start">
-            <div className="dashboard">
+            <div key={t._id} className="dashboard">
                 <div className="card color1">
             <div>
                 <div className="font-bold text-2xl">{t.title}</div>

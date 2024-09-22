@@ -10,7 +10,7 @@
 
 //     return <RegisterForm />;
 // }
-import RegisterForm from "../RegisterForm";
+import RegisterForm from "../RegisterForrm";
 import { cookies } from "next/headers"; // Import cookie handling in Next.js
 import jwt from "jsonwebtoken";
 import { redirect } from "next/navigation";

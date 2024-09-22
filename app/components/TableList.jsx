@@ -5,7 +5,7 @@ import ActionBtn from  "./ActionBtn";
 
 const getTables = async() => {
     try {
-      const res =  await fetch('http://localhost:3000/api/tables', {
+      const res =  await fetch('https://billing-nextjs.vercel.app/api/tables', {
             cache: 'no-store',
         });
         if(!res.ok) {

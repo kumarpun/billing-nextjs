@@ -365,37 +365,57 @@ tbody tr {
   white-space: pre; /* Preserve whitespace and line breaks */
 }
 
-/* Add print-specific styles */
+/* Print-specific styles */
 @media print {
   body {
-    width: 80mm; /* Set width for 80mm thermal paper */
-    height: 210mm; /* Set height for 210mm paper */
+    width: 80mm;
+    height: 210mm;
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
-    font-size: 10px; /* Adjust font size to fit */
+    font-size: 10px;
+  }
+  .bill-print{
+    width: 80mm;
+    height: 210mm;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    font-size: 10px;
   }
 
   .receipt-container, .order-table {
-    width: 100%; /* Ensure receipt content fits within 80mm width */
+    width: 100%; /* Ensure the table and content fit within 80mm */
   }
 
   .receipt-text {
     text-align: center;
-    white-space: pre-wrap; /* Handle line breaks correctly */
+    white-space: pre-wrap;
     margin: 0 auto;
+    font-size: 10px; /* Smaller font for receipt text */
   }
 
   .order-table {
     border-collapse: collapse;
     width: 100%;
-    font-size: 9px; /* Small font for table */
+    font-size: 9px; /* Smaller font for table */
+    border-spacing: 0; /* Removes extra space between borders */
   }
 
   .order-table th, .order-table td {
-    border: 1px solid #000; /* Simple table border */
-    padding: 4px;
+    padding: 1px 2px; /* Reduce padding inside table cells */
+    border: 1px solid #000; /* Table borders */
     text-align: left;
+  }
+
+  .order-table th {
+    white-space: nowrap;
+    font-weight: bold;
+    padding: 1px 2px; /* Decrease padding for table headers */
+  }
+
+  .order-table td {
+    white-space: nowrap; /* Prevent text wrapping in table cells */
   }
 
   p, pre {
@@ -404,30 +424,14 @@ tbody tr {
   }
 
   button {
-    display: none; /* Hide buttons when printing */
+    display: none; /* Hide buttons during print */
   }
 
   #discount-section input {
     border: none;
     border-bottom: 1px solid #000;
-    width: 50mm; /* Width for input box */
+    width: 50mm;
   }
 }
 
-/* Regular screen styles */
-.receipt-container {
-  padding: 10px;
-  margin: 0 auto;
-  text-align: center;
-}
-
-.order-table {
-  margin-top: 10px;
-  width: 100%;
-}
-
-.receipt-text {
-  margin: 10px 0;
-  font-size: 12px;
-}
 

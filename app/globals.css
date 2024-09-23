@@ -364,3 +364,70 @@ tbody tr {
   font-family: monospace; /* Use a monospaced font to keep alignment */
   white-space: pre; /* Preserve whitespace and line breaks */
 }
+
+/* Add print-specific styles */
+@media print {
+  body {
+    width: 80mm; /* Set width for 80mm thermal paper */
+    height: 210mm; /* Set height for 210mm paper */
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    font-size: 10px; /* Adjust font size to fit */
+  }
+
+  .receipt-container, .order-table {
+    width: 100%; /* Ensure receipt content fits within 80mm width */
+  }
+
+  .receipt-text {
+    text-align: center;
+    white-space: pre-wrap; /* Handle line breaks correctly */
+    margin: 0 auto;
+  }
+
+  .order-table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 9px; /* Small font for table */
+  }
+
+  .order-table th, .order-table td {
+    border: 1px solid #000; /* Simple table border */
+    padding: 4px;
+    text-align: left;
+  }
+
+  p, pre {
+    margin: 0;
+    padding: 4px 0;
+  }
+
+  button {
+    display: none; /* Hide buttons when printing */
+  }
+
+  #discount-section input {
+    border: none;
+    border-bottom: 1px solid #000;
+    width: 50mm; /* Width for input box */
+  }
+}
+
+/* Regular screen styles */
+.receipt-container {
+  padding: 10px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.order-table {
+  margin-top: 10px;
+  width: 100%;
+}
+
+.receipt-text {
+  margin: 10px 0;
+  font-size: 12px;
+}
+

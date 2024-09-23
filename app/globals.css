@@ -418,6 +418,13 @@ tbody tr {
     white-space: nowrap; /* Prevent text wrapping in table cells */
   }
 
+  .order-table th:nth-child(2), /* "Quantity" header */
+  .order-table td:nth-child(2)  /* "Quantity" data */
+  {
+    width: 5%; /* Adjust this value as needed (smaller percentage or fixed width) */
+    text-align: center; /* Optional: Center-align text in the quantity column */
+  }
+
   p, pre {
     margin: 0;
     padding: 4px 0;

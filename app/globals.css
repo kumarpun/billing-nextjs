@@ -400,6 +400,7 @@ tbody tr {
     width: 100%;
     font-size: 9px; /* Smaller font for table */
     border-spacing: 0; /* Removes extra space between borders */
+    table-layout: fixed; /* Fixes the table layout */
   }
 
   .order-table th, .order-table td {
@@ -418,11 +419,31 @@ tbody tr {
     white-space: nowrap; /* Prevent text wrapping in table cells */
   }
 
+  /* Set a fixed width for the "Quantity" column */
   .order-table th:nth-child(2), /* "Quantity" header */
   .order-table td:nth-child(2)  /* "Quantity" data */
   {
-    width: 5%; /* Adjust this value as needed (smaller percentage or fixed width) */
+    width: 15% !important; /* Force the width using !important */
     text-align: center; /* Optional: Center-align text in the quantity column */
+  }
+
+  /* Set a fixed width for other columns as well, if needed */
+  .order-table th:nth-child(1), /* "Order" header */
+  .order-table td:nth-child(1)  /* "Order" data */
+  {
+    width: 25%; /* Adjust as needed */
+  }
+
+  .order-table th:nth-child(3), /* "Price" header */
+  .order-table td:nth-child(3)  /* "Price" data */
+  {
+    width: 15%; /* Adjust as needed */
+  }
+
+  .order-table th:nth-child(4), /* "Total Price" header */
+  .order-table td:nth-child(4)  /* "Total Price" data */
+  {
+    width: 20%; /* Adjust as needed */
   }
 
   p, pre {

@@ -14,7 +14,7 @@ const getSalesReport = async () => {
         // }
         // const token = session?.token;
 
-        const res = await fetch('http://localhost:3000/api/orders', {
+        const res = await fetch('https://billing-nextjs.vercel.app/api/orders', {
             // cache: 'no-store',
             // Cookies: {
             //     Cookie: `authToken=${token}`, // Include the token in the Authorization header

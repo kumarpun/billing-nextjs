@@ -9,7 +9,7 @@ export default function RemoveOrderBtn({ id }) {
     const removeOrder = async () => {
         const confirmed = confirm("Are you sure?");
         if (confirmed) {
-            const res = await fetch(`http://localhost:3000/api/orders?id=${id}`, {
+            const res = await fetch(`https://billing-nextjs.vercel.app/api/orders?id=${id}`, {
               method: "DELETE",
             });
             if (res.ok) {

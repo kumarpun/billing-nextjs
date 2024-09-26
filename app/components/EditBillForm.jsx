@@ -14,7 +14,7 @@ export default function EditBillForm({id, billStatus, finalPrice, onBillAdded}) 
         e.preventDefault();
 
         try {
-            const res = await fetch(`http://localhost:3000/api/bill/${id}`, {
+            const res = await fetch(`https://billing-nextjs.vercel.app/api/bill/${id}`, {
               method: "PUT",
               headers: {
                 "Content-type": "application/json",

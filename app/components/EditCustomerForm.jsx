@@ -19,7 +19,7 @@ export default function EditCustomerForm({ id, customer_status }) {
         e.preventDefault();
 
         try {
-            const res = await fetch(`http://localhost:3000/api/orders/${id}`, {
+            const res = await fetch(`https://billing-nextjs.vercel.app/api/orders/${id}`, {
               method: "PUT",
               headers: {
                 "Content-type": "application/json",

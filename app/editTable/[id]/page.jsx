@@ -2,7 +2,7 @@ import EditTableForm from "../../components/EditTableForm";
 
 const getTableById = async (id) => {
     try {
-      const res = await fetch(`http://localhost:3000/api/tables/${id}`, {
+      const res = await fetch(`https://billing-nextjs.vercel.app/api/tables/${id}`, {
         cache: "no-store",
       });
   

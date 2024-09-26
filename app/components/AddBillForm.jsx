@@ -23,7 +23,7 @@ export default function AddBillForm({ initialOriginalPrice, initialBillId, onBil
         e.preventDefault();
         
           try {
-            const res = await fetch("http://localhost:3000/api/bill", {
+            const res = await fetch("https://billing-nextjs.vercel.app/api/bill", {
               method: "POST",
               headers: {
                 "Content-type": "application/json",

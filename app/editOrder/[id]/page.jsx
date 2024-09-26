@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const getOrderById = async (id) => {
     try {
-      const res = await fetch(`http://localhost:3000/api/orders/${id}`, {
+      const res = await fetch(`https://billing-nextjs.vercel.app/api/orders/${id}`, {
         cache: "no-store",
       });
   

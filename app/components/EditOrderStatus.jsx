@@ -23,7 +23,7 @@ export default function EditOrderStatus({ id, order_title, order_description, or
         e.preventDefault();
 
         try {
-            const res = await fetch(`http://localhost:3000/api/orders/${id}`, {
+            const res = await fetch(`https://billing-nextjs.vercel.app/api/orders/${id}`, {
               method: "PUT",
               headers: {
                 "Content-type": "application/json",

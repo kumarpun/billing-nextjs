@@ -19,7 +19,7 @@ export default function AddTable() {
           }
       
           try {
-            const res = await fetch("http://localhost:3000/api/tables", {
+            const res = await fetch("https://billing-nextjs.vercel.app/api/tables", {
               method: "POST",
               headers: {
                 "Content-type": "application/json",

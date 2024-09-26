@@ -19,7 +19,10 @@ export default function AddOrder({ params }) {
 
     const options = [
         { value: 'Momo fry', label: 'Momo fry - NRs 200', price: 200 },
-        { value: 'Chicken chilly', label: 'Chicken chilly - NRs 300', price: 300 }
+        { value: 'Chicken chilly', label: 'Chicken chilly - NRs 300', price: 300 },
+        { value: 'Buff sukuti', label: 'Buff sukuti - NRs 300', price: 300 },
+        { value: 'Hawain Pizza', label: 'Hawain Pizza - NRs 600', price: 500 },
+        { value: 'Spagetti', label: 'Spagetti - NRs 300', price: 300 }
       ];
 
     const router = useRouter();

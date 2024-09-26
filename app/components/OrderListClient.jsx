@@ -163,7 +163,7 @@ export default function OrderListClient({ orderbyTableId, total_price, tablebill
     </pre>
 
                         <br></br>
-
+                        <div className="table-wrapper" style={{ maxHeight: '200px', overflowY: 'auto' }}>
               <table className="order-table w-full border-collapse border border-gray-300">
     <thead>
         <tr>
@@ -184,6 +184,8 @@ export default function OrderListClient({ orderbyTableId, total_price, tablebill
         ))}
     </tbody>
 </table>
+</div>
+
         <br></br>
 
 

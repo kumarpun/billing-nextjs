@@ -3,10 +3,16 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { toast } from "react-hot-toast";
+import Select from 'react-select';
 
 export default function EditBillForm({id, billStatus, finalPrice, onBillAdded}) {
     const [newBillStatus, setNewBillStatus] = useState(billStatus);
     const [newFinalPrice, setNewFinalPrice] = useState(finalPrice);
+
+    const options = [
+      { value: 'Pending', label: 'Pending' },
+      { value: 'Paid', label: 'Paid' }
+    ];
 
     const router = useRouter();
 
@@ -34,6 +40,11 @@ export default function EditBillForm({id, billStatus, finalPrice, onBillAdded}) 
           }
         };
 
+        const Dropdown = (selectedOption) => {
+          console.log('Selected:', selectedOption)
+          setNewBillStatus(selectedOption.value)
+        }
+
     return(
      <>
      <form onSubmit={handleSubmit} className="flex flex-col gap-3">
@@ -42,10 +53,19 @@ export default function EditBillForm({id, billStatus, finalPrice, onBillAdded}) 
             value={newFinalPrice}
             className="border border-slate-500 px-8 py-2" type="number" placeholder="Final price" />
 
-     <input
+     {/* <input
          onChange={(e) => setNewBillStatus(e.target.value)}
          value={newBillStatus}
-         className="border border-slate-500 px-8 py-2" type="text" placeholder="Bill status" />
+         className="border border-slate-500 px-8 py-2" type="text" placeholder="Bill status" /> */}
+         <Select
+      options={options}
+      onChange={Dropdown}
+      value={{ value: newBillStatus, label: newBillStatus }}      
+      styles={{ control: (provided) => ({ ...provided, width: 400 }),
+      menu: (provided) => ({ ...provided, width: 400 })
+     }}
+      placeholder="Select bill status"
+    />
 
         <button className="bg-green-600 font-bold text-white py-3 px-6 w-fit">
     Update Bill

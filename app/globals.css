@@ -118,7 +118,7 @@ button:hover {
 .bg-page{
   content: "";
   position: absolute;
-  background-image: url('assets/bg2.jpg');
+  /* background-image: url('assets/bg2.jpg'); */
   width: 100%;
   height: 90%;
   background-position: center;
@@ -339,6 +339,23 @@ tbody tr {
   border: none;
   font-size: 20px;
   cursor: pointer;
+}
+
+@media (min-width: 640px) {
+  /* On screens larger than mobile, place the button at the top */
+  .modal-close {
+    top: 20px;
+    right: 10px;
+  }
+}
+
+@media (max-width: 640px) {
+  /* On mobile screens, place the button at the bottom */
+  .modal-close {
+    bottom: 450px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
 }
 
 @media print {

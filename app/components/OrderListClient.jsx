@@ -153,7 +153,7 @@ export default function OrderListClient({ orderbyTableId, total_price, tablebill
                         <div class="receipt-container">
         <pre class="receipt-text">
             *************************************************
-            {'\n'}   RECEIPT
+            {'\n'}   THE HYBE
             {'\n'}*************************************************
         </pre>
     </div>

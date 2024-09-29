@@ -69,7 +69,7 @@ export default function AddBillForm({ initialOriginalPrice, initialBillId, onBil
                    <input
                     onChange={(e) => setFinalPrice(e.target.value)} 
                     value={finalPrice}
-                   className="border border-slate-500 px-8 py-2" type="number" placeholder="Final discounted bill" />
+                   className="border border-slate-500 px-8 py-2" type="number" placeholder="Final discounted bill" required />
 
                     <input
                     onChange={(e) => setRemarks(e.target.value)}

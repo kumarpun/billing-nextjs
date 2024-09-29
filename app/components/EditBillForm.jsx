@@ -12,7 +12,7 @@ export default function EditBillForm({id, billStatus, finalPrice, onBillAdded}) 
 
     const options = [
       { value: 'pending', label: 'pending' },
-      { value: 'paid', label: 'paid' }
+      { value: 'Paid', label: 'Paid' }
     ];
 
     const router = useRouter();

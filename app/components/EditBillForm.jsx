@@ -8,7 +8,7 @@ import Select from 'react-select';
 export default function EditBillForm({id, billStatus, finalPrice, onBillAdded}) {
     const [newBillStatus, setNewBillStatus] = useState(billStatus);
     const [newFinalPrice, setNewFinalPrice] = useState(finalPrice);
-    const [isError, setIsError] = useState(false); // Track validation error
+    // const [isError, setIsError] = useState(false); // Track validation error
 
     const options = [
       { value: 'Pending', label: 'Pending' },
@@ -20,10 +20,10 @@ export default function EditBillForm({id, billStatus, finalPrice, onBillAdded}) 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!newBillStatus) {
-          setIsError(true);
-          return;
-        }
+        // if (!newBillStatus) {
+        //   setIsError(true);
+        //   return;
+        // }
 
         try {
             const res = await fetch(`https://billing-nextjs.vercel.app/api/bill/${id}`, {
@@ -49,7 +49,7 @@ export default function EditBillForm({id, billStatus, finalPrice, onBillAdded}) 
         const Dropdown = (selectedOption) => {
           console.log('Selected:', selectedOption)
           setNewBillStatus(selectedOption.value)
-          setIsError(false); // Reset error if value is selected
+          // setIsError(false); // Reset error if value is selected
         }
 
     return(
@@ -73,7 +73,7 @@ export default function EditBillForm({id, billStatus, finalPrice, onBillAdded}) 
      }}
       placeholder="Select bill status"
     />
-        {isError && <span style={{ color: 'red' }}>Please select a bill status</span>}
+        {/* {isError && <span style={{ color: 'red' }}>Please select a bill status</span>} */}
 
         <button className="bg-green-600 font-bold text-white py-3 px-6 w-fit">
     Update Bill

@@ -11,7 +11,7 @@ export default function EditBillForm({id, billStatus, finalPrice, onBillAdded}) 
     // const [isError, setIsError] = useState(false); // Track validation error
 
     const options = [
-      { value: 'Pending', label: 'Pending' },
+      // { value: 'Pending', label: 'Pending' },
       { value: 'Paid', label: 'Paid' }
     ];
 
@@ -58,7 +58,7 @@ export default function EditBillForm({id, billStatus, finalPrice, onBillAdded}) 
         <input
             onChange={(e) => setNewFinalPrice(e.target.value)}
             value={newFinalPrice}
-            className="border border-slate-500 px-8 py-2" type="number" placeholder="Final price" />
+            className="border border-slate-500 px-8 py-2" type="number" placeholder="Final price" required />
 
      {/* <input
          onChange={(e) => setNewBillStatus(e.target.value)}

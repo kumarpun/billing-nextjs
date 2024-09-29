@@ -74,7 +74,8 @@ export default async function ListOrder({ params }) {
   
         <div>
         <hr className="separator" />
-        <EditCustomerForm id={id} />
+        {/* <EditCustomerForm id={id} /> */}
+        {totalFinalbill <= 0 && <EditCustomerForm id={id} />}
         <OrderListClient orderbyTableId={orderbyTableId} total_price={total_price} tablebill_id={tablebill_id} tableId={id} billById={billById} totalFinalbill={totalFinalbill} billFinalStatus={billFinalStatus} />
 
       </div>

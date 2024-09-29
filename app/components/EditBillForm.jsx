@@ -11,7 +11,7 @@ export default function EditBillForm({id, billStatus, finalPrice, onBillAdded}) 
     // const [isError, setIsError] = useState(false); // Track validation error
 
     const options = [
-      { value: 'Pending', label: 'Pending' },
+      // { value: 'Pending', label: 'Pending' },
       { value: 'Paid', label: 'Paid' }
     ];
 

@@ -23,8 +23,7 @@ export async function GET(request, { params }) {
         // Fetch the bill using tablebill_id
         const billById = await Bill.find({
             tablebill_id: id,
-            // billStatus: ["pending"]
-            billStatus: { $regex: /^pending$/i } // Case-insensitive match
+            billStatus: ["pending"]
         });
 
         if (!billById || billById.length === 0) {

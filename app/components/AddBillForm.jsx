@@ -19,6 +19,17 @@ export default function AddBillForm({ initialOriginalPrice, initialBillId, onBil
         setTableBillId(initialBillId);
     }, [initialOriginalPrice, initialBillId]);
 
+       // Calculate the final price when discount or original price changes
+       useEffect(() => {
+        if (originalPrice && discountPercent) {
+            const discountAmount = (discountPercent / 100) * originalPrice;
+            const calculatedFinalPrice = originalPrice - discountAmount;
+            setFinalPrice(Math.round(calculatedFinalPrice)); // Use Math.round() to avoid decimals
+        } else {
+            setFinalPrice(originalPrice); // No discount applied
+        }
+    }, [discountPercent, originalPrice]);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         

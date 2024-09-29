@@ -2,7 +2,7 @@ import Link from "next/link";
 
 const getFinalSalesReport = async () => {
     try {
-        const res = await fetch('https://billing-nextjs.vercel.app/api/bill', {
+        const res = await fetch('http://localhost:3000/api/bill?lastWeek=true', {
             cache: 'no-store',
         });
         if (!res.ok) {
@@ -16,7 +16,8 @@ const getFinalSalesReport = async () => {
 }
 
 export default async function ListReport() {
-    const { bill, totalFinalPrice } = await getFinalSalesReport() || { bill: [], totalFinalPrice: 0 }; // Handle undefined case
+    // const { bill, totalFinalPrice } = await getFinalSalesReport() || { bill: [], totalFinalPrice: 0 }; // Handle undefined case
+    const { bills, totalFinalPrice } = await getFinalSalesReport() || { bill: [], totalFinalPrice: 0 }; // Handle undefined case
     return (
         <>
             <nav className="flex justify-between items-center bg-slate-800 px-8 py-3 navbar nav-color">
@@ -56,7 +57,7 @@ export default async function ListReport() {
                                                     <th>Remarks</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
+                                            {/* <tbody>
                                                 {bill.map((sales, index) => (
                                                     <tr key={index}>
                                                         <td>{index + 1}</td>
@@ -66,7 +67,24 @@ export default async function ListReport() {
                                                         <td>{sales.remarks}</td>
                                                     </tr>
                                                 ))}
-                                            </tbody>
+                                            </tbody> */}
+                                               <tbody>
+                                            {bills.length > 0 ? (
+                                                bills.map((sales, index) => (
+                                                    <tr key={index}>
+                                                        <td>{index + 1}</td>
+                                                        <td>{sales.originalPrice}</td>
+                                                        <td>{sales.discountPercent}</td>
+                                                        <td>{sales.finalPrice}</td>
+                                                        <td>{sales.remarks}</td>
+                                                    </tr>
+                                                ))
+                                            ) : (
+                                                <tr>
+                                                    <td colSpan="5" className="text-center">No sales records available</td>
+                                                </tr>
+                                            )}
+                                        </tbody>
                                         </table>
                                     </section>
                                 </main>

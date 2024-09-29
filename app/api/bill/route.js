@@ -43,7 +43,7 @@ export async function GET(request) {
 
     if (lastWeek === "true") {
         // Fetch bills created in the last 7 days
-        const oneWeekAgo = dayjs().subtract(1, 'day').toDate();    
+        const oneWeekAgo = dayjs().subtract(7, 'day').toDate();    
         bills = await Bill.find({
             createdAt: { $gte: oneWeekAgo }
         });

@@ -9,7 +9,7 @@ export default function EditCustomerForm({ id, customer_status }) {
     const [newCustomerStatus, setNewCustomerStatus] = useState(customer_status);
 
     const options = [
-        { value: 'Bill paid', label: 'Bill paid' },
+        // { value: 'Bill paid', label: 'Bill paid' },
         { value: 'Customer left', label: 'Customer left' }
       ];
 

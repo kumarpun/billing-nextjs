@@ -11,8 +11,8 @@ export default function EditBillForm({id, billStatus, finalPrice, onBillAdded}) 
     // const [isError, setIsError] = useState(false); // Track validation error
 
     const options = [
-      // { value: 'Pending', label: 'Pending' },
-      { value: 'Paid', label: 'Paid' }
+      { value: 'pending', label: 'pending' },
+      { value: 'paid', label: 'paid' }
     ];
 
     const router = useRouter();

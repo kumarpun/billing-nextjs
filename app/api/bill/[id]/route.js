@@ -34,7 +34,8 @@ export async function GET(request, { params }) {
             }, { status: 200 });
         }
 
-        const totalFinalbill = billById.reduce((acc, bill) => acc + bill.finalPrice, 0);
+        // const totalFinalbill = billById.reduce((acc, bill) => acc + bill.finalPrice, 0);
+        const totalFinalbill = billById[0].finalPrice;
         const billFinalStatus = billById[0].billStatus;
 
         const response = {

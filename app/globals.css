@@ -494,6 +494,28 @@ tbody tr {
   background-color: rgba(0, 0, 0, 0.1); /* Customize the track color */
 }
 
+@media (min-width: 1024px) {
+  .tables-row {
+      display: flex;
+      flex-direction: row; /* Horizontally align items */
+      gap: 16px; /* Adjust gap as needed */
+  }
+}
 
+/* For devices below 1024px (mobile) */
+@media (max-width: 1024px) {
+  .tables-row {
+      display: flex;
+      flex-direction: column; /* Stack items vertically */
+      gap: 8px; /* Adjust gap as needed */
+  }
+}
+
+@media (min-width: 1024px) {
+  .table-reverse {
+    flex-direction: row-reverse; /* Reverse order (8, 7, 6, 5) */
+    margin-right: 30px;
+  }
+}
 
 

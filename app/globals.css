@@ -479,4 +479,21 @@ tbody tr {
   }
 }
 
+/* Scrollbar styles for WebKit browsers (Chrome, Safari) */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 12px;
+  visibility: visible; /* Force visibility */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.3); /* Customize the scrollbar color */
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0.1); /* Customize the track color */
+}
+
+
+
 

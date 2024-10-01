@@ -16,7 +16,6 @@ export default function OrderListClient({ orderbyTableId, total_price, tablebill
     const [modalContent, setModalContent] = useState(null); // to track which form to display
     const [discount, setDiscount] = useState(''); // State to track discount value
 
-
     const handleOpenModal = (content) => {
         setModalContent(content);
         setModalOpen(true);
@@ -72,7 +71,10 @@ export default function OrderListClient({ orderbyTableId, total_price, tablebill
             {
                 !orderbyTableId || orderbyTableId.length === 0 ? 'No orders found for this table.' : ''
             }
+        <div className="order-list-container max-h-[calc(3*10rem)] overflow-y-scroll custom-scrollbar">
+
             {orderbyTableId.map(order => (
+
                 <div className="p-4 border border-slate-300 my-3 flex justify-between gap-5 items-start" key={order._id}>
                     <div>
                         <h3 className="font-bold text-2xl">{order.order_title}</h3>
@@ -91,7 +93,8 @@ export default function OrderListClient({ orderbyTableId, total_price, tablebill
                     </div>
                 </div>
             ))}
-
+            </div>
+    
 {/* {orderbyTableId.length > 0 && (
                 <table className="order-table w-full border-collapse border border-gray-300 mt-4">
                     <thead>

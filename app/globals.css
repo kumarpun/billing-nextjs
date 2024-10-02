@@ -534,5 +534,17 @@ tbody tr {
   }
 }
 
+.filter-options {
+  display: flex;
+  justify-content: flex-end; /* Align to the right */
+  margin-bottom: 16px; /* Spacing below the filter */
+  margin-right: 80px;
+  margin-top: 12px;
+} 
+
+.filter-options label {
+  margin-right: 8px; /* Space between label and dropdown */
+}
+
 
 

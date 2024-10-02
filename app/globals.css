@@ -23,12 +23,28 @@ input {
   align-items: center;
   border-radius: 25px;
   gap: 2rem;
+  width: 260px;
 }
 .card:hover,
 .card.color1 {
   border: 1px solid #7a7777;
   box-shadow: 10px 20px 20px 20px rgba(206, 17, 17, 0.1);
 }
+
+.card-terrace {
+  height: 8rem;
+  /* width: 120%; */
+  padding: 5rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border: 0px;
+  align-items: center;
+  border-radius: 25px;
+  gap: 2rem;
+  width: 290px;
+}
+
 .icon {
   color: #343432;
   padding: 1rem;
@@ -514,8 +530,9 @@ tbody tr {
 @media (min-width: 1024px) {
   .table-reverse {
     flex-direction: row-reverse; /* Reverse order (8, 7, 6, 5) */
-    margin-right: 30px;
+    margin-right: 10px;
   }
 }
+
 
 

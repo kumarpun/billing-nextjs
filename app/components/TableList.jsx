@@ -199,7 +199,7 @@ export default async function TableList() {
             <div className="flex gap-4 tables-row">
                     {terrraceTables.map(t => (
                         <div key={t._id} className="dashboard">
-                            <div className="card color1">
+                            <div className="card card-terrace color1">
                                 <div>
                                     <div className="font-bold text-2xl">{t.title}</div>
                                     <div>{t.description}</div>

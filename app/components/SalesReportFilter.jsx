@@ -31,7 +31,7 @@ export default function SalesReportFilter() {
 
     return (
         <>
-            <div className="filter-options">
+             <div className="filter-options">
                 <label htmlFor="filter">Select Filter: </label>
                 <select id="filter" value={selectedFilter} onChange={handleFilterChange}>
                     <option value="today">Today</option>

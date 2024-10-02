@@ -546,5 +546,54 @@ tbody tr {
   margin-right: 8px; /* Space between label and dropdown */
 }
 
+.dropdown {
+  position: relative;
+  display: inline-block; /* Allows the dropdown to be inline with other elements */
+}
+
+.dropdown button {
+  margin-top: -10px;
+  background-color: #808283; /* Button background color */
+  color: white; /* Button text color */
+  border: none; /* Remove default border */
+  padding: 10px 20px; /* Button padding */
+  font-size: 16px; /* Font size */
+  cursor: pointer; /* Pointer cursor on hover */
+  border-radius: 4px; /* Rounded corners */
+  transition: background-color 0.3s; /* Smooth background transition */
+}
+
+.dropdown button:hover {
+  background-color: #0056b3; /* Darker color on hover */
+}
+
+.dropdown-options {
+  position: absolute;
+  right: 0; /* Align dropdown to the right */
+  z-index: 10; /* Ensure this is higher than surrounding elements */
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 4px; /* Rounded corners for dropdown */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  margin-top: 4px; /* Space between button and dropdown */
+  padding: 0; /* Reset padding */
+  list-style-type: none; /* Remove default list styles */
+  width: 150%; /* Match dropdown to button width */
+}
+
+.dropdown-options li {
+  padding: 10px 15px; /* Padding for dropdown items */
+  cursor: pointer; /* Pointer cursor for items */
+  transition: background-color 0.3s; /* Smooth background transition */
+}
+
+.dropdown-options li:hover {
+  background-color: #f0f0f0; /* Highlight on hover */
+}
+
+.dropdown-options li:active {
+  background-color: #e0e0e0; /* Slightly darker on click */
+}
+
 
 

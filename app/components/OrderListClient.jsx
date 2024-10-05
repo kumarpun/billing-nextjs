@@ -89,7 +89,7 @@ export default function OrderListClient({ orderbyTableId, total_price, totalKitc
                         <div>Order price: NRs. {order.order_price}</div>
                         <div>Order quantity: {order.order_quantity}</div>
                         <div>Sum: NRs. {order.final_price}</div>
-                        <div>Order type: {order.order_type}</div>
+                        <div className="bg-green-600">Order type: {order.order_type}</div>
                     </div>
                     <div>
                         <RemoveOrderBtn id={order._id} />

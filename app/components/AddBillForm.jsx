@@ -213,11 +213,11 @@ export default function AddBillForm({ initialOriginalPrice, initialBillId, initi
                 <label htmlFor="finalPrice">Final Discount (KOT Discounted Price + BOT Price)</label>
                 <input
                     id="finalPrice"
+                    onChange={(e) => setFinalPrice(e.target.value)} // Allow user input
                     value={finalPrice}
                     className="border border-slate-500 px-8 py-2" 
                     type="number" 
                     placeholder="Final price" 
-                    required 
                 />
 
                 <label htmlFor="remarks">Remarks</label>

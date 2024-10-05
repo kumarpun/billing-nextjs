@@ -16,7 +16,8 @@ export default function AddOrder({ params }) {
     const [newOrdertitle, setnewOrdertitle] = useState(order_title);
     const [order_price, setOrderPrice] = useState("");
     const [order_quantity, setOrderQuantity] = useState(1);
-    const [order_type, setOrderType] = useState("Kitchen");
+    // const [order_type, setOrderType] = useState("Kitchen");
+    const [order_type, setOrderType] = useState(""); // Initially empty
 
     const options = [
       // bar menu
@@ -156,7 +157,7 @@ export default function AddOrder({ params }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!newOrdertitle || !order_status || !customer_status) {
+        if (!newOrdertitle || !order_status || !customer_status || !order_type) {
             alert("Title is required.");
             return;
           }
@@ -197,116 +198,144 @@ export default function AddOrder({ params }) {
 
     try {
 
-        return (
-            <>
-                <div>
-                    <nav className="flex justify-between items-center bg-slate-800 px-8 py-3 w-full navbar nav-color">
+      return (
+        <>
+            <div>
+                <nav className="flex justify-between items-center bg-slate-800 px-8 py-3 w-full navbar nav-color">
                     <div style={{ flex: 0 }}></div>
                     <Link className="page-title font-bold" href={"/"}>
                         {Array.from("HYBE Food & Drinks").map((char, index) => (
-            <span key={index} className={`char-${index}`}>{char}</span>
-           ))}
-                        </Link>
-                        <Link className="add-table px-6 py-2 mt-3" href={`/listOrder/${id}`}>
-                            Back
-                        </Link>
-                    </nav>
-                    <hr className="separator" />
-                    <br/>
-                    <div className="bg-page">
+                            <span key={index} className={`char-${index}`}>{char}</span>
+                        ))}
+                    </Link>
+                    <Link className="add-table px-6 py-2 mt-3" href={`/listOrder/${id}`}>
+                        Back
+                    </Link>
+                </nav>
+                <hr className="separator" />
+                <br />
+                <div className="bg-page">
                     <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-                        <div>
-                            
+    
+                        <div className="flex items-center">
+                            <label className="mr-4 w-32 order-label">Order Name:</label>
+                            <Select
+                                options={options}
+                                onChange={Dropdown}
+                                value={{ value: newOrdertitle, label: newOrdertitle }}
+                                styles={{
+                                    control: (provided) => ({ ...provided, width: 400 }),
+                                    menu: (provided) => ({ ...provided, width: 400 })
+                                }}
+                                placeholder="Select an option"
+                            />
+                        </div>
+    
+                        <div className="flex items-center">
+                            <label className="mr-4 w-32 order-label">Price:</label>
                             <input
-                             value={id}
+                                value={`NRs. ${order_price}`}
                                 className="border border-slate-500 px-8 py-2"
                                 type="text"
-                                placeholder="Order id"
+                                placeholder="Order price"
                                 disabled
                             />
                         </div>
-                        <div>
-                        <Select
-                        options={options}
-                        onChange={Dropdown}
-                        value={{ value: newOrdertitle, label: newOrdertitle }}      
-                        styles={{ control: (provided) => ({ ...provided, width: 400 }),
-                        menu: (provided) => ({ ...provided, width: 400 })
-                        }}
-                        placeholder="Select an option"
-                        />
-                        </div>
-
-                        <div>
-                        <input
-                            value={`NRs. ${order_price}`}
-                            className="border border-slate-500 px-8 py-2"
-                            type="text"
-                            placeholder="Order price"
-                            disabled
-                        />
-                    </div>
-
-                    <div>
+    
+                        <div className="flex items-center">
+                            <label className="mr-4 w-32 order-label">Quantity:</label>
                             <input
-                              onChange={(e) => setOrderQuantity(e.target.value)} 
-                              value={order_quantity}
+                                onChange={(e) => setOrderQuantity(e.target.value)}
+                                value={order_quantity}
                                 className="border border-slate-500 px-8 py-2"
                                 type="number"
                                 placeholder="Order quantity"
                             />
                         </div>
-
-                        <div>
-                        <select
-                            className="border border-slate-500 px-8 py-2"
-                            value={order_type}
-                            onChange={(e) => setOrderType(e.target.value)}
-                        >
-                            <option value="Kitchen">Kitchen</option>
-                            <option value="Bar">Bar</option>
-                        </select>
-                        </div>
-                    
-                        <div>
+    
+                        {/* <div className="flex items-center">
+                            <label className="mr-4 w-32 order-label">Order Type:</label>
+                            <select
+                                className="border border-slate-500 px-8 py-2"
+                                value={order_type}
+                                onChange={(e) => setOrderType(e.target.value)}
+                            >
+                                <option value="Kitchen">Kitchen</option>
+                                <option value="Bar">Bar</option>
+                            </select>
+                        </div> */}
+                        <div className="flex items-center">
+                                <label className="mr-4 w-32 order-label">Order Type:</label>
+                                <select
+                                    className="border border-slate-500 px-8 py-2"
+                                    value={order_type}
+                                    onChange={(e) => setOrderType(e.target.value)}
+                                    required // Added required attribute
+                                >
+                                    <option value="">Select Order Type</option> {/* Default option for selection */}
+                                    <option value="Kitchen">Kitchen</option>
+                                    <option value="Bar">Bar</option>
+                                </select>
+                            </div>
+    
+                        <div className="flex items-center">
+                            <label className="mr-4 w-32 order-label">Description:</label>
                             <input
-                              onChange={(e) => setDescription(e.target.value)} 
-                              value={order_description}
+                                onChange={(e) => setDescription(e.target.value)}
+                                value={order_description}
                                 className="border border-slate-500 px-8 py-2"
                                 type="text"
                                 placeholder="Order description"
                             />
                         </div>
-                        <div>
-                        <input
-                            onChange={(e) => setOrderStatus(e.target.value)} 
-                             value={order_status}
+    
+                        <div className="flex items-center">
+                            <label className="mr-4 w-32 order-label">Order Status:</label>
+                            <input
+                                onChange={(e) => setOrderStatus(e.target.value)}
+                                value={order_status}
                                 className="border border-slate-500 px-8 py-2"
                                 type="text"
                                 placeholder="Order status"
                                 disabled
                             />
                         </div>
-                        <di>
+    
+                        <div className="flex items-center">
+                            <label className="mr-4 w-32 order-label">Customer Status:</label>
                             <input
-                            onChange={(e) => setCustomerStatus(e.target.value)} 
-                             value={customer_status}
-                            className="border border-slate-500 px-8 py-2"
-                            type="text"
-                            placeholder="Customer status"
-                            disabled
+                                onChange={(e) => setCustomerStatus(e.target.value)}
+                                value={customer_status}
+                                className="border border-slate-500 px-8 py-2"
+                                type="text"
+                                placeholder="Customer status"
+                                disabled
                             />
-                        </di>
+                        </div>
+
+                        <div className="flex items-center">
+                            <label className="mr-4 w-32 order-label">Order ID:</label>
+                            <input
+                                value={id}
+                                className="border border-slate-500 px-8 py-2"
+                                type="text"
+                                placeholder="Order id"
+                                disabled
+                            />
+                        </div>
+    
                         <button
                             type="submit"
-                            className="bg-green-600 font-bold text-white py-3 px-6 w-fit" >
+                            className="bg-green-600 font-bold text-white py-3 px-6 w-fit order-label">
                             Add Order
                         </button>
                     </form>
-                      </div>
                 </div>
-            </>
-        );
+            </div>
+        </>
+    );
+    
+    
     } catch (error) {
         return <div>Error Adding orders. Please try again later.</div>;
     }

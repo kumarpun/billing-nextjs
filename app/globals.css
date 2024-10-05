@@ -595,5 +595,15 @@ tbody tr {
   background-color: #e0e0e0; /* Slightly darker on click */
 }
 
+.customer-label{
+  font-weight: 800;
+  margin-left: 15px;
+  color: #416fd3;
+}
+
+.order-label{
+  margin-left: 15px;
+}
+
 
 

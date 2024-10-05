@@ -2,70 +2,86 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Select from 'react-select';
-import { toast } from "react-hot-toast";
-import Link from "next/link";
 
 export default function EditCustomerForm({ id, customer_status }) {
     const [newCustomerStatus, setNewCustomerStatus] = useState(customer_status);
+    const [touched, setTouched] = useState(false); // To track if the select has been touched
 
     const options = [
-        // { value: 'Bill paid', label: 'Bill paid' },
         { value: 'Customer left', label: 'Customer left' }
-      ];
+    ];
 
     const router = useRouter();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setTouched(true); // Mark the select as touched on submit
+
+        // Check if a valid option is selected
+        if (!newCustomerStatus) {
+            // If no selection is made, simply return and display the required message
+            return; // Stop form submission
+        }
 
         try {
             const res = await fetch(`https://billing-nextjs.vercel.app/api/orders/${id}`, {
-              method: "PUT",
-              headers: {
-                "Content-type": "application/json",
-              },
-              body: JSON.stringify({ newCustomerStatus }),
+                method: "PUT",
+                headers: {
+                    "Content-type": "application/json",
+                },
+                body: JSON.stringify({ newCustomerStatus }),
             });
-      
+
             if (!res.ok) {
-              throw new Error("Failed to update customer status");
+                throw new Error("Failed to update customer status");
             }
-            toast.success("Customer status updated!");
-
-            // router.push("/");
+            // On successful update, refresh the router
             router.refresh();
-          } catch (error) {
+        } catch (error) {
             console.log(error);
-          }
-        };
+        }
+    };
 
-        const Dropdown = (selectedOption) => {
-            console.log('Selected:', selectedOption)
-            setNewCustomerStatus(selectedOption.value)
-          }
+    const Dropdown = (selectedOption) => {
+        console.log('Selected:', selectedOption);
+        setNewCustomerStatus(selectedOption ? selectedOption.value : null); // Handle when no option is selected
+    };
+
+    // Custom styles for react-select
+    const customStyles = {
+        control: (provided) => ({
+            ...provided,
+            width: 400,
+            borderColor: touched && !newCustomerStatus ? 'green' : provided.borderColor, // Change border color if required
+            boxShadow: 'none',
+            '&:hover': {
+                borderColor: touched && !newCustomerStatus ? 'green' : provided.borderColor, // Change border color on hover if required
+            },
+        }),
+        placeholder: (provided) => ({
+            ...provided,
+            color: touched && !newCustomerStatus ? 'green' : provided.color, // Change placeholder color if required
+        }),
+    };
 
     return (
         <>
-        <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-        {/* <input
-         onChange={(e) => setNewCustomerStatus(e.target.value)}
-         value={newCustomerStatus}
-         className="border border-slate-500 px-8 py-2" type="text" placeholder="Customer Status" /> */}
-<br/>
-<Select
-      options={options}
-      onChange={Dropdown}
-      value={{ value: newCustomerStatus, label: newCustomerStatus }}      
-      styles={{ control: (provided) => ({ ...provided, width: 400 }),
-      menu: (provided) => ({ ...provided, width: 400 })
-     }}
-      placeholder="Select an option"
-    />
-
-    <button className="bg-green-600 font-bold text-white py-3 px-6 w-fit">
-    Update Customer
-    </button>
-    </form>
-    </>
+            <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+                <br />
+                <label className="customer-label">Select If Customer Left:</label>
+                <div className="flex items-center gap-3">
+                    <Select
+                        options={options}
+                        onChange={Dropdown}
+                        value={options.find(option => option.value === newCustomerStatus) || null} // Handle value for react-select
+                        styles={customStyles} // Apply custom styles
+                        placeholder={touched && !newCustomerStatus ? "Please select customer left (Click here)" : "Select an option"} // Change placeholder if required
+                    />
+                    <button className="bg-green-600 font-bold text-white py-3 px-6 w-fit">
+                        Update Customer
+                    </button>
+                </div>
+            </form>
+        </>
     );
 }

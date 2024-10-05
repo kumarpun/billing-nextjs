@@ -61,7 +61,12 @@ export default function OrderListClient({ orderbyTableId, total_price, totalKitc
                 {/* <button className="px-6 py-2 mt-3 add-table" onClick={() => handleOpenModal('edit')}>
                     Update Bill
                 </button> */}
-                                     {total_price > 0 && (
+                                     {/* {total_price > 0 && (
+                <button className="px-6 py-2 mt-3 add-table" onClick={() => handleOpenModal('print')}>
+                    Print Bill
+                </button>
+            )} */}
+                                  {totalFinalbill > 0 && (
                 <button className="px-6 py-2 mt-3 add-table" onClick={() => handleOpenModal('print')}>
                     Print Bill
                 </button>
@@ -133,8 +138,8 @@ export default function OrderListClient({ orderbyTableId, total_price, totalKitc
             )} */}
 
             <p className="p-4 border border-slate-300 my-3 flex justify-between gap-5 items-start font-bold">Total bill: NRs. {total_price}</p>  
-            <p className="p-4 border border-slate-300 my-3 flex justify-between gap-5 items-start font-bold">Total Kitchen bill: NRs. {totalKitchenPrice}</p>  
-            <p className="p-4 border border-slate-300 my-3 flex justify-between gap-5 items-start font-bold">Total Bar bill: NRs. {totalBarPrice}</p>  
+            {/* <p className="p-4 border border-slate-300 my-3 flex justify-between gap-5 items-start font-bold">Total Kitchen bill: NRs. {totalKitchenPrice}</p>  
+            <p className="p-4 border border-slate-300 my-3 flex justify-between gap-5 items-start font-bold">Total Bar bill: NRs. {totalBarPrice}</p>   */}
 
         
              <p className="p-4 border border-slate-300 my-3 flex justify-between gap-5 items-start font-bold">Final bill: NRs. {totalFinalbill} status: {billFinalStatus}</p>                

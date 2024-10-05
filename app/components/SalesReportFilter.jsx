@@ -51,6 +51,9 @@ export default function SalesReportFilter() {
                                     <th>Original Bill</th>
                                     <th>Discount %</th>
                                     <th>Final Bill</th>
+                                    <th>Payment Mode</th>
+                                    <th>QR Amount</th>
+                                    <th>Cash Amount</th>
                                     <th>Remarks</th>
                                 </tr>
                             </thead>
@@ -62,6 +65,9 @@ export default function SalesReportFilter() {
                                             <td>{sales.originalPrice}</td>
                                             <td>{sales.discountPercent}</td>
                                             <td>{sales.finalPrice}</td>
+                                            <td>{sales.billPaymentMode}</td>
+                                            <td>{sales.qrAmount}</td>
+                                            <td>{sales.cashAmount}</td>
                                             <td>{sales.remarks}</td>
                                         </tr>
                                     ))

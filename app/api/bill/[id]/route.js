@@ -66,7 +66,7 @@ export async function PUT(request, { params }) {
             return NextResponse.json({ error: 'Error verifying token' }, { status: 500 });
         }
 
-        const { billStatus, finalPrice } = await request.json();
+        const { billStatus, finalPrice, billPaymentMode, qrAmount, cashAmount, remarks } = await request.json();
         
         await connectMongoDB();
         
@@ -81,7 +81,7 @@ export async function PUT(request, { params }) {
         for (const bill of bills) {
             const updatedBill = await Bill.findOneAndUpdate(
                 { _id: bill._id }, // Use _id to uniquely identify each bill
-                { billStatus, finalPrice },
+                { billStatus, finalPrice, billPaymentMode, qrAmount, cashAmount, remarks },
                 { new: true }
             );
             updatedBills.push(updatedBill);

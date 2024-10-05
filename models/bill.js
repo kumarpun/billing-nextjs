@@ -7,7 +7,10 @@ const billSchema = new Schema(
     discountPercent: Number,
     remarks: String,
     tablebill_id: String,
-    billStatus: String
+    billStatus: String,
+    billPaymentMode: String,
+    qrAmount: Number,
+    cashAmount: Number
   },
   {
     timestamps: true,

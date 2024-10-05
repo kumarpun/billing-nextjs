@@ -8,15 +8,20 @@ export async function GET(request, { params }) {
 
     try {
         // Fetch the customer order using table_id
-        const orderbyTableId = await CustomerOrder.find({ 
+        const orderbyTableId = await CustomerOrder.find({
             table_id: id,
             customer_status: ["Customer accepted", "Bill paid"]
-        })
-        // .populate('table_id');
+        });
 
-        if (!orderbyTableId) {
-            // return NextResponse.json({ error: 'Order not found' }, { status: 404 });
-            return NextResponse.json({ message: 'No order placed for this table' }, { status: 200 });       
+        // If no orders are found, return an empty array
+        if (!orderbyTableId || orderbyTableId.length === 0) {
+            return NextResponse.json({
+                orderbyTableId: [],
+                total_price: 0,
+                totalKitchenPrice: 0,
+                totalBarPrice: 0,
+                tablebill_id: id
+            }, { status: 200 });
         }
 
         const ordersWithFinalPrice = orderbyTableId.map(order => ({
@@ -24,13 +29,23 @@ export async function GET(request, { params }) {
             final_price: order.order_price * order.order_quantity
         }));
 
-        // const totalPrice = orderbyTableId.reduce((total, order) => total + order.order_price, 0);
         const totalPrice = ordersWithFinalPrice.reduce((total, order) => total + order.final_price, 0);
-        
+
+        // Calculate totalKitchenPrice and totalBarPrice
+        const totalKitchenPrice = ordersWithFinalPrice
+            .filter(order => order.order_type === 'Kitchen')
+            .reduce((total, order) => total + order.final_price, 0);
+
+        const totalBarPrice = ordersWithFinalPrice
+            .filter(order => order.order_type === 'Bar')
+            .reduce((total, order) => total + order.final_price, 0);
+
         const response = {
             orderbyTableId: ordersWithFinalPrice,
             total_price: totalPrice,
-            tablebill_id: id, // Adding the new field with table_id
+            totalKitchenPrice: totalKitchenPrice || 0,
+            totalBarPrice: totalBarPrice || 0,
+            tablebill_id: id,
         };
 
         return NextResponse.json(response, { status: 200 });
@@ -39,6 +54,46 @@ export async function GET(request, { params }) {
         return NextResponse.json({ error: 'Error fetching order' }, { status: 500 });
     }
 }
+
+
+
+// export async function GET(request, { params }) {
+//     const { id } = params;
+//     await connectMongoDB();
+
+//     try {
+//         // Fetch the customer order using table_id
+//         const orderbyTableId = await CustomerOrder.find({ 
+//             table_id: id,
+//             customer_status: ["Customer accepted", "Bill paid"]
+//         })
+//         // .populate('table_id');
+
+//         if (!orderbyTableId) {
+//             // return NextResponse.json({ error: 'Order not found' }, { status: 404 });
+//             return NextResponse.json({ message: 'No order placed for this table' }, { status: 200 });       
+//         }
+
+//         const ordersWithFinalPrice = orderbyTableId.map(order => ({
+//             ...order._doc,
+//             final_price: order.order_price * order.order_quantity
+//         }));
+
+//         // const totalPrice = orderbyTableId.reduce((total, order) => total + order.order_price, 0);
+//         const totalPrice = ordersWithFinalPrice.reduce((total, order) => total + order.final_price, 0);
+        
+//         const response = {
+//             orderbyTableId: ordersWithFinalPrice,
+//             total_price: totalPrice,
+//             tablebill_id: id, // Adding the new field with table_id
+//         };
+
+//         return NextResponse.json(response, { status: 200 });
+//     } catch (error) {
+//         console.error('Error fetching order:', error);
+//         return NextResponse.json({ error: 'Error fetching order' }, { status: 500 });
+//     }
+// }
 
 // export async function PUT(request, {params}) {
 //     const { id } = params;

@@ -20,14 +20,14 @@ const getOrdersByTableId = async(id) => {
         console.log('Auth token:', authToken);
 
         const [ordersRes, billRes] = await Promise.all([
-            fetch(`https://billing-nextjs.vercel.app/api/orders/${id}`, {
+            fetch(`http://localhost:3000/api/orders/${id}`, {
                 cache: 'no-store',
                 headers: {
                     'Content-Type': 'application/json',
                     'Cookie': `authToken=${authToken}`, // Manually set the Cookie header
                 },              
                  }),
-            fetch(`https://billing-nextjs.vercel.app/api/bill/${id}`, {
+            fetch(`http://localhost:3000/api/bill/${id}`, {
                 cache: 'no-store',
                 headers: {
                     'Content-Type': 'application/json',
@@ -54,7 +54,7 @@ export default async function ListOrder({ params }) {
     const { id } = params;
 
     try {
-    const { orderbyTableId, total_price, tablebill_id, billById, totalFinalbill, billFinalStatus } = await getOrdersByTableId(id);
+    const { orderbyTableId, total_price, totalKitchenPrice, totalBarPrice, tablebill_id, billById, totalFinalbill, billFinalStatus, order_type } = await getOrdersByTableId(id);
  
     const { order_title, order_description } = orderbyTableId;
     return (
@@ -76,7 +76,12 @@ export default async function ListOrder({ params }) {
         <hr className="separator" />
         {/* <EditCustomerForm id={id} /> */}
         {totalFinalbill <= 0 && <EditCustomerForm id={id} />}
-        <OrderListClient orderbyTableId={orderbyTableId} total_price={total_price} tablebill_id={tablebill_id} tableId={id} billById={billById} totalFinalbill={totalFinalbill} billFinalStatus={billFinalStatus} />
+        <OrderListClient 
+        orderbyTableId={orderbyTableId} 
+        total_price={total_price} 
+        totalKitchenPrice={totalKitchenPrice}
+        totalBarPrice={totalBarPrice}
+        tablebill_id={tablebill_id} tableId={id} billById={billById} totalFinalbill={totalFinalbill} billFinalStatus={billFinalStatus} order_type={order_type} />
 
       </div>
       </div>

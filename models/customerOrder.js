@@ -12,7 +12,8 @@ const customerOrderSchema = new Schema(
     order_status: String,
     customer_status: String,
     order_quantity: Number,
-    order_price: Number
+    order_price: Number,
+    order_type: String
   },
   {
     timestamps: true,

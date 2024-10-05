@@ -4,9 +4,9 @@ import Bill from "../../../models/bill";
 import dayjs from "dayjs";
 
 export async function POST(request) {
-    const { originalPrice, finalPrice, discountPercent, remarks, tablebill_id, billStatus } = await request.json();
+    const { originalPrice, finalPrice, discountPercent, remarks, tablebill_id, billStatus, kitchenPrice, barPrice } = await request.json();
     await connectMongoDB();
-    await Bill.create({ originalPrice, discountPercent, remarks, finalPrice, tablebill_id, billStatus});
+    await Bill.create({ originalPrice, discountPercent, remarks, finalPrice, tablebill_id, billStatus, kitchenPrice, barPrice });
     return NextResponse.json({ message: "Bill created successfully." }, { status: 201 });
 }
 

@@ -8,9 +8,9 @@ import { authOptions } from "../../api/auth/[...nextauth]/route";
 import dayjs from "dayjs";
 
 export async function POST(request) {
-    const { table_id,order_title, order_description, order_test, order_status, customer_status, order_quantity, order_price } = await request.json();
+    const { table_id,order_title, order_description, order_test, order_status, customer_status, order_quantity, order_price, order_type } = await request.json();
     await connectMongoDB();
-    await CustomerOrder.create({table_id, order_title, order_description, order_test, order_status, customer_status, order_quantity, order_price});
+    await CustomerOrder.create({table_id, order_title, order_description, order_test, order_status, customer_status, order_quantity, order_price, order_type});
     return NextResponse.json({ message: "Order created successfully." }, { status: 201 });
 }
 

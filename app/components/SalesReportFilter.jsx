@@ -55,6 +55,8 @@ export default function SalesReportFilter() {
                                     <th>QR Amount</th>
                                     <th>Cash Amount</th>
                                     <th>Remarks</th>
+                                    <th>Kitchen</th>
+                                    <th>Bar</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -69,6 +71,8 @@ export default function SalesReportFilter() {
                                             <td>{sales.qrAmount}</td>
                                             <td>{sales.cashAmount}</td>
                                             <td>{sales.remarks}</td>
+                                            <td>{sales.kitchenPrice}</td>
+                                            <td>{sales.barPrice}</td>
                                         </tr>
                                     ))
                                 ) : (

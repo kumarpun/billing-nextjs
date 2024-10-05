@@ -10,7 +10,9 @@ const billSchema = new Schema(
     billStatus: String,
     billPaymentMode: String,
     qrAmount: Number,
-    cashAmount: Number
+    cashAmount: Number,
+    barPrice: Number,
+    kitchenPrice: Number,
   },
   {
     timestamps: true,

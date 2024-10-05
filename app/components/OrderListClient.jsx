@@ -9,7 +9,7 @@ import AddBillForm from "./AddBillForm";
 import Modal from "./ModalForm";
 import EditBillForm from "./EditBillForm";
 
-export default function OrderListClient({ orderbyTableId, total_price, tablebill_id, tableId, billById, totalFinalbill, billFinalStatus }) {
+export default function OrderListClient({ orderbyTableId, total_price, totalKitchenPrice, totalBarPrice, tablebill_id, tableId, billById, totalFinalbill, billFinalStatus, order_type }) {
     const [isModalOpen, setModalOpen] = useState(false);
     // const [finalBill, setFinalBill] = useState(null); // Manage final bill state
     // const [finalBill, setFinalBill] = useState(finalBillFromAPI); // Initialize with the value from API
@@ -84,6 +84,7 @@ export default function OrderListClient({ orderbyTableId, total_price, tablebill
                         <div>Order price: NRs. {order.order_price}</div>
                         <div>Order quantity: {order.order_quantity}</div>
                         <div>Sum: NRs. {order.final_price}</div>
+                        <div>Order type: {order.order_type}</div>
                     </div>
                     <div>
                         <RemoveOrderBtn id={order._id} />
@@ -132,6 +133,8 @@ export default function OrderListClient({ orderbyTableId, total_price, tablebill
             )} */}
 
             <p className="p-4 border border-slate-300 my-3 flex justify-between gap-5 items-start font-bold">Total bill: NRs. {total_price}</p>  
+            <p className="p-4 border border-slate-300 my-3 flex justify-between gap-5 items-start font-bold">Total Kitchen bill: NRs. {totalKitchenPrice}</p>  
+            <p className="p-4 border border-slate-300 my-3 flex justify-between gap-5 items-start font-bold">Total Bar bill: NRs. {totalBarPrice}</p>  
 
         
              <p className="p-4 border border-slate-300 my-3 flex justify-between gap-5 items-start font-bold">Final bill: NRs. {totalFinalbill} status: {billFinalStatus}</p>                
@@ -139,7 +142,10 @@ export default function OrderListClient({ orderbyTableId, total_price, tablebill
             <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
                 {/* <AddBillForm initialOriginalPrice={total_price} initialBillId={tablebill_id} onBillAdded={handleBillAdded} /> */}
                 {modalContent === 'add' && (
-                    <AddBillForm initialOriginalPrice={total_price} initialBillId={tablebill_id} onBillAdded={handleBillAdded} />
+                    <AddBillForm initialOriginalPrice={total_price}
+                    initialKitchenPrice={totalKitchenPrice}
+                    initialBarPrice={totalBarPrice}
+                    initialBillId={tablebill_id} order_type={order_type} onBillAdded={handleBillAdded} />
                 )}
                 {modalContent === 'edit' && (
                     <EditBillForm id={tablebill_id} onBillAdded={handleBillAdded} />
@@ -193,9 +199,11 @@ export default function OrderListClient({ orderbyTableId, total_price, tablebill
 
 
                         <p>Total bill: NRs. {total_price}</p>
-                        
+                        {/* <p>Total Kitchen bill: NRs. {totalKitchenPrice}</p>
+                        <p>Total Bar bill: NRs. {totalBarPrice}</p> */}
+
                         <p id="discount-section">
-                    Discount: 
+                    Discount on KOT: 
                     <input
                         className="px-8 py-2 border-none border-b border-gray-500 focus:outline-none focus:ring-0"
                         type="text"

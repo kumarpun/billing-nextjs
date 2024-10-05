@@ -16,6 +16,7 @@ export default function AddOrder({ params }) {
     const [newOrdertitle, setnewOrdertitle] = useState(order_title);
     const [order_price, setOrderPrice] = useState("");
     const [order_quantity, setOrderQuantity] = useState(1);
+    const [order_type, setOrderType] = useState("Kitchen");
 
     const options = [
       // bar menu
@@ -161,7 +162,7 @@ export default function AddOrder({ params }) {
           }
       
           try {
-            const res = await fetch("https://billing-nextjs.vercel.app/api/orders", {
+            const res = await fetch("http://localhost:3000/api/orders", {
               method: "POST",
               headers: {
                 "Content-type": "application/json",
@@ -173,7 +174,8 @@ export default function AddOrder({ params }) {
                 order_status,
                 customer_status,
                 order_price,
-                order_quantity
+                order_quantity,
+                order_type
              }),
             });
       
@@ -253,6 +255,17 @@ export default function AddOrder({ params }) {
                                 type="number"
                                 placeholder="Order quantity"
                             />
+                        </div>
+
+                        <div>
+                        <select
+                            className="border border-slate-500 px-8 py-2"
+                            value={order_type}
+                            onChange={(e) => setOrderType(e.target.value)}
+                        >
+                            <option value="Kitchen">Kitchen</option>
+                            <option value="Bar">Bar</option>
+                        </select>
                         </div>
                     
                         <div>

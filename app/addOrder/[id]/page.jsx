@@ -177,6 +177,7 @@ export default function AddOrder({ params }) {
 
         { value: 'Hookah', label: 'Hookah - NRs 390', price: 390 },
         { value: 'Hybe Hookah', label: 'Hybe Hookah - NRs 500', price: 500 },
+        { value: 'Coil', label: 'Coil - NRs 30', price: 30 },
 
         // Barista menu
         { value: 'Espresso', label: 'Espresso - NRs 90', price: 90 },

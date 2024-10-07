@@ -170,6 +170,9 @@ export default function AddOrder({ params }) {
         { value: 'Shikhar Ice', label: 'Shikhar Ice - NRs 25', price: 25 },
         { value: 'Surya Red', label: 'Surya Red - NRs 30', price: 30 },
         { value: 'Surya Light', label: 'Surya Light - NRs 30', price: 30 },
+        { value: 'Shikhar Ice packet', label: 'Shikhar Ice packet - NRs 480', price: 480 },
+        { value: 'Surya Red packet', label: 'Surya Red packet - NRs 570', price: 570 },
+        { value: 'Surya Light packet', label: 'Surya Light packet - NRs 570', price: 570 },
 
         { value: 'Hookah', label: 'Hookah - NRs 390', price: 390 },
         { value: 'Hybe Hookah', label: 'Hybe Hookah - NRs 500', price: 500 },

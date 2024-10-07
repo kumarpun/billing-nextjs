@@ -22,7 +22,7 @@ export default function AddOrder({ params }) {
     const options = [
       // kitchen menu
       { value: 'Kitchen menu', label: 'Kitchen menu', price: 0 },
-      { value: 'Fries - dynamite fries', label: 'Fries - dynamite fries 0 NRs 180', price: 180 },
+      { value: 'Fries - dynamite fries', label: 'Fries - dynamite fries - NRs 180', price: 180 },
       { value: 'Suracha tempura', label: 'Suracha tempura - NRs 220', price: 220 },
       { value: 'Chilly paneer', label: 'Chilly paneer - NRs 350', price: 350 },
       { value: 'Aloo papdi chat', label: 'Aloo papdi chat - NRs 200', price: 200 },
@@ -237,6 +237,9 @@ export default function AddOrder({ params }) {
         { value: 'Ice cream - Vanilla', label: 'Ice cream - Vanilla - NRs 80', price: 80 },
         { value: 'Ice cream - Strawberry', label: 'Ice cream - Strawberry - NRs 80', price: 80 },
         { value: 'Ice cream - Butter scotch', label: 'Ice cream - Butter scotch - NRs 80', price: 80 },
+
+        { value: 'Water', label: 'Water - NRs 50', price: 50 },
+
       ];
 
     const router = useRouter();

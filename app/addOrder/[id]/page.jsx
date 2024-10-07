@@ -28,6 +28,7 @@ export default function AddOrder({ params }) {
       { value: 'Aloo papdi chat', label: 'Aloo papdi chat - NRs 200', price: 200 },
       { value: 'Dynamite fries non-veg', label: 'Dynamite fries non-veg - NRs 220', price: 220 },
       { value: 'Chilly chicken', label: 'Chilly chicken - NRs 350', price: 350 },
+      { value: 'Corn salt & pepper', label: 'Corn salt & pepper - NRs 250', price: 250 },
       { value: 'Hot wings', label: 'Hot wings - NRs 390', price: 390 },
       { value: 'Kungpao chicken', label: 'Kungpao chicken - NRs 390', price: 390 },
       { value: 'Pepper chicken', label: 'Pepper chicken - NRs 330', price: 330 },

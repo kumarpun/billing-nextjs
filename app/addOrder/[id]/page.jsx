@@ -23,6 +23,7 @@ export default function AddOrder({ params }) {
       // kitchen menu
       { value: 'Kitchen menu', label: 'Kitchen menu', price: 0 },
       { value: 'Fries - dynamite fries', label: 'Fries - dynamite fries - NRs 180', price: 180 },
+      { value: 'French fries', label: 'French fries - NRs 95', price: 95 },
       { value: 'Suracha tempura', label: 'Suracha tempura - NRs 220', price: 220 },
       { value: 'Chilly paneer', label: 'Chilly paneer - NRs 350', price: 350 },
       { value: 'Aloo papdi chat', label: 'Aloo papdi chat - NRs 200', price: 200 },

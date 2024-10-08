@@ -153,7 +153,7 @@ export default function OrderListClient({ orderbyTableId, total_price, totalKitc
                     initialBillId={tablebill_id} order_type={order_type} onBillAdded={handleBillAdded} />
                 )}
                 {modalContent === 'edit' && (
-                    <EditBillForm id={tablebill_id} onBillAdded={handleBillAdded} />
+                    <EditBillForm id={tablebill_id} bill={totalFinalbill} onBillAdded={handleBillAdded} />
                 )}
                      {modalContent === 'print' && (
                     <div class="bill-print">
@@ -208,7 +208,7 @@ export default function OrderListClient({ orderbyTableId, total_price, totalKitc
                         <p>Total Bar bill: NRs. {totalBarPrice}</p> */}
 
                         <p id="discount-section">
-                    Discount on KOT: 
+                    Discount: 
                     <input
                         className="px-8 py-2 border-none border-b border-gray-500 focus:outline-none focus:ring-0"
                         type="text"

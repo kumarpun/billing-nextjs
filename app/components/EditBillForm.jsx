@@ -327,25 +327,28 @@ export default function EditBillForm({ id, bill, billStatus, finalPrice, billPay
     const [newBill, setNewBill] = useState(bill); // Initialize with the passed bill prop
     const [discount, setDiscount] = useState(0); // New state for discount
     const [isBillStatusValid, setIsBillStatusValid] = useState(true); // Track bill status validity
+    const [isAutoCalculation, setIsAutoCalculation] = useState(true); // Track if final price is auto-calculated or manually edited
 
     const options = [
-      { value: 'pending', label: 'Pending' },
-      { value: 'paid', label: 'Paid' }
+        { value: 'pending', label: 'Pending' },
+        { value: 'paid', label: 'Paid' }
     ];
 
     const paymentModeOptions = [
-      { value: 'QR Payment', label: 'QR Payment' },
-      { value: 'Cash Payment', label: 'Cash Payment' },
-      { value: 'Both QR and Cash', label: 'Both QR and Cash' }
+        { value: 'QR Payment', label: 'QR Payment' },
+        { value: 'Cash Payment', label: 'Cash Payment' },
+        { value: 'Both QR and Cash', label: 'Both QR and Cash' }
     ];
 
     const router = useRouter();
 
     useEffect(() => {
-        // Calculate the final price based on the bill and discount
-        const discountedPrice = newBill - (newBill * (discount / 100));
-        setNewFinalPrice(Number(discountedPrice).toString().replace(/\.?0+$/, '')); // Remove trailing zeros and decimals if not needed
-    }, [newBill, discount]);
+        // Calculate the final price based on the bill and discount only if auto-calculation is enabled
+        if (isAutoCalculation) {
+            const discountedPrice = newBill - (newBill * (discount / 100));
+            setNewFinalPrice(Number(discountedPrice).toString().replace(/\.?0+$/, '')); // Remove trailing zeros and decimals if not needed
+        }
+    }, [newBill, discount, isAutoCalculation]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -359,22 +362,22 @@ export default function EditBillForm({ id, bill, billStatus, finalPrice, billPay
 
         try {
             const res = await fetch(`/api/bill/${id}`, {
-              method: "PUT",
-              headers: {
-                "Content-type": "application/json",
-              },
-              body: JSON.stringify({ 
-                billStatus: newBillStatus, 
-                finalPrice: newFinalPrice, 
-                billPaymentMode: newBillPaymentMode,
-                qrAmount: newBillPaymentMode === 'Both QR and Cash' ? qrAmount : undefined,
-                cashAmount: newBillPaymentMode === 'Both QR and Cash' ? cashAmount : undefined,
-                remarks: newRemarks
-              }),
+                method: "PUT",
+                headers: {
+                    "Content-type": "application/json",
+                },
+                body: JSON.stringify({
+                    billStatus: newBillStatus,
+                    finalPrice: newFinalPrice,
+                    billPaymentMode: newBillPaymentMode,
+                    qrAmount: newBillPaymentMode === 'Both QR and Cash' ? qrAmount : undefined,
+                    cashAmount: newBillPaymentMode === 'Both QR and Cash' ? cashAmount : undefined,
+                    remarks: newRemarks
+                }),
             });
-      
+
             if (!res.ok) {
-              throw new Error("Failed to update bill status");
+                throw new Error("Failed to update bill status");
             }
             toast.success("Bill status updated!");
 
@@ -394,12 +397,20 @@ export default function EditBillForm({ id, bill, billStatus, finalPrice, billPay
         setNewBillPaymentMode(selectedOption.value);
     };
 
+    const handleFinalPriceChange = (e) => {
+        setNewFinalPrice(e.target.value);
+        setIsAutoCalculation(false); // Disable auto-calculation if user manually edits the final price
+    };
+
     return (
         <>
             <form onSubmit={handleSubmit} className="flex flex-col gap-3">
                 <label className="font-bold">Bill</label>
                 <input
-                    onChange={(e) => setNewBill(e.target.value)}
+                    onChange={(e) => {
+                        setNewBill(e.target.value);
+                        setIsAutoCalculation(true); // Re-enable auto-calculation when the bill amount changes
+                    }}
                     value={newBill}
                     className="border border-slate-500 px-8 py-2"
                     type="number"
@@ -409,7 +420,10 @@ export default function EditBillForm({ id, bill, billStatus, finalPrice, billPay
 
                 <label className="font-bold">Discount (%)</label>
                 <input
-                    onChange={(e) => setDiscount(e.target.value)}
+                    onChange={(e) => {
+                        setDiscount(e.target.value);
+                        setIsAutoCalculation(true); // Re-enable auto-calculation when the discount changes
+                    }}
                     value={discount}
                     className="border border-slate-500 px-8 py-2"
                     type="number"
@@ -418,11 +432,12 @@ export default function EditBillForm({ id, bill, billStatus, finalPrice, billPay
 
                 <label className="font-bold">Final Price</label>
                 <input
+                    onChange={handleFinalPriceChange}
                     value={newFinalPrice}
                     className="border border-slate-500 px-8 py-2"
                     type="text"
                     placeholder="Final price"
-                    readOnly
+                    required
                 />
 
                 <label className="font-bold">Bill Status</label>

@@ -605,5 +605,12 @@ tbody tr {
   margin-left: 15px;
 }
 
+.table-title{
+  margin-left: 10px;
+  text-align: center;
+  margin-top: 10px;
+  color: #e5872a;
+}
+
 
 

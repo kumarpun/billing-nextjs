@@ -44,9 +44,29 @@ const getOrdersByTableId = async(id) => {
         }
         return { ...ordersData, billById: billData.billById,
              totalFinalbill:billData.totalFinalbill, 
-             billFinalStatus: billData.billFinalStatus};
+             billFinalStatus: billData.billFinalStatus,
+            };
+             
     } catch (error) {
         console.error("Error loading orders: ", error);
+    }
+}
+
+const getTableById = async (id) => {
+    try {
+        const res = await fetch(`https://billing-nextjs.vercel.app/api/tables/${id}`, {
+            cache: 'no-store'
+        });
+
+        if (!res.ok) {
+            throw new Error("Failed to fetch table");
+        }
+
+        const data = await res.json();
+        return data.table; // Assuming the response structure has a 'table' field
+    } catch (error) {
+        console.error("Error fetching table: ", error);
+        return null;
     }
 }
 
@@ -54,6 +74,8 @@ export default async function ListOrder({ params }) {
     const { id } = params;
 
     try {
+    const table = await getTableById(id);
+
     const { orderbyTableId, total_price, totalKitchenPrice, totalBarPrice, tablebill_id, billById, totalFinalbill, billFinalStatus, order_type } = await getOrdersByTableId(id);
  
     const { order_title, order_description } = orderbyTableId;
@@ -74,6 +96,10 @@ export default async function ListOrder({ params }) {
   
         <div>
         <hr className="separator" />
+        <div className="table-info">
+              <h1 className="font-bold text-3xl table-title">{table.title}</h1>
+        </div>
+
         {/* <EditCustomerForm id={id} /> */}
         {totalFinalbill <= 0 && <EditCustomerForm id={id} />}
         <OrderListClient 

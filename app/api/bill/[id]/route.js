@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { connectMongoDB } from "../../../../lib/mongodb";
 import Bill from "../../../../models/bill";
 import jwt from "jsonwebtoken";
+import { ObjectId } from "mongodb"; // Import ObjectId
 
 export async function GET(request, { params }) {
     const { id } = params;
@@ -94,5 +95,38 @@ export async function PUT(request, { params }) {
     } catch (error) {
         console.error('Error updating bills:', error);
         return NextResponse.json({ error: 'Error updating bills' }, { status: 500 });
+    }
+}
+
+export async function DELETE(request, { params }) {
+    const { id } = params;
+
+    // Extract and verify the token
+    try {
+        const authToken = request.cookies.get("authToken")?.value;
+
+        if (!authToken) {
+            return NextResponse.json({ error: 'No authentication token provided' }, { status: 401 });
+        }
+
+        try {
+            jwt.verify(authToken, process.env.NEXTAUTH_SECRET);
+        } catch (error) {
+            return NextResponse.json({ error: 'Error verifying token' }, { status: 403 });
+        }
+
+        await connectMongoDB();
+
+        // Delete the bill using _id
+        const result = await Bill.deleteOne({ _id: new ObjectId(id) });
+
+        if (result.deletedCount === 0) {
+            return NextResponse.json({ error: 'Bill not found or already deleted' }, { status: 404 });
+        }
+
+        return NextResponse.json({ message: 'Bill deleted successfully' }, { status: 200 });
+    } catch (error) {
+        console.error('Error deleting bill:', error);
+        return NextResponse.json({ error: 'Error deleting bill' }, { status: 500 });
     }
 }

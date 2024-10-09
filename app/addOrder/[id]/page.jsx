@@ -31,6 +31,7 @@ export default function AddOrder({ params }) {
       { value: 'Chilly chicken', label: 'Chilly chicken - NRs 350', price: 350 },
       { value: 'Corn salt & pepper', label: 'Corn salt & pepper - NRs 250', price: 250 },
       { value: 'Hot wings', label: 'Hot wings - NRs 390', price: 390 },
+      { value: 'Chicken lollipop', label: 'Chicken lollipop - NRs 390', price: 390 },
       { value: 'Kungpao chicken', label: 'Kungpao chicken - NRs 390', price: 390 },
       { value: 'Pepper chicken', label: 'Pepper chicken - NRs 330', price: 330 },
       { value: 'Chicken 65', label: 'Chicken 65 - NRs 330', price: 330 },

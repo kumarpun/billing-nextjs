@@ -44,6 +44,7 @@ export default function AddOrder({ params }) {
       { value: 'Chicken sadheko', label: 'Chicken sadheko - NRs 250', price: 250 },
       { value: 'Peanut sadheko', label: 'Peanut sadheko - NRs 180', price: 180 },
       { value: 'Waiwai sadheko', label: 'Waiwai sadheko - NRs 150', price: 150 },
+      { value: 'Bhatmas sadeko', label: 'Bhatmas sadeko - NRs 175', price: 175 },
       { value: 'Chicken sukuti', label: 'Chicken sukuti - NRs 320', price: 320 },
       { value: 'Buff sukuti', label: 'Buff sukuti - NRs 300', price: 300 },
       { value: 'Buff chooila', label: 'Buff chooila - NRs 360', price: 360 },

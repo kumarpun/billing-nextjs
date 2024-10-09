@@ -612,5 +612,35 @@ tbody tr {
   color: #e5872a;
 }
 
+/* For screen (UI display) */
+.bill-print {
+  position: relative;
+  max-height: 80vh; /* Set a max height to prevent the popup from growing too large */
+  overflow-y: auto; /* Make it scrollable if content exceeds the height */
+  padding: 20px;
+  border-radius: 8px;
+  background-color: white;
+  z-index: 1000; /* Ensure it's above other elements */
+}
+
+.table-wrapper {
+  max-height: 300px; /* Set a smaller height for UI display */
+  overflow-y: auto; /* Enable scrolling if content is too long */
+}
+
+/* For the print view */
+@media print {
+  .table-wrapper {
+      max-height: none; /* Remove height limitation for printing */
+      overflow: visible; /* Ensure all content is printed */
+  }
+
+  button, input, #discount-section {
+      display: none; /* Hide UI elements like buttons when printing */
+  }
+}
+
+
+
 
 

@@ -69,6 +69,9 @@ export default function AddOrder({ params }) {
       { value: 'Pizza veg', label: 'Pizza veg - NRs 350', price: 350 },
       { value: 'Hot sour & soup', label: 'Hot sour & soup - NRs 250', price: 250 },
       { value: 'Pizza non-veg', label: 'Pizza non-veg - NRs 400', price: 400 },
+      { value: 'Paneer fried rice', label: 'Paneer fried rice - NRs 170', price: 170 },
+      { value: 'Paneer noodles', label: 'Paneer noodles - NRs 210', price: 210 },
+
       { value: 'Hybe special platter veg', label: 'Hybe special platter veg - NRs 700', price: 700 },
       { value: 'Hybe special platter non-veg', label: 'Hybe special platter non-veg - NRs 1050', price: 1050 },
 

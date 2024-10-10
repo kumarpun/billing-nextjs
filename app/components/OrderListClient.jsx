@@ -91,8 +91,8 @@ export default function OrderListClient({ orderbyTableId, total_price, totalKitc
                         <div>Sum: NRs. {order.final_price}</div>
                         <div className="bg-green-600">Order type: {order.order_type}</div>
                     </div>
+                    <RemoveOrderBtn id={order._id} />
                     <div>
-                        <RemoveOrderBtn id={order._id} />
                         <Link href={`/editOrder/${order._id}`}>
                             <HiPencilAlt className="edit-icon" size={24} />
                         </Link>

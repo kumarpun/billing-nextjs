@@ -173,7 +173,7 @@ export default function OrderListClient({ orderbyTableId, total_price, totalKitc
 
         <pre className="receipt-text">
             TERMINAL#132f2wd33
-            {'\n'}_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+            {/* {'\n'}_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _  */}
         </pre>
 
         <br />

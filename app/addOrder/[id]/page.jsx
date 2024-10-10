@@ -54,6 +54,7 @@ export default function AddOrder({ params }) {
       { value: 'Chilly chicken momo', label: 'Chilly chicken momo - NRs 220', price: 220 },
       { value: 'Afghani veg momo', label: 'Afghani veg momo - NRs 200', price: 200 },
       { value: 'Afghani chicken momo', label: 'Afghani chicken momo - NRs 280', price: 280 },
+      { value: 'Fry chicken momo', label: 'Fry chicken momo - NRs 250', price: 250 },
       { value: 'Burger veg', label: 'Burger veg - NRs 210', price: 210 },
       { value: 'Burger non-veg', label: 'Burger non-veg - NRs 250', price: 250 },
       { value: 'Pasta veg', label: 'Pasta veg - NRs 280', price: 280 },

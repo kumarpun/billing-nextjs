@@ -398,7 +398,6 @@ tbody tr {
   white-space: pre; /* Preserve whitespace and line breaks */
 }
 
-/* Print-specific styles */
 @media print {
   body {
     width: 80mm;
@@ -406,7 +405,7 @@ tbody tr {
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
-    font-size: 10px;
+    font-size: 14px;
   }
   .bill-print{
     width: 80mm;
@@ -414,9 +413,8 @@ tbody tr {
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
-    font-size: 10px;
+    font-size: 14px;
   }
-
   .receipt-container, .order-table {
     width: 100%; /* Ensure the table and content fit within 80mm */
   }
@@ -425,21 +423,24 @@ tbody tr {
     text-align: center;
     white-space: pre-wrap;
     margin: 0 auto;
-    font-size: 10px; /* Smaller font for receipt text */
+    font-size: 14px; /* Smaller font for receipt text */
   }
 
   .order-table {
     border-collapse: collapse;
     width: 100%;
-    font-size: 9px; /* Smaller font for table */
+    font-size: 14px; /* Smaller font for table */
     border-spacing: 0; /* Removes extra space between borders */
     table-layout: fixed; /* Fixes the table layout */
+    word-wrap: break-word; /* Allows long text to wrap */
   }
 
   .order-table th, .order-table td {
     padding: 1px 2px; /* Reduce padding inside table cells */
     border: 1px solid #000; /* Table borders */
     text-align: left;
+    word-wrap: break-word; /* Ensure text wrapping in narrow cells */
+    white-space: normal; /* Allow text to wrap */
   }
 
   .order-table th {
@@ -449,7 +450,8 @@ tbody tr {
   }
 
   .order-table td {
-    white-space: nowrap; /* Prevent text wrapping in table cells */
+    word-wrap: break-word; /* Ensure text wraps in table cells */
+    white-space: normal; /* Allow wrapping in all table data */
   }
 
   /* Set a fixed width for the "Quantity" column */
@@ -464,7 +466,7 @@ tbody tr {
   .order-table th:nth-child(1), /* "Order" header */
   .order-table td:nth-child(1)  /* "Order" data */
   {
-    width: 25%; /* Adjust as needed */
+    width: 55%; /* Adjust as needed */
   }
 
   .order-table th:nth-child(3), /* "Price" header */
@@ -476,7 +478,7 @@ tbody tr {
   .order-table th:nth-child(4), /* "Total Price" header */
   .order-table td:nth-child(4)  /* "Total Price" data */
   {
-    width: 20%; /* Adjust as needed */
+    width: 15%; /* Adjust as needed */
   }
 
   p, pre {
@@ -636,7 +638,7 @@ tbody tr {
   }
 
   button, input, #discount-section {
-      display: none; /* Hide UI elements like buttons when printing */
+      display: flex;
   }
 }
 

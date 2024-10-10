@@ -183,9 +183,9 @@ export default function OrderListClient({ orderbyTableId, total_price, totalKitc
                 <thead>
                     <tr>
                         <th className="border border-gray-300 p-2 text-left">Order</th>
-                        <th className="border border-gray-300 p-2 text-left">Quantity</th>
+                        <th className="border border-gray-300 p-2 text-left">Qty</th>
                         <th className="border border-gray-300 p-2 text-left">Price</th>
-                        <th className="border border-gray-300 p-2 text-left">Total Price</th>
+                        <th className="border border-gray-300 p-2 text-left">Total</th>
                     </tr>
                 </thead>
                 <tbody>

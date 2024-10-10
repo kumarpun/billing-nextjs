@@ -162,6 +162,20 @@ export default function OrderListClient({ orderbyTableId, total_price, totalKitc
                 Print
             </button>
         </div>
+
+        <div className="receipt-container">
+            <pre className="receipt-text">
+                *************************************************
+                {'\n'}   THE HYBE
+                {'\n'}*************************************************
+            </pre>
+        </div>
+
+        <pre className="receipt-text">
+            TERMINAL#132f2wd33
+            {/* {'\n'}_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _  */}
+        </pre>
+
         <br />
 
         <div className="table-wrapper">

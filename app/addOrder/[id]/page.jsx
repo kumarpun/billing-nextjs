@@ -211,6 +211,7 @@ export default function AddOrder({ params }) {
         { value: 'Hot lemon with honey and ginger', label: 'Hot lemon with honey and ginger - NRs 125', price: 125 },
         { value: 'Lemon sprite', label: 'Lemon sprite - NRs 110', price: 110 },
         { value: 'Lemon water', label: 'Lemon water - NRs 60', price: 60 },
+        { value: 'Lime soda', label: 'Lime soda - NRs 110', price: 110 },
 
         { value: 'Black tea', label: 'Black tea - NRs 45', price: 45 },
         { value: 'Lemon tea', label: 'Lemon tea - NRs 60', price: 60 },

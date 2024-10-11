@@ -99,7 +99,7 @@ export default function AddOrder({ params }) {
         { value: 'Gorkha premium', label: 'Gorkha premium - NRs 500', price: 500 },
         { value: 'Gorkha strong', label: 'Gorkha strong - NRs 430', price: 430 },
         { value: 'Tuborg gold', label: 'Tuborg gold - NRs 530', price: 530 },
-        { value: 'Barahsinghe', label: 'Barahsinghe - NRs 500', price: 500 },
+        { value: 'Barahsinghe', label: 'Barahsinghe - NRs 520', price: 520 },
 
         { value: '8848 Vodka', label: '8848 Vodka - 30 ml - NRs 110', price: 110 },
         { value: '8848 Vodka', label: '8848 Vodka - 60 ml - NRs 220', price: 220 },

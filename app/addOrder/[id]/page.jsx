@@ -73,6 +73,7 @@ export default function AddOrder({ params }) {
       { value: 'Paneer fried rice', label: 'Paneer fried rice - NRs 170', price: 170 },
       { value: 'Paneer noodles', label: 'Paneer noodles - NRs 210', price: 210 },
       { value: 'Chef special', label: 'Chef special - NRs 600', price: 600 },
+      { value: 'Papad fry', label: 'Papad fry - NRs 25', price: 25 },
 
       { value: 'Hybe special platter veg', label: 'Hybe special platter veg - NRs 700', price: 700 },
       { value: 'Hybe special platter non-veg', label: 'Hybe special platter non-veg - NRs 1050', price: 1050 },

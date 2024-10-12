@@ -128,6 +128,15 @@ export default function ListReport() {
                 </Link>
 
                 <div style={{ display: 'flex', gap: '12px' }}>
+                 <a
+                     className="px-6 py-2 mt-3 add-table"
+                href="https://docs.google.com/spreadsheets/d/1LnrugVBIRQ9ZPBkJqHcLTVdJuBnq1O-ovg9xcZJ9M3I/edit?gid=0#gid=0"
+                target="_blank"
+                rel="noopener noreferrer"
+                >
+                Inventory
+                </a>
+
                     <Link className="px-6 py-2 mt-3 add-table" href={"/listSales"}>
                         Order Report
                     </Link>

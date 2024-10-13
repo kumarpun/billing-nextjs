@@ -193,6 +193,8 @@ export default function AddOrder({ params }) {
         { value: 'Hookah Refill', label: 'Hookah Refill - NRs 250', price: 250 },
         { value: 'Coil', label: 'Coil - NRs 30', price: 30 },
 
+        { value: 'Red wine - Marlot Jacob creek', label: 'Red wine - Marlot Jacob creek - NRs 3000', price: 3000 },
+
         // Barista menu
         { value: 'Espresso', label: 'Espresso - NRs 90', price: 90 },
         { value: 'Ristretto', label: 'Ristretto - NRs 90', price: 90 },

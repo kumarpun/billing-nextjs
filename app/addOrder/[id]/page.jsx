@@ -146,6 +146,7 @@ export default function AddOrder({ params }) {
         { value: 'Khukrirum Light', label: 'Khukrirum Light - 60 ml - NRs 250', price: 250 },
         { value: 'Khukrirum Light', label: 'Khukrirum Light - bottle - NRs 2940', price: 2940 },
         { value: 'Khukrirum Dark', label: 'Khukrirum Dark - 30 ml - NRs 105', price: 105 },
+        { value: 'Khukrirum Dark', label: 'Khukrirum Dark - 60 ml - NRs 315', price: 315 },
         { value: 'Khukrirum Dark', label: 'Khukrirum Dark - 60 ml - NRs 210', price: 210 },
         { value: 'Khukrirum Dark', label: 'Khukrirum Dark - bottle - NRs 2545', price: 2545 },
         { value: 'Captain Morgan Black', label: 'Captain Morgan Black - 30 ml - NRs 335', price: 335 },

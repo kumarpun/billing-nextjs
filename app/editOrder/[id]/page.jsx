@@ -20,11 +20,11 @@ const getOrderById = async (id) => {
 export default async function EditOrder({ params }) {
     const { id } = params;
     const { orderbyTableId } = await getOrderById(id);
-    const { table_id, order_title, order_description } = orderbyTableId;
+    const { table_id, order_title, order_description, order_quantity } = orderbyTableId;
 
   return (
     <>
-    <EditOrderStatus id={id} order_title={order_title} order_description={order_description} />
+    <EditOrderStatus id={id} order_title={order_title} order_description={order_description} order_quantity={order_quantity} />
     </>
   );
 }

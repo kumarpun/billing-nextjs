@@ -109,17 +109,19 @@ export async function PUT(request, { params }) {
         newOrderTitle,
         newOrderDescription,
         newOrderStatus,
-        newCustomerStatus
+        newCustomerStatus,
+        newOrderQuantity
     } = await request.json();
     await connectMongoDB();
 
     try {
-        if (newOrderTitle || newOrderDescription || newOrderStatus) {
+        if (newOrderTitle || newOrderDescription || newOrderStatus || newOrderQuantity) {
             // Update specific order by ID
             const updateData = {};
             if (newOrderTitle) updateData.order_title = newOrderTitle;
             if (newOrderDescription) updateData.order_description = newOrderDescription;
             if (newOrderStatus) updateData.order_status = newOrderStatus;
+            if (newOrderQuantity) updateData.order_quantity = newOrderQuantity; // Update order_quantity
 
             const updatedOrder = await CustomerOrder.findByIdAndUpdate(id, updateData, { new: true });
             if (!updatedOrder) {

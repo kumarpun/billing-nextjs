@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { toast } from "react-hot-toast";
 import Select from 'react-select';
@@ -10,6 +10,7 @@ export default function EditOrderStatus({ id, order_title, order_description, or
     const [newOrderTitle, setNewOrderTitle] = useState(order_title);
     const [newOrderDescription, setNewOrderDescription] = useState(order_description);
     const [newOrderStatus, setNewOrderStatus] = useState(order_status);
+    const [newOrderQuantity, setNewOrderQuantity] = useState("");
 
     const options = [
       { value: 'Order accepted', label: 'Order accepted' },
@@ -18,6 +19,15 @@ export default function EditOrderStatus({ id, order_title, order_description, or
     ];
 
     const router = useRouter();
+    const searchParams = useSearchParams();
+
+    useEffect(() => {
+      // Get the 'order_quantity' from query parameters
+      const orderQuantity = searchParams.get('order_quantity');
+      if (orderQuantity) {
+          setNewOrderQuantity(orderQuantity);
+      }
+  }, [searchParams]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -28,7 +38,7 @@ export default function EditOrderStatus({ id, order_title, order_description, or
               headers: {
                 "Content-type": "application/json",
               },
-              body: JSON.stringify({ newOrderTitle, newOrderDescription, newOrderStatus }),
+              body: JSON.stringify({ newOrderTitle, newOrderDescription, newOrderStatus, newOrderQuantity }),
             });
       
             if (!res.ok) {
@@ -75,6 +85,16 @@ export default function EditOrderStatus({ id, order_title, order_description, or
                     value={newOrderDescription}
                     className="border border-slate-500 px-8 py-2" type="text" placeholder="Order description" /> */}
 
+<div className="flex items-center">
+  <label className="mr-4 w-32 order-label">Quantity:</label>
+  <input
+         onChange={(e) => setNewOrderQuantity(e.target.value)}
+         value={newOrderQuantity}
+         className="border border-slate-500 px-8 py-2" type="number" placeholder="Order Quantity" />
+</div>
+
+<div className="flex items-center">
+<label className="mr-4 w-32 order-label">Order Status:</label>
 <Select
       options={options}
       onChange={Dropdown}
@@ -84,6 +104,7 @@ export default function EditOrderStatus({ id, order_title, order_description, or
      }}
       placeholder="Select an option"
     />
+    </div>
 
                 <div>
                     <button type="submit" className="bg-green-600 font-bold text-white py-3 px-6 w-fit">

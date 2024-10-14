@@ -93,7 +93,8 @@ export default function OrderListClient({ orderbyTableId, total_price, totalKitc
                     </div>
                     <div>
                     <RemoveOrderBtn id={order._id} />
-                        <Link href={`/editOrder/${order._id}`}>
+                        {/* <Link href={`/editOrder/${order._id}`}> */}
+                        <Link href={`/editOrder/${order._id}?order_quantity=${order.order_quantity}`}>
                             <HiPencilAlt className="edit-icon" size={24} />
                         </Link>
                     </div>

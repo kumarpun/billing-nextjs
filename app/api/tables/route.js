@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { connectMongoDB } from "../../../lib/mongodb";
 import Table from "../../../models/table";
-import jwt from "jsonwebtoken";
 
 export async function POST(request) {
     const { title, description } = await request.json();

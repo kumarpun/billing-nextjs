@@ -1,7 +1,7 @@
 import { connectMongoDB } from "../../../../lib/mongodb";
 import Table from "../../../../models/table";
 import { NextResponse } from "next/server";
-import { dbConnect } from "./dbConnect";
+import { dbConnect } from "../../dbConnect";
 
 export async function PUT(request, {params}) {
     const { id } = params;

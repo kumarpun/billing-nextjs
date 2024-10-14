@@ -3,7 +3,7 @@ import { connectMongoDB } from "../../../../lib/mongodb";
 import Bill from "../../../../models/bill";
 import jwt from "jsonwebtoken";
 import { ObjectId } from "mongodb"; // Import ObjectId
-import { dbConnect } from "./dbConnect";
+import { dbConnect } from "../../dbConnect";
 
 export async function GET(request, { params }) {
     const { id } = params;

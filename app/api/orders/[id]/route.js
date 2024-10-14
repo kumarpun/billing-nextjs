@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server";
 import { connectMongoDB } from "../../../../lib/mongodb";
 import CustomerOrder from "../../../../models/customerOrder";
+import { dbConnect } from "../../dbConnect";
 
 export async function GET(request, { params }) {
     const { id } = params;
-    await connectMongoDB();
+    await dbConnect(); // Reused MongoDB connection
 
     try {
         // Fetch the customer order using table_id
@@ -112,7 +113,7 @@ export async function PUT(request, { params }) {
         newCustomerStatus,
         newOrderQuantity
     } = await request.json();
-    await connectMongoDB();
+    await dbConnect(); // Reused MongoDB connection
 
     try {
         if (newOrderTitle || newOrderDescription || newOrderStatus || newOrderQuantity) {

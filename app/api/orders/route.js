@@ -6,10 +6,11 @@ import { getToken } from "next-auth/jwt";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../api/auth/[...nextauth]/route";
 import dayjs from "dayjs";
+import { dbConnect } from "../dbConnect";
 
 export async function POST(request) {
     const { table_id,order_title, order_description, order_test, order_status, customer_status, order_quantity, order_price, order_type } = await request.json();
-    await connectMongoDB();
+    await dbConnect(); // Reused MongoDB connection
     await CustomerOrder.create({table_id, order_title, order_description, order_test, order_status, customer_status, order_quantity, order_price, order_type});
     return NextResponse.json({ message: "Order created successfully." }, { status: 201 });
 }
@@ -62,7 +63,7 @@ export async function POST(request) {
 
 
 export async function GET(request) {
-    await connectMongoDB();
+    await dbConnect(); // Reused MongoDB connection
     
     const url = new URL(request.url);
     const today = url.searchParams.get("today");
@@ -127,7 +128,7 @@ export async function GET(request) {
 
 export async function DELETE(request) {
     const id = request.nextUrl.searchParams.get("id");
-    await connectMongoDB();
+    await dbConnect(); // Reused MongoDB connection
     await CustomerOrder.findByIdAndDelete(id);
     return NextResponse.json({ message: "Order deleted." });
 }

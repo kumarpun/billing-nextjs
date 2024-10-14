@@ -3,6 +3,7 @@ import { connectMongoDB } from "../../../../lib/mongodb";
 import Bill from "../../../../models/bill";
 import jwt from "jsonwebtoken";
 import { ObjectId } from "mongodb"; // Import ObjectId
+import { dbConnect } from "./dbConnect";
 
 export async function GET(request, { params }) {
     const { id } = params;
@@ -19,7 +20,8 @@ export async function GET(request, { params }) {
             return NextResponse.json({ error: 'Error verifying token' }, { status: 500 });
         }
 
-        await connectMongoDB();
+        // await connectMongoDB();
+        await dbConnect(); // Reused MongoDB connection
 
         // Fetch the bill using tablebill_id
         const billById = await Bill.find({
@@ -69,8 +71,9 @@ export async function PUT(request, { params }) {
 
         const { billStatus, finalPrice, billPaymentMode, qrAmount, cashAmount, remarks } = await request.json();
         
-        await connectMongoDB();
-        
+        // await connectMongoDB();
+        await dbConnect(); // Reused MongoDB connection
+
         // Find all bills with the specified tablebill_id
         const bills = await Bill.find({ 
             tablebill_id: id,
@@ -115,7 +118,7 @@ export async function DELETE(request, { params }) {
             return NextResponse.json({ error: 'Error verifying token' }, { status: 403 });
         }
 
-        await connectMongoDB();
+        await dbConnect(); // Reused MongoDB connection
 
         // Delete the bill using _id
         const result = await Bill.deleteOne({ _id: new ObjectId(id) });

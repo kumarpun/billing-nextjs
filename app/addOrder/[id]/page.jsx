@@ -227,6 +227,7 @@ export default function AddOrder({ params }) {
         { value: 'Lemon tea', label: 'Lemon tea - NRs 60', price: 60 },
         { value: 'Milk tea', label: 'Milk tea - NRs 60', price: 60 },
         { value: 'Green tea', label: 'Green tea - NRs 90', price: 90 },
+        { value: 'Steam milk', label: 'Steam milk - NRs 70', price: 70 },
 
         { value: 'Iced Americano', label: 'Iced Americano - NRs 155', price: 155 },
         { value: 'Iced Americano double', label: 'Iced Americano double - NRs 245', price: 245 },

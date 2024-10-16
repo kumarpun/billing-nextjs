@@ -53,11 +53,11 @@ export default function OrderListClient({ orderbyTableId, total_price, totalKitc
                         Generate Bill
                     </button>
                 )}
-                     {totalFinalbill > 0 && (
+                     {/* {totalFinalbill > 0 && ( */}
                     <button className="px-6 py-2 mt-3 add-table" onClick={() => handleOpenModal('edit')}>
                         Update Bill
                     </button>
-                )}
+                {/* )} */}
                 {/* <button className="px-6 py-2 mt-3 add-table" onClick={() => handleOpenModal('edit')}>
                     Update Bill
                 </button> */}

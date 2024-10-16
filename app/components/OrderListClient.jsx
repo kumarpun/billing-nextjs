@@ -66,11 +66,11 @@ export default function OrderListClient({ orderbyTableId, total_price, totalKitc
                     Print Bill
                 </button>
             )} */}
-                                  {totalFinalbill > 0 && (
+                                  {/* {totalFinalbill > 0 && ( */}
                 <button className="px-6 py-2 mt-3 add-table" onClick={() => handleOpenModal('print')}>
                     Print Bill
                 </button>
-            )}
+            {/* )} */}
             </div>
 
             {

@@ -64,6 +64,7 @@ export default function AddOrder({ params }) {
       { value: 'Fried rice non-veg', label: 'Fried rice non-veg - NRs 150', price: 150 },
       { value: 'Noodles veg', label: 'Noodles veg - NRs 150', price: 150 },
       { value: 'Noodles non-veg', label: 'Noodles non-veg - NRs 190', price: 190 },
+      { value: 'Buff Noodles', label: 'Buff Noodles - NRs 200', price: 200 },
       { value: 'Sandwich veg', label: 'Sandwich veg - NRs 230', price: 230 },
       { value: 'Sandwich non-veg', label: 'Sandwich non-veg - NRs 300', price: 300 },
       { value: 'Biryani veg', label: 'Biryani veg - NRs 350', price: 350 },

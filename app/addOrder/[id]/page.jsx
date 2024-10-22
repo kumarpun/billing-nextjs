@@ -65,6 +65,8 @@ export default function AddOrder({ params }) {
       { value: 'Mix Fried rice', label: 'Mix Fried rice - NRs 200', price: 200 },
       { value: 'Noodles veg', label: 'Noodles veg - NRs 150', price: 150 },
       { value: 'Noodles non-veg', label: 'Noodles non-veg - NRs 190', price: 190 },
+      { value: 'Half Noodles veg', label: 'Noodles veg - NRs 80', price: 80 },
+      { value: 'Half Noodles non-veg', label: 'Noodles non-veg - NRs 100', price: 100 },
       { value: 'Buff Noodles', label: 'Buff Noodles - NRs 200', price: 200 },
       { value: 'Sandwich veg', label: 'Sandwich veg - NRs 230', price: 230 },
       { value: 'Sandwich non-veg', label: 'Sandwich non-veg - NRs 300', price: 300 },

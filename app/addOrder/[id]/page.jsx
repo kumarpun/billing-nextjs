@@ -266,6 +266,7 @@ export default function AddOrder({ params }) {
         { value: 'Banana lassi', label: 'Banana lassi - NRs 160', price: 160 },
         { value: 'Apple lassi', label: 'Apple lassi - NRs 160', price: 160 },
         { value: 'Mango lassi', label: 'Mango lassi - NRs 160', price: 160 },
+        { value: 'Strawberry lassi', label: 'Strawberry lassi - NRs 160', price: 160 },
         { value: 'Mix Fruit lassi', label: 'Mix Fruit lassi - NRs 180', price: 180 },
 
         { value: 'Ice cream - Chocolate', label: 'Ice cream - Chocolate - NRs 80', price: 80 },

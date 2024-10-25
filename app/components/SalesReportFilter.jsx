@@ -48,6 +48,7 @@ export default function SalesReportFilter() {
                             <thead>
                                 <tr>
                                     <th>Sn</th>
+                                    <th>Date</th>
                                     <th>Original Bill</th>
                                     <th>Discount %</th>
                                     <th>Final Bill</th>
@@ -64,6 +65,8 @@ export default function SalesReportFilter() {
                                     bills.map((sales, index) => (
                                         <tr key={index}>
                                             <td>{index + 1}</td>
+                                            {/* <td>{sales.createdAt}</td> */}
+                                            <td>{new Date(sales.createdAt).toLocaleDateString()}</td>
                                             <td>{sales.originalPrice}</td>
                                             <td>{sales.discountPercent}</td>
                                             <td>{sales.finalPrice}</td>

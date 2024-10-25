@@ -60,6 +60,7 @@ export default function SalesReportClient() {
                             <thead>
                                 <tr>
                                     <th>Sn</th>
+                                    <th>Date</th>
                                     <th>Order Title</th>
                                     <th>Order Status</th>
                                     <th>Quantity</th>
@@ -74,6 +75,7 @@ export default function SalesReportClient() {
                                         salesGroup.orders.map((sales, orderIndex) => (
                                             <tr key={`${groupIndex}-${orderIndex}`}>
                                                 <td>{groupIndex * ordersWithTables.length + orderIndex + 1}</td>
+                                                <td>{new Date(sales.createdAt).toLocaleDateString()}</td>
                                                 <td>{sales.order_title}</td>
                                                 <td>{sales.order_status}</td>
                                                 <td>{sales.order_quantity}</td>

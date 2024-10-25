@@ -200,8 +200,8 @@ export default function AddOrder({ params }) {
 
         { value: 'Hookah', label: 'Hookah - NRs 390', price: 390 },
         { value: 'Hybe Hookah', label: 'Hybe Hookah - NRs 500', price: 500 },
-        { value: 'Hookah Refill', label: 'Hookah Refill - NRs 250', price: 250 },
-        { value: 'Coil', label: 'Coil - NRs 30', price: 30 },
+        { value: 'Hookah Refill', label: 'Hookah Refill - NRs 300', price: 300 },
+        { value: 'Coil', label: 'Coil - NRs 40', price: 40 },
 
         { value: 'Red wine - Marlot Jacob creek', label: 'Red wine - Marlot Jacob creek - NRs 3000', price: 3000 },
 

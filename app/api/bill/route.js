@@ -64,27 +64,75 @@ export async function POST(request) {
 //     return NextResponse.json({ bills, totalFinalPrice }, { status: 200 });
 // }
 
+// export async function GET(request) {
+//     await connectMongoDB();
+    
+//     const url = new URL(request.url);
+//     const today = url.searchParams.get("today"); // Check for 'today' parameter
+//     const lastWeek = url.searchParams.get("lastWeek");
+//     const lastMonth = url.searchParams.get("lastMonth");
+
+//     let bills;
+//     let totalFinalPrice;
+
+//     if (today === "true") {
+//         // Fetch bills created today only
+//         const startOfToday = dayjs().startOf('day').toDate(); // Start of today (00:00:00)
+//         const endOfToday = dayjs().endOf('day').toDate();     // End of today (23:59:59)
+
+//         bills = await Bill.find({
+//             createdAt: { $gte: startOfToday, $lte: endOfToday } // Fetch records only for today
+//         });
+//     } else if (lastWeek === "true") {
+//         // Fetch bills created in the last 7 days
+//         const oneWeekAgo = dayjs().subtract(7, 'day').startOf('day').toDate();
+//         const todayEnd = dayjs().endOf('day').toDate();
+
+//         bills = await Bill.find({
+//             createdAt: { $gte: oneWeekAgo, $lte: todayEnd }
+//         });
+//     } else if (lastMonth === "true") {
+//         // Fetch bills created in the last month
+//         const oneMonthAgo = dayjs().subtract(1, 'month').startOf('day').toDate();
+//         const todayEnd = dayjs().endOf('day').toDate();
+
+//         bills = await Bill.find({
+//             createdAt: { $gte: oneMonthAgo, $lte: todayEnd }
+//         });
+//     } else {
+//         // Fetch all bills if no specific filter is applied
+//         bills = await Bill.find();
+//     }
+
+//     totalFinalPrice = bills.reduce((sum, bill) => {
+//         return sum + (bill.finalPrice || 0);
+//     }, 0);
+    
+//     return NextResponse.json({ bills, totalFinalPrice }, { status: 200 });
+// }
+
+
 export async function GET(request) {
     await connectMongoDB();
     
     const url = new URL(request.url);
-    const today = url.searchParams.get("today"); // Check for 'today' parameter
+    const today = url.searchParams.get("today");
     const lastWeek = url.searchParams.get("lastWeek");
     const lastMonth = url.searchParams.get("lastMonth");
 
     let bills;
-    let totalFinalPrice;
+    let totalFinalPrice = 0;
+    let totalKitchenPrice = 0;
+    let totalBarPrice = 0;
 
     if (today === "true") {
-        // Fetch bills created today only
-        const startOfToday = dayjs().startOf('day').toDate(); // Start of today (00:00:00)
-        const endOfToday = dayjs().endOf('day').toDate();     // End of today (23:59:59)
+        const startOfToday = dayjs().startOf('day').toDate();
+        const endOfToday = dayjs().endOf('day').toDate();
 
         bills = await Bill.find({
-            createdAt: { $gte: startOfToday, $lte: endOfToday } // Fetch records only for today
+            createdAt: { $gte: startOfToday, $lte: endOfToday }
         });
     } else if (lastWeek === "true") {
-        // Fetch bills created in the last 7 days
         const oneWeekAgo = dayjs().subtract(7, 'day').startOf('day').toDate();
         const todayEnd = dayjs().endOf('day').toDate();
 
@@ -92,7 +140,6 @@ export async function GET(request) {
             createdAt: { $gte: oneWeekAgo, $lte: todayEnd }
         });
     } else if (lastMonth === "true") {
-        // Fetch bills created in the last month
         const oneMonthAgo = dayjs().subtract(1, 'month').startOf('day').toDate();
         const todayEnd = dayjs().endOf('day').toDate();
 
@@ -100,13 +147,15 @@ export async function GET(request) {
             createdAt: { $gte: oneMonthAgo, $lte: todayEnd }
         });
     } else {
-        // Fetch all bills if no specific filter is applied
         bills = await Bill.find();
     }
 
-    totalFinalPrice = bills.reduce((sum, bill) => {
-        return sum + (bill.finalPrice || 0);
-    }, 0);
+    // Calculate total prices
+    bills.forEach(bill => {
+        totalFinalPrice += bill.finalPrice || 0;
+        totalKitchenPrice += bill.kitchenPrice || 0;
+        totalBarPrice += bill.barPrice || 0;
+    });
     
-    return NextResponse.json({ bills, totalFinalPrice }, { status: 200 });
+    return NextResponse.json({ bills, totalFinalPrice, totalKitchenPrice, totalBarPrice }, { status: 200 });
 }

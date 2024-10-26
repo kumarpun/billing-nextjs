@@ -5,6 +5,8 @@ export default function SalesReportFilter() {
     const [selectedFilter, setSelectedFilter] = useState("today");
     const [bills, setBills] = useState([]);
     const [totalFinalPrice, setTotalFinalPrice] = useState(0);
+    const [totalKitchenPrice, setTotalKitchenPrice] = useState(0);
+    const [totalBarPrice, setTotalBarPrice] = useState(0);
 
     const handleFilterChange = (event) => {
         setSelectedFilter(event.target.value);
@@ -41,6 +43,8 @@ export default function SalesReportFilter() {
             </div>
 
             <div className="font-bold text-center">Total Sales: NRs. {totalFinalPrice}</div>
+            <div className="font-bold text-center">Total Kitchen Sales: NRs. {totalKitchenPrice}</div>
+                <div className="font-bold text-center">Total Bar Sales: NRs. {totalBarPrice}</div>
             <div className="sales-body">
                 <main className="table" id="customers_table">
                     <section className="table-body">

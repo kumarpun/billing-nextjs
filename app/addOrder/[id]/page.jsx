@@ -173,6 +173,9 @@ export default function AddOrder({ params }) {
         { value: 'Agavita Silver', label: 'Agavita Silver - 30 ml - NRs 260', price: 260 },
         { value: 'Agavita Silver', label: 'Agavita Silver - 60 ml - NRs 520', price: 520 },
         { value: 'Agavita Silver', label: 'Agavita Silver - bottle - NRs 6265', price: 6265 },
+
+        { value: 'Hot rum punch', label: 'Hot rum punch - NRs 430', price: 430 },
+
       
         { value: 'Cosmopolitan', label: 'Cosmopolitan - NRs 500', price: 500 },
         { value: 'Espresso martini', label: 'Espresso martini - NRs 590', price: 590 },

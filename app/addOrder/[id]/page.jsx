@@ -162,6 +162,10 @@ export default function AddOrder({ params }) {
         { value: 'Captain Morgan Black', label: 'Captain Morgan Black - 30 ml - NRs 335', price: 335 },
         { value: 'Captain Morgan Black', label: 'Captain Morgan Black - 60 ml - NRs 670', price: 670 },
         { value: 'Captain Morgan Black', label: 'Captain Morgan Black - bottle - NRs 8040', price: 8040 },
+        { value: 'Le cuvier napolian VSOP', label: 'Le cuvier napolian VSOP - 30 ml - NRs 220', price: 220 },
+        { value: 'Le cuvier napolian VSOP', label: 'Le cuvier napolian VSOP - 60 ml - NRs 450', price: 450 },
+        { value: 'Le cuvier napolian VSOP', label: 'Le cuvier napolian VSOP - 90 ml - NRs 670', price: 670 },
+        { value: 'Le cuvier napolian VSOP - bottle', label: 'Le cuvier napolian VSOP - bottle - NRs 7200', price: 7200 },
 
         { value: 'Snowman Gin', label: 'Snowman Gin - 30 ml - NRs 120', price: 120 },
         { value: 'Snowman Gin', label: 'Snowman Gin - 60 ml - NRs 240', price: 240 },

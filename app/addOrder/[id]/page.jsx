@@ -229,6 +229,9 @@ export default function AddOrder({ params }) {
         { value: 'Honey latte', label: 'Honey latte - NRs 200', price: 200 },
         { value: 'Flavoured latte', label: 'Flavoured latte - NRs 200', price: 200 },
         { value: 'Cappuccino', label: 'Cappuccino - NRs 170', price: 170 },
+        { value: 'Ice Cappuccino - single', label: 'Ice Cappuccino single - NRs 190', price: 190 },
+        { value: 'Ice Cappuccino - double', label: 'Ice Cappuccino double - NRs 280', price: 280 },
+
         { value: 'Flavoured cappuccino', label: 'Flavoured cappuccino - NRs 200', price: 200 },
         { value: 'Hot chocolate', label: 'Hot chocolate - NRs 180', price: 180 },
         { value: 'Flavoured streamed milk', label: 'Flavoured streamed milk - NRs 120', price: 120 },

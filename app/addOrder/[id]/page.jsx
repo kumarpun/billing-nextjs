@@ -212,6 +212,8 @@ export default function AddOrder({ params }) {
         { value: 'Coil', label: 'Coil - NRs 40', price: 40 },
 
         { value: 'Red wine - Marlot Jacob creek', label: 'Red wine - Marlot Jacob creek - NRs 3000', price: 3000 },
+        { value: 'Calvet chardonnay demi sec', label: 'Calvet chardonnay demi sec - NRs 3500', price: 3500 },
+        { value: 'Calvet brut', label: 'Calvet brut - NRs 3500', price: 3500 },
 
         // Barista menu
         { value: 'Espresso', label: 'Espresso - NRs 90', price: 90 },

@@ -290,6 +290,9 @@ export default function AddOrder({ params }) {
         { value: 'Ice cream - Strawberry', label: 'Ice cream - Strawberry - NRs 80', price: 80 },
         { value: 'Ice cream - Butter scotch', label: 'Ice cream - Butter scotch - NRs 80', price: 80 },
 
+        { value: 'Cocktail of the day', label: 'Cocktail of the day - NRs 550', price: 550 },
+        { value: 'Mocktail of the day', label: 'Mocktail of the day - NRs 250', price: 250 },
+
         { value: 'Water', label: 'Water - NRs 50', price: 50 },
 
       ];

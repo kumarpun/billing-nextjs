@@ -81,6 +81,7 @@ export default function AddOrder({ params }) {
       { value: 'Chef special', label: 'Chef special - NRs 600', price: 600 },
       { value: 'Papad fry', label: 'Papad fry - NRs 25', price: 25 },
       { value: 'Thupka non-veg', label: 'Thupka non-veg - NRs 250', price: 250 },
+      { value: 'Crispy chiken', label: 'Crispy chiken - NRs 350', price: 350 },
 
       { value: 'Hybe special platter veg', label: 'Hybe special platter veg - NRs 700', price: 700 },
       { value: 'Hybe special platter non-veg', label: 'Hybe special platter non-veg - NRs 1050', price: 1050 },

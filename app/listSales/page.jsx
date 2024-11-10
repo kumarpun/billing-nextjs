@@ -111,6 +111,9 @@ export default async function ListSales() {
                 </Link>
 
                 <div style={{ display: 'flex', gap: '12px' }}>
+                <Link className="px-6 py-2 mt-3 add-table" href={"/orderQuantity"}>
+                        Order Details
+                    </Link>
                     <Link className="px-6 py-2 mt-3 add-table" href="/listReport">
                         Back
                     </Link>

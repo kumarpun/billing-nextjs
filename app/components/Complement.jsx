@@ -4,6 +4,7 @@ import { useState } from "react";
 export default function Complement() {
     const [orderTitle, setOrderTitle] = useState("");
     const [orderDescription, setOrderDescription] = useState("");
+    const [orderQuantity, setOrderQuantity] = useState("");
     const [responseMessage, setResponseMessage] = useState("");
 
     const handleSubmit = async (e) => {
@@ -13,7 +14,7 @@ export default function Complement() {
             const response = await fetch("/api/orders", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ order_title: orderTitle, order_description: orderDescription })
+                body: JSON.stringify({ order_title: orderTitle, order_description: orderDescription, order_quantity: orderQuantity })
             });
             const data = await response.json();
             setResponseMessage(data.message);
@@ -41,6 +42,16 @@ export default function Complement() {
                     placeholder="Remarks"
                     value={orderDescription}
                     onChange={(e) => setOrderDescription(e.target.value)}
+                    className="border p-2 rounded w-full max-w-xs"
+                    required
+                    style={{ zIndex: 10 }}
+                />
+
+                    <input
+                    type="number"
+                    placeholder="Quantity"
+                    value={orderQuantity}
+                    onChange={(e) => setOrderQuantity(e.target.value)}
                     className="border p-2 rounded w-full max-w-xs"
                     required
                     style={{ zIndex: 10 }}

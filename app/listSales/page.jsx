@@ -118,7 +118,7 @@ export default async function ListSales() {
                         Back
                     </Link>
                     <Link className="px-6 py-2 mt-3 add-table" href="/listComplement">
-                    complementary
+                    Complementary
                     </Link>
                 </div>
             </nav>

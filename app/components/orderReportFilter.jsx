@@ -67,6 +67,7 @@ export default function SalesReportClient() {
                                     <th>Price</th>
                                     <th>Table</th>
                                     <th>Total Price</th>
+                                    <th>Remarks</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -82,6 +83,7 @@ export default function SalesReportClient() {
                                                 <td>{sales.order_price}</td>
                                                 <td>{sales.table[0]?.title || "N/A"}</td>
                                                 <td>{sales.total_price}</td>
+                                                <td>{sales.order_description}</td>
                                             </tr>
                                         ))
                                     )

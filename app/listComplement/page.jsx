@@ -1,7 +1,7 @@
 import Link from "next/link";
-import OrderQuantityDetails from "../components/orderDetailsClient";
+import Complement from "../components/Complement";
 
-export default async function OrderQuantity() {
+export default function ListComplement() {
     return (
         <>
             <nav className="flex justify-between items-center bg-slate-800 px-8 py-3 navbar nav-color">
@@ -19,9 +19,11 @@ export default async function OrderQuantity() {
                 </div>
             </nav>
             <hr className="separator" />
+            <div className="report-bg" style={{ position: "relative", zIndex: -1 }}></div> {/* Set z-index */}
             <div>
-                <OrderQuantityDetails /> {/* Use the client component here */}
+                <br />
+                <Complement />
             </div>
         </>
-    )
+    );
 }

@@ -136,8 +136,11 @@ export default function AddOrder({ params }) {
         { value: 'Gurkhas & Guns  60', label: 'Gurkhas & Guns - 60 ml - NRs 310', price: 310 },
         { value: 'Gurkhas & Guns - 180', label: 'Gurkhas & Guns - 180 ml - NRs 930', price: 930 },
         { value: 'Gurkhas & Guns', label: 'Gurkhas & Guns - bottle - NRs 3745', price: 3745 },
-        { value: 'Jack Daniel (J.D)', label: 'Jack Daniel (J.D) - 30 ml - NRs 315', price: 315 },
-        { value: 'Jack Daniel (J.D)', label: 'Jack Daniel (J.D) - 60 ml - NRs 630', price: 630 },
+        { value: 'Jack Daniel (J.D) - 30 ml', label: 'Jack Daniel (J.D) - 30 ml - NRs 315', price: 315 },
+        { value: 'Jack Daniel (J.D) - 60 ml', label: 'Jack Daniel (J.D) - 60 ml - NRs 630', price: 630 },
+        { value: 'Jack Daniel (J.D) - 90 ml', label: 'Jack Daniel (J.D) - 90 ml - NRs 945', price: 945 },
+        { value: 'Jack Daniel (J.D) - 180 ml', label: 'Jack Daniel (J.D) - 180 ml - NRs 1890', price: 1890 },
+
         { value: 'Jack Daniel (J.D)', label: 'Jack Daniel (J.D) - bottle - NRs 10125', price: 10125 },
         { value: 'Glenfiddhich', label: 'Glenfiddhich - 30 ml - NRs 480', price: 480 },
         { value: 'Glenfiddhich', label: 'Glenfiddhich - 60 ml - NRs 960', price: 960 },

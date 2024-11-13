@@ -158,13 +158,19 @@ export default function AddOrder({ params }) {
         { value: 'Jameson', label: 'Jameson - 60 ml - NRs 580', price: 580 },
         { value: 'Jameson', label: 'Jameson - bottle - NRs 9310', price: 9310 },
 
-        { value: 'Khukrirum Light', label: 'Khukrirum Light - 30 ml - NRs 125', price: 125 },
-        { value: 'Khukrirum Light', label: 'Khukrirum Light - 60 ml - NRs 250', price: 250 },
-        { value: 'Khukrirum Light', label: 'Khukrirum Light - bottle - NRs 2940', price: 2940 },
+        { value: 'Khukrirum Light - 30 ml', label: 'Khukrirum Light - 30 ml - NRs 125', price: 125 },
+        { value: 'Khukrirum Light  60 ml', label: 'Khukrirum Light - 60 ml - NRs 250', price: 250 },
+        { value: 'Khukrirum Light - 90 ml', label: 'Khukrirum Light - 90 ml - NRs 375', price: 375 },
+        { value: 'Khukrirum Light - 180 ml', label: 'Khukrirum Light - 180 ml - NRs 750', price: 750 },
+
+        { value: 'Khukrirum Light - bottle', label: 'Khukrirum Light - bottle - NRs 2940', price: 2940 },
+        
         { value: 'Khukrirum Dark -30', label: 'Khukrirum Dark - 30 ml - NRs 105', price: 105 },
         { value: 'Khukrirum Dark -60', label: 'Khukrirum Dark - 60 ml - NRs 210', price: 210 },
         { value: 'Khukrirum Dark -90', label: 'Khukrirum Dark - 90 ml - NRs 315', price: 315 },
-        { value: 'Khukrirum Dark', label: 'Khukrirum Dark - bottle - NRs 2545', price: 2545 },
+        { value: 'Khukrirum Dark -180', label: 'Khukrirum Dark - 180 ml - NRs 630', price: 630 },
+        { value: 'Khukrirum Dark - bottle', label: 'Khukrirum Dark - bottle - NRs 2545', price: 2545 },
+
         { value: 'Captain Morgan Black', label: 'Captain Morgan Black - 30 ml - NRs 335', price: 335 },
         { value: 'Captain Morgan Black', label: 'Captain Morgan Black - 60 ml - NRs 670', price: 670 },
         { value: 'Captain Morgan Black', label: 'Captain Morgan Black - bottle - NRs 8040', price: 8040 },

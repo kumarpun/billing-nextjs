@@ -180,6 +180,12 @@ export default function AddOrder({ params }) {
         { value: 'Bombay Sapphire', label: 'Bombay Sapphire - 60 ml - NRs 1160', price: 1160 },
         { value: 'Bombay Sapphire', label: 'Bombay Sapphire - bottle - NRs 13975', price: 13975 },
 
+        { value: 'Baileys Irish Cream - 30 ml', label: 'Baileys Irish Cream - 30 ml - NRs 260', price: 260 },
+        { value: 'Baileys Irish Cream - 60 ml', label: 'Baileys Irish Cream - 60 ml - NRs 520', price: 520 },
+        { value: 'Baileys Irish Cream - half bottle', label: 'Baileys Irish Cream - half bottle - NRs 4115', price: 4115 },
+        { value: 'Baileys Irish Cream - full bottle', label: 'Baileys Irish Cream - full bottle - NRs 8230', price: 8230 },
+
+
         { value: 'Agavita Silver', label: 'Agavita Silver - 30 ml - NRs 260', price: 260 },
         { value: 'Agavita Silver', label: 'Agavita Silver - 60 ml - NRs 520', price: 520 },
         { value: 'Agavita Silver', label: 'Agavita Silver - bottle - NRs 6265', price: 6265 },

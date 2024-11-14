@@ -132,6 +132,7 @@ export default function AddOrder({ params }) {
         { value: 'Old Durbar Regular - 90 ml', label: 'Old Durbar Regular - 90 ml - NRs 540', price: 540 },
         { value: 'Old Durbar Regular - 180 ml', label: 'Old Durbar Regular - 180 ml - NRs 1080', price: 1080 },
 
+        { value: 'Old Durbar Regular - half bottle', label: 'Old Durbar Regular - half bottle - NRs 2200', price: 2200 },
         { value: 'Old Durbar Regular - bottle', label: 'Old Durbar Regular - bottle - NRs 4300', price: 4300 },
 
         { value: 'Old Durbar Chimney - 30 ml', label: 'Old Durbar Chimney - 30 ml - NRs 240', price: 240 },
@@ -139,6 +140,7 @@ export default function AddOrder({ params }) {
         { value: 'Old Durbar Chimney - 90 ml', label: 'Old Durbar Chimney - 90 ml - NRs 720', price: 720 },
         { value: 'Old Durbar Chimney - 180 ml', label: 'Old Durbar Chimney - 180 ml - NRs 1440', price: 1440 },
 
+        { value: 'Old Durbar Chimney - half bottle', label: 'Old Durbar Chimney - half bottle - NRs 2650', price: 2650 },
         { value: 'Old Durbar Chimney - bottle', label: 'Old Durbar Chimney - bottle - NRs 5710', price: 5710 },
 
         { value: 'Gurkhas & Guns - 30', label: 'Gurkhas & Guns - 30 ml - NRs 155', price: 155 },

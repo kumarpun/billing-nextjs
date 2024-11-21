@@ -183,6 +183,12 @@ export default function AddOrder({ params }) {
         { value: 'Khukrirum Dark -180', label: 'Khukrirum Dark - 180 ml - NRs 630', price: 630 },
         { value: 'Khukrirum Dark - bottle', label: 'Khukrirum Dark - bottle - NRs 2545', price: 2545 },
 
+        { value: 'Khukrirum spiced rum - 30 ml', label: 'Khukrirum spiced rum - 30 ml - NRs 150', price: 150 },
+        { value: 'Khukrirum spiced rum - 60 ml', label: 'Khukrirum spiced rum - 60 ml - NRs 280', price: 280 },
+        { value: 'Khukrirum spiced rum - 90 ml', label: 'Khukrirum spiced rum - 90 ml - NRs 420', price: 420 },
+        { value: 'Khukrirum spiced rum - 180 ml', label: 'Khukrirum spiced rum - 180 ml - NRs 800', price: 800 },
+        { value: 'Khukrirum spiced rum - bottle', label: 'Khukrirum spiced rum - bottle - NRs 3000', price: 3000 },
+
         { value: 'Captain Morgan Black', label: 'Captain Morgan Black - 30 ml - NRs 335', price: 335 },
         { value: 'Captain Morgan Black', label: 'Captain Morgan Black - 60 ml - NRs 670', price: 670 },
         { value: 'Captain Morgan Black', label: 'Captain Morgan Black - bottle - NRs 8040', price: 8040 },

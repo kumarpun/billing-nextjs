@@ -75,6 +75,8 @@ export default function AddOrder({ params }) {
       { value: 'Biryani non-veg', label: 'Biryani non-veg - NRs 450', price: 450 },
       { value: 'Pizza veg', label: 'Pizza veg - NRs 350', price: 350 },
       { value: 'Hot sour & soup', label: 'Hot sour & soup - NRs 250', price: 250 },
+      { value: 'Mushroom soup', label: 'Mushroom soup - NRs 300', price: 300 },
+
       { value: 'Pizza non-veg', label: 'Pizza non-veg - NRs 400', price: 400 },
       { value: 'Paneer fried rice', label: 'Paneer fried rice - NRs 170', price: 170 },
       { value: 'Paneer noodles', label: 'Paneer noodles - NRs 210', price: 210 },

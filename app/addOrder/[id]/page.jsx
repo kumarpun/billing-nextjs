@@ -253,6 +253,8 @@ export default function AddOrder({ params }) {
         { value: 'Calvet chardonnay demi sec', label: 'Calvet chardonnay demi sec - NRs 3500', price: 3500 },
         { value: 'Calvet brut', label: 'Calvet brut - NRs 3500', price: 3500 },
 
+        { value: 'Triple sec - 30 ml', label: 'Triple sec - 30 ml - NRs 400', price: 400 },
+
         // Barista menu
         { value: 'Espresso', label: 'Espresso - NRs 90', price: 90 },
         { value: 'Ristretto', label: 'Ristretto - NRs 90', price: 90 },

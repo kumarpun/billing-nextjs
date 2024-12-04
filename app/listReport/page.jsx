@@ -136,6 +136,14 @@ export default function ListReport() {
                 >
                 Inventory
                 </a> */}
+                  <a
+                        className="px-6 py-2 mt-3 add-table"
+                        href="https://docs.google.com/spreadsheets/d/1LnrugVBIRQ9ZPBkJqHcLTVdJuBnq1O-ovg9xcZJ9M3I/edit?gid=1373956564#gid=1373956564"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Credit
+                    </a>
                  <Link className="px-6 py-2 mt-3 add-table" href={"/salesCalculation"}>
                         Sales Calc
                     </Link>

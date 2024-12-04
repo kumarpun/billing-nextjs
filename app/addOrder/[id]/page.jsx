@@ -283,6 +283,8 @@ export default function AddOrder({ params }) {
         { value: 'Lemon water', label: 'Lemon water - NRs 60', price: 60 },
         { value: 'Lime soda', label: 'Lime soda - NRs 110', price: 110 },
 
+        { value: 'Hot water', label: 'Hot water - NRs 20', price: 20 },
+
         { value: 'Black tea', label: 'Black tea - NRs 45', price: 45 },
         { value: 'Lemon tea', label: 'Lemon tea - NRs 60', price: 60 },
         { value: 'Milk tea', label: 'Milk tea - NRs 60', price: 60 },

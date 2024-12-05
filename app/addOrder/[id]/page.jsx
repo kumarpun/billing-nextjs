@@ -256,6 +256,8 @@ export default function AddOrder({ params }) {
         { value: 'Calvet brut', label: 'Calvet brut - NRs 3500', price: 3500 },
 
         { value: 'Triple sec - 30 ml', label: 'Triple sec - 30 ml - NRs 400', price: 400 },
+        { value: 'Purple galaxy', label: 'Purple galaxy - NRs 340', price: 340 },
+
 
         // Barista menu
         { value: 'Espresso', label: 'Espresso - NRs 90', price: 90 },

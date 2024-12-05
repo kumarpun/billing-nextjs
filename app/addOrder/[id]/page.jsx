@@ -89,6 +89,8 @@ export default function AddOrder({ params }) {
       { value: 'Extra cheese', label: 'Extra cheese - NRs 60', price: 60 },
 
 
+      { value: 'Grill chicken - brown sauce/lime rice', label: 'Grill chicken - brown sauce/lime rice - NRs 680', price: 680 },
+
       { value: 'Hybe special platter veg', label: 'Hybe special platter veg - NRs 700', price: 700 },
       { value: 'Hybe special platter non-veg', label: 'Hybe special platter non-veg - NRs 1050', price: 1050 },
 

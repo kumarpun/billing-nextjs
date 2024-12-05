@@ -257,7 +257,8 @@ export default function AddOrder({ params }) {
 
         { value: 'Triple sec - 30 ml', label: 'Triple sec - 30 ml - NRs 400', price: 400 },
         { value: 'Purple galaxy', label: 'Purple galaxy - NRs 340', price: 340 },
-
+        { value: 'Beefeater - 30 ml', label: 'Beefeater 30 ml - NRs 300', price: 300 },
+        { value: 'Beefeater - 60 ml', label: 'Beefeater 60 ml - NRs 600', price: 600 },
 
         // Barista menu
         { value: 'Espresso', label: 'Espresso - NRs 90', price: 90 },

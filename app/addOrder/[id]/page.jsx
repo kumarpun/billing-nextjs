@@ -95,7 +95,10 @@ export default function AddOrder({ params }) {
 
       { value: 'Hybe special platter veg', label: 'Hybe special platter veg - NRs 700', price: 700 },
       { value: 'Hybe special platter non-veg', label: 'Hybe special platter non-veg - NRs 1050', price: 1050 },
-
+      { value: 'Steam Buff MO:MO', label: 'Steam Buff MO:MO - NRs 200', price: 200 },
+      { value: 'Fried Veg MO:MO', label: 'Fried Veg MO:MO - NRs 150', price: 150 },
+      { value: 'Fried Chicken MO:MO', label: 'Fried Chicken MO:MO - NRs 200', price: 200 },
+      { value: 'Fried Buff MO:MO', label: 'Fried Buff MO:MO - NRs 220', price: 220 },
 
       // bar menu
         { value: 'Bar menu', label: 'Bar menu', price: 0 },

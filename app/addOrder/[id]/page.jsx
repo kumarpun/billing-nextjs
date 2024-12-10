@@ -89,6 +89,7 @@ export default function AddOrder({ params }) {
       { value: 'Extra cheese', label: 'Extra cheese - NRs 60', price: 60 },
 
       { value: 'Crown chicken', label: 'Crown chicken - NRs 450', price: 450 },
+      { value: 'Sausage fry', label: 'Sausage fry - NRs 300', price: 300 },
 
 
       { value: 'Grill chicken - brown sauce/lime rice', label: 'Grill chicken - brown sauce/lime rice - NRs 680', price: 680 },

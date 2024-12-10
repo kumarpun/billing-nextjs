@@ -242,7 +242,7 @@ export default function AddOrder({ params }) {
         { value: 'Kamikaze', label: 'Kamikaze - NRs 500', price: 500 },
         { value: 'Jager bomb', label: 'Jager bomb - NRs 530', price: 530 },
         { value: 'Flaming Lambo', label: 'Flaming Lambo - NRs 1250', price: 1250 },
-        { value: 'Red bull', label: 'Red bull - NRs 210', price: 210 },
+        { value: 'Red bull', label: 'Red bull - NRs 280', price: 280 },
 
         { value: 'Shikhar Ice', label: 'Shikhar Ice - NRs 25', price: 25 },
         { value: 'Surya Red', label: 'Surya Red - NRs 30', price: 30 },

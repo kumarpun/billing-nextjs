@@ -267,6 +267,8 @@ export default function AddOrder({ params }) {
         { value: 'Beefeater - 30 ml', label: 'Beefeater 30 ml - NRs 300', price: 300 },
         { value: 'Beefeater - 60 ml', label: 'Beefeater 60 ml - NRs 600', price: 600 },
 
+        { value: 'Old fashioned', label: 'Old fashioned - NRs 1200', price: 1200 },
+
         // Barista menu
         { value: 'Espresso', label: 'Espresso - NRs 90', price: 90 },
         { value: 'Ristretto', label: 'Ristretto - NRs 90', price: 90 },

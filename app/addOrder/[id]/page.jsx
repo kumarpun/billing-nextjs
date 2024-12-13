@@ -146,7 +146,9 @@ export default function AddOrder({ params }) {
      
        // PASTA
        { value: 'Veg Pasta (White/Red/Mixed)', label: 'Veg Pasta (White/Red/Mixed) - NRs 280', price: 280 },
-       { value: 'Non-Veg Pasta (White/Red/Mixed)', label: 'Non-Veg Pasta (White/Red/Mixed) - NRs 320', price: 320 },
+       { value: 'Non-Veg Pasta (White)', label: 'Non-Veg Pasta (White) - NRs 320', price: 320 },
+       { value: 'Non-Veg Pasta (Red)', label: 'Non-Veg Pasta (Red) - NRs 320', price: 320 },
+       { value: 'Non-Veg Pasta (Mixed)', label: 'Non-Veg Pasta (Mixed) - NRs 320', price: 320 },
        { value: 'Aglio e Olio Veg', label: 'Aglio e Olio Veg - NRs 290', price: 290 },
        { value: 'Aglio e Olio Non-Veg', label: 'Aglio e Olio Non-Veg - NRs 340', price: 340 },
      

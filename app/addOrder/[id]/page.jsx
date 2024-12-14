@@ -278,6 +278,7 @@ export default function AddOrder({ params }) {
         { value: 'Hookah Cloud', label: 'Hookah Cloud - NRs 390', price: 390 },
         { value: 'Hybe Hookah (Seasonal Fruits)', label: 'Hybe Hookah (Seasonal Fruits) - NRs 550', price: 550 },
         { value: 'Hybe Hookah (Blueberry)', label: 'Hybe Hookah (Blueberry) - NRs 590', price: 590 },
+        { value: 'Hookah refill', label: 'Hookah refill - NRs 300', price: 300 },
 
          // Rum
   { value: 'Khukri Rum Light - 60ml', label: 'Khukri Rum Light - 60ml - NRs 280', price: 280 },

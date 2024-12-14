@@ -287,6 +287,8 @@ export default function AddOrder({ params }) {
   { value: 'Khukri Rum Dark - 60ml', label: 'Khukri Rum Dark - 60ml - NRs 250', price: 250 },
   { value: 'Khukri Rum Dark - 180ml', label: 'Khukri Rum Dark - 180ml - NRs 720', price: 720 },
   { value: 'Khukri Rum Dark - Bottle', label: 'Khukri Rum Dark - Bottle - NRs 2800', price: 2800 },
+
+  { value: 'Khukri spiced rum - 30 ml', label: 'Khukrirum spiced rum - 30 ml - NRs 150', price: 150 },
   { value: 'Khukri Spiced Rum - 60ml', label: 'Khukri Spiced Rum - 60ml - NRs 280', price: 280 },
   { value: 'Khukri Spiced Rum - 180ml', label: 'Khukri Spiced Rum - 180ml - NRs 800', price: 800 },
   { value: 'Khukri Spiced Rum - Bottle', label: 'Khukri Spiced Rum - Bottle - NRs 3100', price: 3100 },

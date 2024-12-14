@@ -364,8 +364,8 @@ export default function AddOrder({ params }) {
   { value: 'Hot Lemon with Honey and Ginger', label: 'Hot Lemon with Honey and Ginger - NRs 150', price: 150 },
 
   // Smoothies
-  { value: 'Blueberry Smoothies', label: 'Blueberry Smoothies - NRs 150', price: 150 },
-  { value: 'Apple Smoothies', label: 'Apple Smoothies - NRs 120', price: 120 },
+  { value: 'Blueberry Smoothies', label: 'Blueberry Smoothies - NRs 200', price: 200 },
+  { value: 'Apple Smoothies', label: 'Apple Smoothies - NRs 220', price: 220 },
   { value: 'Banana Smoothies', label: 'Banana Smoothies - NRs 150', price: 150 },
 
   // Lassi

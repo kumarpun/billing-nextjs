@@ -145,7 +145,10 @@ export default function AddOrder({ params }) {
        { value: 'Sadheko Buff MO:MO', label: 'Sadheko Buff MO:MO - NRs 270', price: 270 },
      
        // PASTA
-       { value: 'Veg Pasta (White/Red/Mixed)', label: 'Veg Pasta (White/Red/Mixed) - NRs 280', price: 280 },
+       { value: 'Veg Pasta (White)', label: 'Veg Pasta (White) - NRs 280', price: 280 },
+       { value: 'Veg Pasta (Red)', label: 'Veg Pasta (Red) - NRs 280', price: 280 },
+       { value: 'Veg Pasta (Mixed)', label: 'Veg Pasta (Mixed) - NRs 280', price: 280 },
+
        { value: 'Non-Veg Pasta (White)', label: 'Non-Veg Pasta (White) - NRs 320', price: 320 },
        { value: 'Non-Veg Pasta (Red)', label: 'Non-Veg Pasta (Red) - NRs 320', price: 320 },
        { value: 'Non-Veg Pasta (Mixed)', label: 'Non-Veg Pasta (Mixed) - NRs 320', price: 320 },

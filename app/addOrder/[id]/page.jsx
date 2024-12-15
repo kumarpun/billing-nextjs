@@ -48,7 +48,7 @@ export default function AddOrder({ params }) {
      { value: 'Buff Sukuti', label: 'Buff Sukuti - NRs 300', price: 300 },
      { value: 'Buff Choila', label: 'Buff Choila - NRs 360', price: 360 },
      { value: 'Chicken Chatpate', label: 'Chicken Chatpate - NRs 250', price: 250 },
-     { value: 'Sukuli Chatpale Buff', label: 'Sukuli Chatpale Buff - NRs 270', price: 270 },
+     { value: 'Sukuti Chatpale Buff', label: 'Sukuti Chatpale Buff - NRs 270', price: 270 },
      { value: 'Timur Chicken', label: 'Timur Chicken - NRs 300', price: 300 },
    
      // NON-VEG STARTER
@@ -280,6 +280,8 @@ export default function AddOrder({ params }) {
         { value: 'Hybe Hookah (Blueberry)', label: 'Hybe Hookah (Blueberry) - NRs 590', price: 590 },
         { value: 'Hookah refill', label: 'Hookah refill - NRs 300', price: 300 },
 
+        { value: 'Coil', label: 'Coil - NRs 50', price: 50 },
+
          // Rum
   { value: 'Khukri Rum Light - 60ml', label: 'Khukri Rum Light - 60ml - NRs 280', price: 280 },
   { value: 'Khukri Rum Light - 180ml', label: 'Khukri Rum Light - 180ml - NRs 800', price: 800 },
@@ -340,7 +342,7 @@ export default function AddOrder({ params }) {
 
 
         // Espresso Brew (Barista Menu)
-  { value: 'Ristrello', label: 'Ristrello - NRs 90', price: 90 },
+  { value: 'Ristretto', label: 'Ristretto - NRs 90', price: 90 },
   { value: 'Espresso', label: 'Espresso - NRs 100', price: 100 },
   { value: 'Espresso Macchiato', label: 'Espresso Macchiato - NRs 120', price: 120 },
   { value: 'Americano (Single)', label: 'Americano (Single) - NRs 125', price: 125 },

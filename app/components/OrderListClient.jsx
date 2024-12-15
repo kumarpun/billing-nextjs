@@ -8,6 +8,8 @@ import EditCustomerForm from "./EditCustomerForm";
 import AddBillForm from "./AddBillForm";
 import Modal from "./ModalForm";
 import EditBillForm from "./EditBillForm";
+import { useRouter } from "next/navigation";
+import { toast } from "react-hot-toast";
 
 export default function OrderListClient({ orderbyTableId, total_price, totalKitchenPrice, totalBarPrice, tablebill_id, tableId, billById, totalFinalbill, billFinalStatus, order_type }) {
     const [isModalOpen, setModalOpen] = useState(false);
@@ -40,6 +42,48 @@ export default function OrderListClient({ orderbyTableId, total_price, totalKitc
         window.print();
         discountElement.style.display = '';
     }
+
+    const [updating, setUpdating] = useState(null); // Track updating item ID
+    const router = useRouter(); // To refresh the data after update
+    const handleQuantityChange = async (orderId, currentQuantity, change) => {
+        const newQuantity = currentQuantity + change;
+        if (newQuantity < 1) return; // Prevent quantity going below 1
+    
+        setUpdating(orderId); // Set the loading state for this order
+    
+        try {
+          const res = await fetch(
+            `http://localhost:3000/api/orders/${orderId}`,
+            {
+              method: "PUT",
+              headers: {
+                "Content-type": "application/json",
+              },
+              body: JSON.stringify({
+                newOrderTitle: null, // Optional placeholder, adjust if needed
+                newOrderDescription: null,
+                newOrderStatus: null,
+                newOrderQuantity: newQuantity,
+              }),
+            }
+          );
+    
+          if (!res.ok) {
+            throw new Error("Failed to update order quantity");
+          }
+    
+          // Show success message
+          toast.success("Order quantity updated!");
+    
+          // Refresh data
+          router.refresh();
+        } catch (error) {
+          console.error("Error updating quantity:", error);
+          toast.error("Failed to update order quantity");
+        } finally {
+          setUpdating(null); // Reset loading state
+        }
+      };
 
     return (
         <>
@@ -80,7 +124,7 @@ export default function OrderListClient({ orderbyTableId, total_price, totalKitc
 
             {orderbyTableId.map(order => (
 
-                <div className="p-4 border border-slate-300 my-3 flex justify-between gap-5 items-start" key={order._id}>
+                <div className="p-4 border border-slate-300 my-3 flex justify-between gap-5 items-start relative" key={order._id}>
                     <div>
                         <h3 className="font-bold text-2xl">{order.order_title}</h3>
                         <div>{order.order_description}</div>
@@ -91,6 +135,38 @@ export default function OrderListClient({ orderbyTableId, total_price, totalKitc
                         <div>Sum: NRs. {order.final_price}</div>
                         <div className="bg-green-600">Order type: {order.order_type}</div>
                     </div>
+
+                    <div className="flex items-center gap-2 mt-2">
+
+                    <div className="flex items-center gap-2 mt-2 absolute left-1/2 transform -translate-x-1/2 top-1/2 -translate-y-1/2">     
+                  <button
+                    onClick={() =>
+                      handleQuantityChange(order._id, order.order_quantity, -1)
+                    }
+                    disabled={updating === order._id}
+                    className={`px-6 py-4 text-3xl bg-gray-300 hover:bg-gray-400 rounded ${
+                      updating === order._id ? "opacity-50 cursor-not-allowed" : ""
+                    }`}
+                  >
+                    -
+                  </button>
+                  <span className="text-2xl font-bold">{order.order_quantity}</span>
+                  <button
+                    onClick={() =>
+                      handleQuantityChange(order._id, order.order_quantity, 1)
+                    }
+                    disabled={updating === order._id}
+                    className={`px-6 py-4 text-3xl bg-gray-300 hover:bg-gray-400 rounded ${
+                      updating === order._id ? "opacity-50 cursor-not-allowed" : ""
+                    }`}
+                  >
+                    +
+                  </button>
+                    </div>
+
+                </div>
+
+
                     <div>
                     <RemoveOrderBtn id={order._id} />
                         {/* <Link href={`/editOrder/${order._id}`}> */}

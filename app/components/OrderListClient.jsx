@@ -53,7 +53,7 @@ export default function OrderListClient({ orderbyTableId, total_price, totalKitc
     
         try {
           const res = await fetch(
-            `http://localhost:3000/api/orders/${orderId}`,
+            `https://billing-nextjs.vercel.app/api/orders/${orderId}`,
             {
               method: "PUT",
               headers: {

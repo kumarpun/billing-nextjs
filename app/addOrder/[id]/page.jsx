@@ -48,7 +48,7 @@ export default function AddOrder({ params }) {
      { value: 'Buff Sukuti', label: 'Buff Sukuti - NRs 300', price: 300 },
      { value: 'Buff Choila', label: 'Buff Choila - NRs 360', price: 360 },
      { value: 'Chicken Chatpate', label: 'Chicken Chatpate - NRs 250', price: 250 },
-     { value: 'Sukuti Chatpale Buff', label: 'Sukuti Chatpale Buff - NRs 270', price: 270 },
+     { value: 'Sukuti Chatpate Buff', label: 'Sukuti Chatpate Buff - NRs 270', price: 270 },
      { value: 'Timur Chicken', label: 'Timur Chicken - NRs 300', price: 300 },
    
      // NON-VEG STARTER

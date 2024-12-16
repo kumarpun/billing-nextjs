@@ -24,6 +24,11 @@ input {
   border-radius: 25px;
   gap: 2rem;
   width: 260px;
+
+  background-color: rgb(235, 238, 246); /* Solid yellow background */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional shadow for better visibility */
+  z-index: 1; /* Ensures it stays on top of other elements */
+  position: relative; /* Ensures it respects z-index */
 }
 .card:hover,
 .card.color1 {
@@ -134,11 +139,14 @@ button:hover {
 .bg-page{
   content: "";
   position: absolute;
-  /* background-image: url('assets/bg2.jpg'); */
+  background-image: url('assets/chrism.jpg');
+  /* background-image: url('https://media.giphy.com/media/u97VE638KghOl3PCwO/giphy.gif'); */
   width: 100%;
-  height: 90%;
+  height: 110%;
   background-position: center;
   background-size: cover;
+  opacity: 5.5;
+  z-index: -1;
 }
 .report-bg{
   position: absolute;

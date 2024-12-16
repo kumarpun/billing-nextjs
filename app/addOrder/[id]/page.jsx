@@ -475,7 +475,7 @@ export default function AddOrder({ params }) {
                 </nav>
                 <hr className="separator" />
                 <br />
-                <div className="bg-page">
+                <div className="bg-page1">
                     <form onSubmit={handleSubmit} className="flex flex-col gap-3">
     
                         <div className="flex items-center">

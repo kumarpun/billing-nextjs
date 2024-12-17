@@ -132,7 +132,7 @@ export default function OrderListClient({ orderbyTableId, total_price, totalKitc
                         <div>{order.customer_status}</div>
                         <div>Order price: NRs. {order.order_price}</div>
                         <div>Order quantity: {order.order_quantity}</div>
-                        <div>Sum: NRs. {order.final_price}</div>
+                        {/* <div>Sum: NRs. {order.final_price}</div> */}
                         <div className="bg-green-600">Order type: {order.order_type}</div>
                     </div>
 
@@ -164,6 +164,9 @@ export default function OrderListClient({ orderbyTableId, total_price, totalKitc
                   </button>
                     </div>
 
+                         <div className="absolute right-40 top-1/3 mt-2 mr-2 text-3xl sum">
+                        NRs. {order.final_price}
+                    </div>
                 </div>
 
 

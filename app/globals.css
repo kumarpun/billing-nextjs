@@ -141,7 +141,7 @@ button:hover {
   position: absolute;
   background-image: url('assets/chrism.jpg');
   /* background-image: url('https://media.giphy.com/media/u97VE638KghOl3PCwO/giphy.gif'); */
-  width: 100%;
+  width: 110%;
   height: 110%;
   background-position: center;
   background-size: cover;
@@ -156,6 +156,10 @@ button:hover {
   background-position: center;
   background-size: cover;
   opacity: 0.1;
+}
+
+.sum{
+  color: #03594d
 }
 .bg-page3{
   content: "";

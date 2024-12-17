@@ -210,6 +210,9 @@ export default function AddOrder({ params }) {
        { value: 'Cheese Roll (Chicken)', label: 'Cheese Roll (Chicken) - NRs 350', price: 350 },
        { value: 'Cheese Roll (Paneer)', label: 'Cheese Roll (Paneer) - NRs 390', price: 390 },
 
+       { value: 'Peanut', label: 'Peanut - NRs 80', price: 80 },
+       { value: 'Honey', label: 'Honey - NRs 50', price: 50 },
+
       // bar menu
         { value: 'Bar menu', label: 'Bar menu', price: 0 },
         // Soft Drinks

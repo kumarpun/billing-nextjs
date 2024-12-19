@@ -65,7 +65,7 @@ export default function AddOrder({ params }) {
      { value: 'Periperi Chicken', label: 'Periperi Chicken - NRs 350', price: 350 },
      { value: 'Dragon Chicken', label: 'Dragon Chicken - NRs 350', price: 350 },
      { value: 'Drumstick Chicken', label: 'Drumstick Chicken - NRs 390', price: 390 },
-     { value: 'BulTalo Wild Wings', label: 'BulTalo Wild Wings - NRs 380', price: 380 },
+     { value: 'Buffalo Wild Wings', label: 'Buffalo Wild Wings - NRs 380', price: 380 },
      { value: 'Szechuan Chicken', label: 'Szechuan Chicken - NRs 320', price: 320 },
      { value: 'Chilly Sausage', label: 'Chilly Sausage - NRs 250', price: 250 },
      { value: 'Crown Chicken', label: 'Crown Chicken - NRs 450', price: 450 },

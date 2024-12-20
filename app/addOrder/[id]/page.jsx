@@ -287,9 +287,12 @@ export default function AddOrder({ params }) {
         { value: 'Coil', label: 'Coil - NRs 50', price: 50 },
 
          // Rum
+{ value: 'Khukrirum Light - 30 ml', label: 'Khukrirum Light - 30 ml - NRs 130', price: 130 },
   { value: 'Khukri Rum Light - 60ml', label: 'Khukri Rum Light - 60ml - NRs 280', price: 280 },
   { value: 'Khukri Rum Light - 180ml', label: 'Khukri Rum Light - 180ml - NRs 800', price: 800 },
   { value: 'Khukri Rum Light - Bottle', label: 'Khukri Rum Light - Bottle - NRs 3100', price: 3100 },
+  
+  { value: 'Khukrirum Dark -30', label: 'Khukrirum Dark - 30 ml - NRs 110', price: 110 },
   { value: 'Khukri Rum Dark - 60ml', label: 'Khukri Rum Dark - 60ml - NRs 250', price: 250 },
   { value: 'Khukri Rum Dark - 180ml', label: 'Khukri Rum Dark - 180ml - NRs 720', price: 720 },
   { value: 'Khukri Rum Dark - Bottle', label: 'Khukri Rum Dark - Bottle - NRs 2800', price: 2800 },

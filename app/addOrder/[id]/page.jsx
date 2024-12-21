@@ -334,6 +334,11 @@ export default function AddOrder({ params }) {
   { value: 'Hot Rum Punch', label: 'Hot Rum Punch - NRs 450', price: 450 },
   { value: 'Sex on the Beach', label: 'Sex on the Beach - Vodka, Peach Schnapps - NRs 500', price: 500 },
 
+  { value: 'Chivas Regal 12 yrs - 30', label: 'Chivas Regal 12 yrs - 30 ml - NRs 350', price: 350 },
+  { value: 'Chivas Regal 12 yrs - 60', label: 'Chivas Regal 12 yrs - 60 ml - NRs 810', price: 810 },
+  { value: 'Chivas Regal 12 yrs - 180', label: 'Chivas Regal 12 yrs - 180 ml - NRs 2250', price: 2250 },
+  { value: 'Chivas Regal 12 yrs - bottle', label: 'Chivas Regal 12 yrs - bottle - NRs 11500', price: 11500 },
+
   // Mocktail
   { value: 'Blue Angel', label: 'Blue Angel - NRs 300', price: 300 },
   { value: 'Coco Rush', label: 'Coco Rush - NRs 320', price: 320 },

@@ -157,9 +157,9 @@ export default function AddOrder({ params }) {
      
        // BURGER
        { value: 'Veg Burger', label: 'Veg Burger - NRs 210', price: 210 },
-       { value: 'Non-Veg Burger', label: 'Non-Veg Burger - NRs 350', price: 350 },
+       { value: 'Non-Veg Burger', label: 'Non-Veg Burger - NRs 300', price: 300 },
        { value: 'Extra Cheese Veg Burger', label: 'Extra Cheese Veg Burger - NRs 260', price: 260 },
-       { value: 'Extra Cheese Non-Veg Burger', label: 'Extra Cheese Non-Veg Burger - NRs 300', price: 300 },
+       { value: 'Extra Cheese Non-Veg Burger', label: 'Extra Cheese Non-Veg Burger - NRs 350', price: 350 },
        { value: 'Cottage Cheese Burger', label: 'Cottage Cheese Burger - NRs 360', price: 360 },
      
        // PIZZA
@@ -342,6 +342,8 @@ export default function AddOrder({ params }) {
   { value: 'Chivas Regal 12 yrs - 60', label: 'Chivas Regal 12 yrs - 60 ml - NRs 810', price: 810 },
   { value: 'Chivas Regal 12 yrs - 180', label: 'Chivas Regal 12 yrs - 180 ml - NRs 2250', price: 2250 },
   { value: 'Chivas Regal 12 yrs - bottle', label: 'Chivas Regal 12 yrs - bottle - NRs 11500', price: 11500 },
+
+  { value: 'Red bull', label: 'Red bull - NRs 280', price: 280 },
 
   // Mocktail
   { value: 'Blue Angel', label: 'Blue Angel - NRs 300', price: 300 },

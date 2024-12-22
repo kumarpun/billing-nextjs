@@ -185,6 +185,10 @@ export default function AddOrder({ params }) {
        { value: 'Jeera Rice', label: 'Jeera Rice - NRs 150', price: 150 },
        { value: 'Veg Biryani', label: 'Veg Biryani - NRs 350', price: 350 },
        { value: 'Non-Veg Biryani', label: 'Non-Veg Biryani - NRs 450', price: 450 },
+
+       { value: 'Hakka Noodles half (Veg)', label: 'Hakka Noodles half (Veg) - NRs 80', price: 80 },
+       { value: 'Hakka Noodles half (Chicken)', label: 'Hakka Noodles half(Chicken) - NRs 100', price: 100 },
+       { value: 'Hakka Noodles half (Buff)', label: 'Hakka Noodles half (Buff) - NRs 110', price: 110 },
      
        // NOODLES
        { value: 'Keema Noodles', label: 'Keema Noodles - NRs 200', price: 200 },

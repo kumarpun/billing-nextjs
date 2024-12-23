@@ -79,6 +79,7 @@ export default function AddOrder({ params }) {
        { value: 'Cheese Cheery Pineapple', label: 'Cheese Cheery Pineapple - NRs 210', price: 210 },
        { value: 'Nepali Salad', label: 'Nepali Salad - NRs 140', price: 140 },
        { value: 'Classic Salad', label: 'Classic Salad - NRs 250', price: 250 },
+       { value: 'Classic Salad - boiled chicken', label: 'Classic Salad boiled chicken - NRs 350', price: 350 },
 
        // SOUP
        { value: 'Manchow Soup (Veg)', label: 'Manchow Soup (Veg) - NRs 160', price: 160 },

@@ -272,6 +272,7 @@ export default function AddOrder({ params }) {
         { value: 'Gurkhas & Guns - Bottle', label: 'Gurkhas & Guns - Bottle - NRs 3800', price: 3800 },
         { value: 'Jack Daniel (JD) - 60ml', label: 'Jack Daniel (JD) - 60ml - NRs 700', price: 700 },
         { value: 'Jack Daniel (JD) - 180ml', label: 'Jack Daniel (JD) - 180ml - NRs 2050', price: 2050 },
+        { value: 'Jack Daniel (JD) - 500 ml', label: 'Jack Daniel (JD) - 500 m - NRs 5500', price: 5500 },
         { value: 'Jack Daniel (JD) - Bottle', label: 'Jack Daniel (JD) - Bottle - NRs 10900', price: 10900 },
       
         // Liqueur

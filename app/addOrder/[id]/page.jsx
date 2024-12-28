@@ -175,7 +175,6 @@ export default function AddOrder({ params }) {
        { value: 'Fried Rice (Chicken)', label: 'Fried Rice (Chicken) - NRs 190', price: 190 },
        { value: 'Fried Rice (Buff)', label: 'Fried Rice (Buff) - NRs 210', price: 210 },
        { value: 'Fried Rice (Mixed)', label: 'Fried Rice (Mixed) - NRs 260', price: 260 },
-       { value: 'Fried Rice (Mixed with buff)', label: 'Fried Rice (Mixed with buff) - NRs 300', price: 300 },
 
        { value: 'Cilantro Lime Rice (Veg)', label: 'Cilantro Lime Rice (Veg) - NRs 170', price: 170 },
        { value: 'Cilantro Lime Rice (Chicken)', label: 'Cilantro Lime Rice (Chicken) - NRs 210', price: 210 },

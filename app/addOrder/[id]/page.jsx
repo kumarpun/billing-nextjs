@@ -273,6 +273,13 @@ export default function AddOrder({ params }) {
         { value: 'Jack Daniel (JD) - 180ml', label: 'Jack Daniel (JD) - 180ml - NRs 2050', price: 2050 },
         { value: 'Jack Daniel (JD) - 500 ml', label: 'Jack Daniel (JD) - 500 m - NRs 5500', price: 5500 },
         { value: 'Jack Daniel (JD) - Bottle', label: 'Jack Daniel (JD) - Bottle - NRs 10900', price: 10900 },
+
+        { value: 'Jameson -30 ml', label: 'Jameson - 30 ml - NRs 340', price: 340 },
+        { value: 'Jameson - 60 ml', label: 'Jameson - 60 ml - NRs 670', price: 670 },
+        { value: 'Jameson - 180 ml', label: 'Jameson - 180 ml - NRs 1890', price: 1890 },
+        { value: 'Jameson - half bottle', label: 'Jameson - half bottle - NRs 5000', price: 5000 },
+        { value: 'Jameson - bottle', label: 'Jameson - bottle - NRs 9990', price: 9990 },
+
       
         // Liqueur
         { value: 'Baileys - 30ml', label: 'Baileys - 30ml - NRs 325', price: 325 },
@@ -342,6 +349,7 @@ export default function AddOrder({ params }) {
   { value: 'Chivas Regal 12 yrs - 30', label: 'Chivas Regal 12 yrs - 30 ml - NRs 350', price: 350 },
   { value: 'Chivas Regal 12 yrs - 60', label: 'Chivas Regal 12 yrs - 60 ml - NRs 810', price: 810 },
   { value: 'Chivas Regal 12 yrs - 180', label: 'Chivas Regal 12 yrs - 180 ml - NRs 2250', price: 2250 },
+  { value: 'Chivas Regal 12 yrs - half bottle', label: 'Chivas Regal 12 yrs - half bottle - NRs 5800', price: 5800 },
   { value: 'Chivas Regal 12 yrs - bottle', label: 'Chivas Regal 12 yrs - bottle - NRs 11500', price: 11500 },
 
   { value: 'Red bull', label: 'Red bull - NRs 280', price: 280 },

@@ -240,6 +240,9 @@ export default function AddOrder({ params }) {
         { value: 'Sprite - Bottle', label: 'Sprite - Bottle - NRs 400', price: 400 },
         { value: 'Lemon Sprite', label: 'Lemon Sprite - NRs 110', price: 110 },
 
+        { value: 'Lemon water', label: 'Lemon water - NRs 60', price: 60 },
+
+
         // Beer
         { value: 'Gorkha Premium', label: 'Gorkha Premium - NRs 500', price: 500 },
         { value: 'Gorkha Strong', label: 'Gorkha Strong - NRs 440', price: 440 },

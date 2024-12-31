@@ -52,7 +52,7 @@ export default function AddOrder({ params }) {
      { value: 'Timur Chicken', label: 'Timur Chicken - NRs 300', price: 300 },
    
      // NON-VEG STARTER
-     { value: 'Dynamite Fries', label: 'Dynamite Fries - NRs 220', price: 220 },
+     { value: 'Dynamite Fries non veg', label: 'Dynamite Fries non veg - NRs 220', price: 220 },
      { value: 'Chilly Chicken', label: 'Chilly Chicken - NRs 350', price: 350 },
      { value: 'Hot Wings', label: 'Hot Wings - NRs 390', price: 390 },
      { value: 'Kungpao Chicken', label: 'Kungpao Chicken - NRs 390', price: 390 },

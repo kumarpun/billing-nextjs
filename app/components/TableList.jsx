@@ -104,7 +104,7 @@ export default async function TableList() {
     const centerTable = tables.slice(4, 7);  // Table 4
     const bottomTables = tables.slice(7, 10);  // Tables 5, 6, 7, 8
     // const bottomTables = tables.slice(5, 9).reverse();  // Reverse the order of tables 5, 6, 7, 8
-    const terrraceTables = tables.slice(9)
+    const terrraceTables = tables.slice(10)
 
     return (
         <>

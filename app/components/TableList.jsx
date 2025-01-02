@@ -101,8 +101,8 @@ export default async function TableList() {
 
     // Split the tables into three sections for top, center, and bottom
     const topTables = tables.slice(0, 4);  // Tables 0, 1, 2, 3
-    const centerTable = tables.slice(4, 5);  // Table 4
-    const bottomTables = tables.slice(5, 9);  // Tables 5, 6, 7, 8
+    const centerTable = tables.slice(4, 7);  // Table 4
+    const bottomTables = tables.slice(7, 10);  // Tables 5, 6, 7, 8
     // const bottomTables = tables.slice(5, 9).reverse();  // Reverse the order of tables 5, 6, 7, 8
     const terrraceTables = tables.slice(9)
 
@@ -147,7 +147,7 @@ export default async function TableList() {
                 </div>
 
                 {/* Center section */}
-                <div className="flex justify-center">
+                <div className="flex justify-center table-reverse">
                     {centerTable.map(t => (
                         <div key={t._id} className="dashboard">
                             <div className="card color1">
@@ -171,7 +171,8 @@ export default async function TableList() {
                 </div>
 
                 {/* Bottom section */}
-                <div className="flex gap-4 tables-row table-reverse">
+                {/* <div className="flex gap-4 tables-row table-reverse"> */}
+                <div className="flex gap-4 justify-center table-reverse">
                     {bottomTables.map(t => (
                         <div key={t._id} className="dashboard">
                             <div className="card color1">

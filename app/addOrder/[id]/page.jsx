@@ -357,6 +357,11 @@ export default function AddOrder({ params }) {
   { value: 'Chivas Regal 12 yrs - half bottle', label: 'Chivas Regal 12 yrs - half bottle - NRs 5800', price: 5800 },
   { value: 'Chivas Regal 12 yrs - bottle', label: 'Chivas Regal 12 yrs - bottle - NRs 11500', price: 11500 },
 
+  { value: 'Glenfiddhich - 30 ml', label: 'Glenfiddhich - 30 ml - NRs 600', price: 600 },
+  { value: 'Glenfiddhich - 60 ml', label: 'Glenfiddhich - 60 ml - NRs 1150', price: 1150 },
+  { value: 'Glenfiddhich - 180 ml', label: 'Glenfiddhich - 180 ml - NRs 3250', price: 3250 },
+  { value: 'Glenfiddhich - bottle', label: 'Glenfiddhich - bottle - NRs 15435', price: 15435 },
+
   { value: 'Red bull', label: 'Red bull - NRs 280', price: 280 },
 
   // Mocktail

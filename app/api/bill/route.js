@@ -112,50 +112,93 @@ export async function POST(request) {
 // }
 
 
+// export async function GET(request) {
+//     await connectMongoDB();
+    
+//     const url = new URL(request.url);
+//     const today = url.searchParams.get("today");
+//     const lastWeek = url.searchParams.get("lastWeek");
+//     const lastMonth = url.searchParams.get("lastMonth");
+
+//     let bills;
+//     let totalFinalPrice = 0;
+//     let totalKitchenPrice = 0;
+//     let totalBarPrice = 0;
+
+//     if (today === "true") {
+//         const startOfToday = dayjs().startOf('day').toDate();
+//         const endOfToday = dayjs().endOf('day').toDate();
+
+//         bills = await Bill.find({
+//             createdAt: { $gte: startOfToday, $lte: endOfToday }
+//         });
+//     } else if (lastWeek === "true") {
+//         const oneWeekAgo = dayjs().subtract(7, 'day').startOf('day').toDate();
+//         const todayEnd = dayjs().endOf('day').toDate();
+
+//         bills = await Bill.find({
+//             createdAt: { $gte: oneWeekAgo, $lte: todayEnd }
+//         });
+//     } else if (lastMonth === "true") {
+//         const oneMonthAgo = dayjs().subtract(1, 'month').startOf('day').toDate();
+//         const todayEnd = dayjs().endOf('day').toDate();
+
+//         bills = await Bill.find({
+//             createdAt: { $gte: oneMonthAgo, $lte: todayEnd }
+//         });
+//     } else {
+//         bills = await Bill.find();
+//     }
+
+//     // Calculate total prices
+//     bills.forEach(bill => {
+//         totalFinalPrice += bill.finalPrice || 0;
+//         totalKitchenPrice += bill.kitchenPrice || 0;
+//         totalBarPrice += bill.barPrice || 0;
+//     });
+    
+//     return NextResponse.json({ bills, totalFinalPrice, totalKitchenPrice, totalBarPrice }, { status: 200 });
+// }
+
 export async function GET(request) {
     await connectMongoDB();
-    
     const url = new URL(request.url);
     const today = url.searchParams.get("today");
     const lastWeek = url.searchParams.get("lastWeek");
     const lastMonth = url.searchParams.get("lastMonth");
+    const custom = url.searchParams.get("custom");
+    const startDate = url.searchParams.get("startDate");
+    const endDate = url.searchParams.get("endDate");
 
-    let bills;
+    let bills = [];
     let totalFinalPrice = 0;
     let totalKitchenPrice = 0;
     let totalBarPrice = 0;
 
     if (today === "true") {
-        const startOfToday = dayjs().startOf('day').toDate();
-        const endOfToday = dayjs().endOf('day').toDate();
-
-        bills = await Bill.find({
-            createdAt: { $gte: startOfToday, $lte: endOfToday }
-        });
+        const startOfToday = dayjs().startOf("day").toDate();
+        const endOfToday = dayjs().endOf("day").toDate();
+        bills = await Bill.find({ createdAt: { $gte: startOfToday, $lte: endOfToday } });
     } else if (lastWeek === "true") {
-        const oneWeekAgo = dayjs().subtract(7, 'day').startOf('day').toDate();
-        const todayEnd = dayjs().endOf('day').toDate();
-
-        bills = await Bill.find({
-            createdAt: { $gte: oneWeekAgo, $lte: todayEnd }
-        });
+        const oneWeekAgo = dayjs().subtract(7, "day").startOf("day").toDate();
+        const todayEnd = dayjs().endOf("day").toDate();
+        bills = await Bill.find({ createdAt: { $gte: oneWeekAgo, $lte: todayEnd } });
     } else if (lastMonth === "true") {
-        const oneMonthAgo = dayjs().subtract(1, 'month').startOf('day').toDate();
-        const todayEnd = dayjs().endOf('day').toDate();
-
-        bills = await Bill.find({
-            createdAt: { $gte: oneMonthAgo, $lte: todayEnd }
-        });
-    } else {
-        bills = await Bill.find();
+        const oneMonthAgo = dayjs().subtract(1, "month").startOf("day").toDate();
+        const todayEnd = dayjs().endOf("day").toDate();
+        bills = await Bill.find({ createdAt: { $gte: oneMonthAgo, $lte: todayEnd } });
+    } else if (custom === "true" && startDate && endDate) {
+        const start = dayjs(startDate).startOf("day").toDate(); // Adjust start to start of day
+        const end = dayjs(endDate).endOf("day").toDate();       // Adjust end to end of day
+        bills = await Bill.find({ createdAt: { $gte: start, $lte: end } });
     }
 
     // Calculate total prices
-    bills.forEach(bill => {
+    bills.forEach((bill) => {
         totalFinalPrice += bill.finalPrice || 0;
         totalKitchenPrice += bill.kitchenPrice || 0;
         totalBarPrice += bill.barPrice || 0;
     });
-    
+
     return NextResponse.json({ bills, totalFinalPrice, totalKitchenPrice, totalBarPrice }, { status: 200 });
 }

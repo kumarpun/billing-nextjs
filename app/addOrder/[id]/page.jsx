@@ -424,6 +424,7 @@ export default function AddOrder({ params }) {
   { value: 'Iced Americano (Double)', label: 'Iced Americano (Double) - NRs 245', price: 245 },
   { value: 'Iced Latte', label: 'Iced Latte - NRs 180', price: 180 },
   { value: 'Iced Mocha', label: 'Iced Mocha - NRs 200', price: 200 },
+  { value: 'Hot Mocha', label: 'Hot Mocha - NRs 200', price: 200 },
   { value: 'Peach Iced Tea', label: 'Peach Iced Tea - NRs 190', price: 190 },
   { value: 'Lemon Iced Tea', label: 'Lemon Iced Tea - NRs 190', price: 190 },
   { value: 'Iced Caramel Macchiato', label: 'Iced Caramel Macchiato - NRs 210', price: 210 },

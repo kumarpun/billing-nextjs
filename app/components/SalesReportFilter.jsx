@@ -309,7 +309,7 @@ export default function SalesReportFilter() {
             {isModalOpen && (
                 <div className="modal">
                     <div className="modal-content">
-                        <h3>Select Date Range</h3>
+                        {/* <h3>Select Date Range</h3> */}
                         <div className="date-input-row">
                             <label>
                                 Start Date:

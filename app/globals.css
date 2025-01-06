@@ -637,7 +637,7 @@ tbody tr {
   padding: 20px;
   border-radius: 5px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  text-align: center;
+  /* text-align: center; */
 }
 .date-input-row {
   margin-bottom: 25px;

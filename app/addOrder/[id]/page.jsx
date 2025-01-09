@@ -82,7 +82,7 @@ export default function AddOrder({ params }) {
        { value: 'Classic Salad', label: 'Classic Salad - NRs 250', price: 250 },
        { value: 'Classic Salad - boiled chicken', label: 'Classic Salad boiled chicken - NRs 350', price: 350 },
 
-       { value: 'Boiled vegetable with chicken', label: 'Boiled vegetable with chicken - NRs 300', price: 300 },
+       { value: 'Boiled vegetable with chicken', label: 'Boiled vegetable with chicken - NRs 250', price: 250 },
 
        // SOUP
        { value: 'Manchow Soup (Veg)', label: 'Manchow Soup (Veg) - NRs 160', price: 160 },

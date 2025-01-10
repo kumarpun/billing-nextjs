@@ -70,6 +70,7 @@ export default function AddOrder({ params }) {
      { value: 'Chilly Sausage', label: 'Chilly Sausage - NRs 250', price: 250 },
      { value: 'Crown Chicken', label: 'Crown Chicken - NRs 450', price: 450 },
      { value: 'Boiled Sausage', label: 'Boiled Sausage - NRs 200', price: 200 },
+     { value: 'Extra cheese', label: 'Extra cheese - NRs 70', price: 70 },
 
        // SALAD
        { value: 'Green Salad', label: 'Green Salad - NRs 165', price: 165 },

@@ -103,7 +103,7 @@ export default function AddOrder({ params }) {
        // LAPHING
        { value: 'Laphing', label: 'Laphing - NRs 90', price: 90 },
        { value: 'Chicken Laphing', label: 'Chicken Laphing - NRs 210', price: 210 },
-       { value: 'Soupy Chauchau Laphing', label: 'Soupy Chauchau Laphing - NRs 110', price: 110 },
+       { value: 'Chauchau Laphing', label: 'Chauchau Laphing - NRs 110', price: 110 },
        { value: 'Soupy Peanuts Laphing', label: 'Soupy Peanuts Laphing - NRs 130', price: 130 },
        { value: 'Soupy Plain Laphing', label: 'Soupy Plain Laphing - NRs 90', price: 90 },
 

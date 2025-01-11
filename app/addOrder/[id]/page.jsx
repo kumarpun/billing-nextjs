@@ -453,6 +453,18 @@ export default function AddOrder({ params }) {
 
         { value: 'Water', label: 'Water - NRs 50', price: 50 },
 
+    // Breakfast
+    { value: 'Continental breakfast', label: 'Continental breakfast - NRs 520', price: 520 },
+    { value: 'Nepali breakfast', label: 'Nepali breakfast - NRs 550', price: 550 },
+    { value: 'Choice of eggs', label: 'Choice of eggs - NRs 220', price: 220 },
+    { value: 'Mix fruit salad', label: 'Mix fruit salad - NRs 320', price: 320 },
+    { value: 'Citrus salad', label: 'Citrus salad - NRs 280', price: 280 },
+    { value: 'Sandwich veg', label: 'Sandwich veg - NRs 230', price: 230 },
+    { value: 'Sandwich non-veg', label: 'Sandwich non-veg - NRs 280', price: 280 },
+    { value: 'Mix veg puree soup', label: 'Mix veg puree soup - NRs 250', price: 250 },
+    { value: 'Cream of mushroom soup', label: 'Cream of mushroom soup - NRs 250', price: 250 },
+    { value: 'Saute vegetable', label: 'Saute vegetable - NRs 180', price: 180 },
+
       ];
 
     const router = useRouter();

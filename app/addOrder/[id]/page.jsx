@@ -305,6 +305,8 @@ export default function AddOrder({ params }) {
         { value: 'Hybe Hookah (Blueberry)', label: 'Hybe Hookah (Blueberry) - NRs 590', price: 590 },
         { value: 'Hookah refill', label: 'Hookah refill - NRs 300', price: 300 },
 
+        { value: 'Hookah morning', label: 'Hookah morning - NRs 300', price: 300 },
+
         { value: 'Coil', label: 'Coil - NRs 50', price: 50 },
 
          // Rum

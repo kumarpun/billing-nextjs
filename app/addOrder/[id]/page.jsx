@@ -222,6 +222,9 @@ export default function AddOrder({ params }) {
 
        { value: 'Peanut', label: 'Peanut - NRs 80', price: 80 },
        { value: 'Honey', label: 'Honey - NRs 50', price: 50 },
+       
+       { value: 'Egg', label: 'Honey - NRs 60', price: 60 },
+
 
       // bar menu
         { value: 'Bar menu', label: 'Bar menu', price: 0 },

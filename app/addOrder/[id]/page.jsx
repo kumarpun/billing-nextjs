@@ -368,6 +368,16 @@ export default function AddOrder({ params }) {
 
   { value: 'Red bull', label: 'Red bull - NRs 280', price: 280 },
 
+  { value: 'JW (Double Black) - 30 ml', label: 'JW (Double Black) - 30 ml - NRs 450', price: 450 },
+  { value: 'JW (Double Black) - 60 ml', label: 'JW (Double Black) - 60 ml - NRs 880', price: 880 },
+  { value: 'JW (Double Black) - 180 ml', label: 'JW (Double Black) - 180 ml - NRs 2580', price: 2580 },
+  { value: 'JW (Double Black) - bottle', label: 'JW (Double Black) - bottle - NRs 13000', price: 13000 },
+
+  { value: 'JW (Black level) - 30 ml', label: 'JW (Black level) - 30 ml - NRs 400', price: 400 },
+  { value: 'JW (Black level) - 60 ml', label: 'JW (Black level) - 60 ml - NRs 760', price: 760 },
+  { value: 'JW (Black level) - 180 ml', label: 'JW (Black level) - 180 ml - NRs 2150', price: 2150 },
+  { value: 'JW (Black level) - bottle', label: 'JW (Black level) - bottle - NRs 11500', price: 11500 },
+
   // Mocktail
   { value: 'Blue Angel', label: 'Blue Angel - NRs 300', price: 300 },
   { value: 'Coco Rush', label: 'Coco Rush - NRs 320', price: 320 },

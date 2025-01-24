@@ -233,7 +233,7 @@
 import { useState, useEffect } from "react";
 
 export default function SalesReportFilter() {
-    const [selectedFilter, setSelectedFilter] = useState("custom");
+    const [selectedFilter, setSelectedFilter] = useState("today");
     const [bills, setBills] = useState([]);
     const [totalFinalPrice, setTotalFinalPrice] = useState(0);
     const [totalKitchenPrice, setTotalKitchenPrice] = useState(0);

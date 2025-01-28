@@ -225,6 +225,7 @@ export default function AddOrder({ params }) {
        
        { value: 'Egg', label: 'Egg - NRs 60', price: 60 },
 
+       { value: 'Pastry', label: 'Pastry - NRs 300', price: 300 },
 
       // bar menu
         { value: 'Bar menu', label: 'Bar menu', price: 0 },

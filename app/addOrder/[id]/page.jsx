@@ -33,7 +33,7 @@ export default function AddOrder({ params }) {
      { value: 'Cheese Ball', label: 'Cheese Ball - NRs 290', price: 290 },
      { value: 'Chilly Mushroom', label: 'Chilly Mushroom - NRs 280', price: 280 },
      { value: 'Afgani Fries', label: 'Afgani Fries - NRs 170', price: 170 },
-     { value: 'Bolled Vegetables', label: 'Bolled Vegetables - NRs 150', price: 150 },
+     { value: 'Boiled Vegetables', label: 'Boiled Vegetables - NRs 150', price: 150 },
      { value: 'Mushroom Steak', label: 'Mushroom Steak - NRs 200', price: 200 },
      { value: 'Paneer Steak', label: 'Paneer Steak - NRs 350', price: 350 },
      { value: 'Jalapeno Poppers', label: 'Jalapeno Poppers - NRs 250', price: 250 },

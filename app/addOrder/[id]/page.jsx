@@ -311,6 +311,8 @@ export default function AddOrder({ params }) {
         { value: 'Hookah refill', label: 'Hookah refill - NRs 300', price: 300 },
 
         { value: 'Hookah morning', label: 'Hookah morning - NRs 300', price: 300 },
+        { value: 'Hookah lemon', label: 'Hookah lemon - NRs 440', price: 440 },
+
 
         { value: 'Coil', label: 'Coil - NRs 50', price: 50 },
 
@@ -475,6 +477,7 @@ export default function AddOrder({ params }) {
     { value: 'Nepali breakfast', label: 'Nepali breakfast - NRs 550', price: 550 },
     { value: 'Choice of eggs', label: 'Choice of eggs - NRs 220', price: 220 },
     { value: 'Mix fruit salad', label: 'Mix fruit salad - NRs 320', price: 320 },
+    { value: 'Fruit punch', label: 'Fruit punch - NRs 430', price: 430 },
     { value: 'Citrus salad', label: 'Citrus salad - NRs 280', price: 280 },
     { value: 'Sandwich veg', label: 'Sandwich veg - NRs 230', price: 230 },
     { value: 'Sandwich non-veg', label: 'Sandwich non-veg - NRs 280', price: 280 },

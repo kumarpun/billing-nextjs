@@ -346,6 +346,8 @@ export default function AddOrder({ params }) {
   { value: 'Jacob Creek White Wine (Chardonnay)', label: 'Jacob Creek White Wine (Chardonnay) - NRs 3200', price: 3200 },
   { value: 'Sparkling Wine (Calver)', label: 'Sparkling Wine (Calver) - NRs 3900', price: 3900 },
 
+  { value: 'Big master', label: 'Big master - NRs 1400', price: 1400 },
+
   // Cocktail
   { value: 'Cosmopolitan', label: 'Cosmopolitan - Vodka, Triple Sec, Cranberry - NRs 500', price: 500 },
   { value: 'Espresso Martini', label: 'Espresso Martini - Vodka, Kahlua, Espresso Shot - NRs 590', price: 590 },

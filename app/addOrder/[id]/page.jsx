@@ -345,6 +345,7 @@ export default function AddOrder({ params }) {
   { value: 'Rose Wine (Moscato)', label: 'Rose Wine (Moscato) - NRs 3100', price: 3100 },
   { value: 'Jacob Creek White Wine (Chardonnay)', label: 'Jacob Creek White Wine (Chardonnay) - NRs 3200', price: 3200 },
   { value: 'Sparkling Wine (Calver)', label: 'Sparkling Wine (Calver) - NRs 3900', price: 3900 },
+  { value: 'jp chenet', label: 'jp chenet - NRs 2500', price: 2500 },
 
   { value: 'Big master', label: 'Big master - NRs 1400', price: 1400 },
 

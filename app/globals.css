@@ -139,7 +139,7 @@ button:hover {
 .bg-page{
   content: "";
   position: absolute;
-  background-image: url('assets/val.jpg');
+  background-image: url('assets/new.jpg');
   /* background-image: url('https://media.giphy.com/media/u97VE638KghOl3PCwO/giphy.gif'); */
   width: 100%;
   height: 110%;

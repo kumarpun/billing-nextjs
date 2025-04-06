@@ -138,7 +138,7 @@ export default function ListReport() {
                 </a> */}
                   <a
                         className="px-6 py-2 mt-3 add-table"
-                        href="https://docs.google.com/spreadsheets/d/1LnrugVBIRQ9ZPBkJqHcLTVdJuBnq1O-ovg9xcZJ9M3I/edit?gid=1373956564#gid=1373956564"
+                        href="https://docs.google.com/spreadsheets/d/1bsYPfCKZkcrKZrWfRqS4RiKmwOXwLMQ3USFfJ9wiKwg/edit?gid=1009457690#gid=1009457690"
                         target="_blank"
                         rel="noopener noreferrer"
                     >

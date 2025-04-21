@@ -139,6 +139,9 @@ export default async function TableList() {
                                     <Link className="icon" href={`/listOrder/${t._id}`}>
                                         <ActionBtn />
                                     </Link>
+                                    <Link className="icon" href={`/editTable/${t._id}`}>
+                                        <HiPencilAlt />
+                                    </Link>
                                 </div>
                             </div>
                         </div>
@@ -163,6 +166,9 @@ export default async function TableList() {
                                 <div>
                                     <Link className="icon" href={`/listOrder/${t._id}`}>
                                         <ActionBtn />
+                                    </Link>
+                                    <Link className="icon" href={`/editTable/${t._id}`}>
+                                        <HiPencilAlt />
                                     </Link>
                                 </div>
                             </div>
@@ -189,6 +195,9 @@ export default async function TableList() {
                                     <Link className="icon" href={`/listOrder/${t._id}`}>
                                         <ActionBtn />
                                     </Link>
+                                    <Link className="icon" href={`/editTable/${t._id}`}>
+                                        <HiPencilAlt />
+                                    </Link>
                                 </div>
                             </div>
                         </div>
@@ -213,6 +222,9 @@ export default async function TableList() {
                                 <div>
                                     <Link className="icon" href={`/listOrder/${t._id}`}>
                                         <ActionBtn />
+                                    </Link>
+                                    <Link className="icon" href={`/editTable/${t._id}`}>
+                                        <HiPencilAlt />
                                     </Link>
                                 </div>
                             </div>

@@ -107,7 +107,7 @@ export default async function ListOrder({ params }) {
         total_price={total_price} 
         totalKitchenPrice={totalKitchenPrice}
         totalBarPrice={totalBarPrice}
-        tablebill_id={tablebill_id} tableId={id} billById={billById} totalFinalbill={totalFinalbill} billFinalStatus={billFinalStatus} order_type={order_type} />
+        tablebill_id={tablebill_id} tableId={id} tableTitle={table.title} billById={billById} totalFinalbill={totalFinalbill} billFinalStatus={billFinalStatus} order_type={order_type} />
 
       </div>
       </div>

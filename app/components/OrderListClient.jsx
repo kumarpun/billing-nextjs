@@ -11,7 +11,7 @@ import EditBillForm from "./EditBillForm";
 import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
 
-export default function OrderListClient({ orderbyTableId, total_price, totalKitchenPrice, totalBarPrice, tablebill_id, tableId, billById, totalFinalbill, billFinalStatus, order_type }) {
+export default function OrderListClient({ orderbyTableId, total_price, totalKitchenPrice, totalBarPrice, tablebill_id, tableTitle, tableId, billById, totalFinalbill, billFinalStatus, order_type }) {
     const [isModalOpen, setModalOpen] = useState(false);
     // const [finalBill, setFinalBill] = useState(null); // Manage final bill state
     // const [finalBill, setFinalBill] = useState(finalBillFromAPI); // Initialize with the value from API
@@ -246,7 +246,7 @@ export default function OrderListClient({ orderbyTableId, total_price, totalKitc
         <div className="receipt-container">
             <pre className="receipt-text">
                 *************************************************
-                {'\n'}   THE HYBE
+                {'\n'}   THE HYBE ({tableTitle})
                 {'\n'}*************************************************
             </pre>
         </div>

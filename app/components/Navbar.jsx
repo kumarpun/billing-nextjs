@@ -32,18 +32,18 @@ export default function Navbar() {
 
     return (
         // <nav className="flex justify-between items-center bg-slate-800 px-8 py-3">
-        <nav className="flex justify-between items-center bg-slate-800 px-8 py-3 navbar nav-color">
-            <div style={{ flex: 0.4 }}></div>
-      <div className="font-bold page-title hidden md:block" href={"/"}>
+        <nav className="flex justify-between items-center px-8 py-3 navbar" style={{ backgroundColor: "#cfcece" }}>
+        <div style={{ flex: 0.4 }}></div>
+      <Link className="absolute left-1/2 transform -translate-x-1/2 font-bold page-title hidden md:block text-white" href={"/"}>
         {Array.from("HYBE Food & Drinks").map((char, index) => (
         <span key={index} className={`char-${index}`}>{char}</span>
     ))}    
-      </div>
+      </Link>
       <div style={{ display: 'flex', gap: '12px' }}>
       <Link className="px-6 py-2 mt-3 add-table" href={"/addTable"}>
         Add Table
       </Link>
-      <Link className="px-6 py-2 mt-3 add-table" href={"/listReport"}>
+      <Link className="px-6 py-2 mt-3 add-table" href={"/dashboard"}>
         Sales Report
       </Link>
       <button

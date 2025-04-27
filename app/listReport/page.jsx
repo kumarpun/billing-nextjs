@@ -121,7 +121,7 @@ export default function ListReport() {
         <>
             <nav className="flex justify-between items-center bg-slate-800 px-8 py-3 navbar nav-color">
                 <div style={{ flex: 0.25 }}></div>
-                <Link className="page-title font-bold" href="/">
+                <Link className="page-title font-bold absolute left-1/2 transform -translate-x-1/2" href="/">
                     {Array.from("HYBE Food & Drinks").map((char, index) => (
                         <span key={index} className={`char-${index}`}>{char}</span>
                     ))}

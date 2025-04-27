@@ -140,7 +140,7 @@ export default async function TableList() {
                                         <ActionBtn />
                                     </Link>
                                     <Link className="icon" href={`/editTable/${t._id}`}>
-                                        <HiPencilAlt />
+                                        <HiPencilAlt className="icon-color" />
                                     </Link>
                                 </div>
                             </div>
@@ -168,7 +168,7 @@ export default async function TableList() {
                                         <ActionBtn />
                                     </Link>
                                     <Link className="icon" href={`/editTable/${t._id}`}>
-                                        <HiPencilAlt />
+                                    <HiPencilAlt className="icon-color" />
                                     </Link>
                                 </div>
                             </div>
@@ -196,7 +196,7 @@ export default async function TableList() {
                                         <ActionBtn />
                                     </Link>
                                     <Link className="icon" href={`/editTable/${t._id}`}>
-                                        <HiPencilAlt />
+                                    <HiPencilAlt className="icon-color" />
                                     </Link>
                                 </div>
                             </div>
@@ -224,7 +224,7 @@ export default async function TableList() {
                                         <ActionBtn />
                                     </Link>
                                     <Link className="icon" href={`/editTable/${t._id}`}>
-                                        <HiPencilAlt />
+                                    <HiPencilAlt className="icon-color" />
                                     </Link>
                                 </div>
                             </div>

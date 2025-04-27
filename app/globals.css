@@ -43,6 +43,9 @@ input {
   border: 1px solid #7a7777;
   box-shadow: 10px 20px 20px 20px rgba(206, 17, 17, 0.1);
 }
+.icon-color{
+  color: #7a7777;
+}
 
 .card-terrace {
   height: 8rem;

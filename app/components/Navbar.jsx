@@ -40,11 +40,11 @@ export default function Navbar() {
     ))}    
       </Link>
       <div style={{ display: 'flex', gap: '12px' }}>
+      <Link className="px-6 py-2 mt-3 add-table" href={"/dashboard"}>
+        Home
+      </Link>
       <Link className="px-6 py-2 mt-3 add-table" href={"/addTable"}>
         Add Table
-      </Link>
-      <Link className="px-6 py-2 mt-3 add-table" href={"/dashboard"}>
-        Sales Report
       </Link>
       <button
         onClick={(e) => handleLogout(e)} className="bg-red-500 text-white font-bold px-6 py-2 mt-3">

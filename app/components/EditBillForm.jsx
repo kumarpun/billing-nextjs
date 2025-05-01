@@ -221,7 +221,7 @@ export default function EditBillForm({ id, bill, billStatus, finalPrice, billPay
 
     return (
         <>
-            <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+            <form onSubmit={handleSubmit} className="flex flex-col gap-3 text-black">
 
             {/* <label className="font-bold">Bill</label>
                 <input

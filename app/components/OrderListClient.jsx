@@ -237,7 +237,7 @@ export default function OrderListClient({ orderbyTableId, total_price, totalKitc
                     <EditBillForm id={tablebill_id} bill={totalFinalbill} onBillAdded={handleBillAdded} />
                 )}
                     {modalContent === 'print' && (
-    <div className="bill-print" style={{ display: 'flex', flexDirection: 'column', height: '100%', justifyContent: 'flex-start' }}>
+    <div className="bill-print text-black" style={{ display: 'flex', flexDirection: 'column', height: '100%', justifyContent: 'flex-start' }}>
         <div style={{ display: 'flex', gap: '12px' }}>
             <button className="px-6 py-2 mt-3 add-table ml-auto" onClick={handlePrint}>
                 Print

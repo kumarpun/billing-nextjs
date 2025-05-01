@@ -156,7 +156,7 @@ export default function AddBillForm({ initialOriginalPrice, initialBillId, initi
 
     return (
         <div>
-            <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+            <form onSubmit={handleSubmit} className="flex flex-col gap-3 text-black">
                 <input
                     id="tablebill_id"
                     onChange={(e) => setTableBillId(e.target.value)} 

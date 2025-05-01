@@ -81,27 +81,26 @@ export default async function ListOrder({ params }) {
     const { order_title, order_description } = orderbyTableId;
     return (
         <>
-        <div>
-        <nav className="flex justify-between items-center bg-slate-800 px-8 py-3 navbar nav-color">
-        <div style={{ flex: 0 }}></div>
-        <Link className="page-title font-bold" href={"/tables"}>
-        {Array.from("HYBE Food & Drinks").map((char, index) => (
-        <span key={index} className={`char-${index}`}>{char}</span>
-    ))}
+        <div className="min-h-screen bg-[#283141] flex flex-col">
+        <nav className="flex justify-between items-center px-8 py-3 navbar" style={{ backgroundColor: "#232b38" }}>
+            <div style={{ flex: 0.4 }}></div>
+      <Link className="absolute left-1/2 transform -translate-x-1/2 font-bold page-title" href={"/tables"}>
+      HYBE Food & Drinks
       </Link>
-        <Link className="bg-white px-6 py-2 mt-3 add-table" href={`/addOrder/${id}`}>
+        <Link className="hover:text-gray-300 font-medium transition-colors duration-200 nav-button" href={`/addOrder/${id}`}>
         Place Order
       </Link>
         </nav>
   
         <div>
-        <hr className="separator" />
+        {/* <hr className="separator" /> */}
         <div className="table-info">
               <h1 className="font-bold text-3xl table-title">{table.title}</h1>
         </div>
 
         {/* <EditCustomerForm id={id} /> */}
         {totalFinalbill <= 0 && <EditCustomerForm id={id} />}
+        <br></br>
         <OrderListClient 
         orderbyTableId={orderbyTableId} 
         total_price={total_price} 

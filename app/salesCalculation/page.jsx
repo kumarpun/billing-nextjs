@@ -31,28 +31,25 @@ export default function SalesCalculation() {
 
     return (
         <>
-            <nav className="flex justify-between items-center bg-slate-800 px-8 py-3 navbar nav-color">
-                <div style={{ flex: 0.25 }}></div>
-                <Link className="page-title font-bold" href="/">
-                    {Array.from("HYBE Food & Drinks").map((char, index) => (
-                        <span key={index} className={`char-${index}`}>{char}</span>
-                    ))}
-                </Link>
+            <nav className="flex justify-between items-center px-8 py-3 navbar" style={{ backgroundColor: "#232b38" }}>
+            <div style={{ flex: 0.4 }}></div>
+      <Link className="absolute left-1/2 transform -translate-x-1/2 font-bold page-title" href={"/listReport"}>
+      HYBE Food & Drinks
+      </Link>
                 <div style={{ display: 'flex', gap: '12px' }}>
                     <a
-                        className="px-6 py-2 mt-3 add-table"
+                        className="hover:text-gray-300 font-medium transition-colors duration-200 nav-button"
                         href="https://docs.google.com/spreadsheets/d/1LnrugVBIRQ9ZPBkJqHcLTVdJuBnq1O-ovg9xcZJ9M3I/edit?gid=0#gid=0"
                         target="_blank"
                         rel="noopener noreferrer"
                     >
                         Inventory
                     </a>
-                    <Link className="px-6 py-2 mt-3 add-table" href="/">
+                    <Link className="hover:text-gray-300 font-medium transition-colors duration-200 nav-button" href="/">
                         Back
                     </Link>
                 </div>
             </nav>
-            <hr className="separator" />
 
             <div className="search-container p-8">
                 <h2 className="text-lg font-bold mb-4">Search Order Count by Title</h2>
@@ -76,7 +73,7 @@ export default function SalesCalculation() {
                         <option value="last_month">Last 30 Days</option>
                     </select>
 
-                    <button type="submit" className="bg-green-600 font-bold text-white py-3 px-6 w-fit">
+                    <button type="submit" className="hover:text-gray-300 font-medium transition-colors duration-200 nav-button py-3 px-6 w-fit">
                         {loading ? "Searching..." : "Search"}
                     </button>
                 </form>

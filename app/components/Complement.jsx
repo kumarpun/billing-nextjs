@@ -56,7 +56,7 @@ export default function Complement() {
                     required
                     style={{ zIndex: 10 }}
                 />
-                <button type="submit" className="bg-green-600 font-bold text-white py-3 px-6 w-fit">
+                <button type="submit" className="hover:text-gray-300 font-medium transition-colors duration-200 nav-button py-3 px-6 w-fit">
                     Submit
                 </button>
             </form>

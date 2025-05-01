@@ -34,35 +34,33 @@ export default function EditTableForm({ id, title, description }) {
 
     return (
         <>
-        <nav className="flex justify-between items-center bg-slate-800 px-8 py-3 navbar nav-color">
-        <div style={{ flex: 0.4 }}></div>
-      <Link className="font-bold page-title hidden md:block" href={"/tables"}>
-        {Array.from("HYBE Food & Drinks").map((char, index) => (
-        <span key={index} className={`char-${index}`}>{char}</span>
-    ))}    
+     <nav className="flex justify-between items-center px-8 py-3 navbar" style={{ backgroundColor: "#232b38" }}>
+            <div style={{ flex: 0.4 }}></div>
+      <Link className="absolute left-1/2 transform -translate-x-1/2 font-bold page-title" href={"/tables"}>
+      HYBE Food & Drinks
       </Link>
       <div style={{ display: 'flex', gap: '12px' }}>
-      <Link className="px-6 py-2 mt-3 add-table" href={"/tables"}>
+      <Link className="hover:text-gray-300 font-medium transition-colors duration-200 nav-button" href={"/tables"}>
          Table List
       </Link>
       <button
-        onClick={(e) => handleLogout(e)} className="bg-red-500 text-white font-bold px-6 py-2 mt-3">
+        onClick={(e) => handleLogout(e)} className="hover:text-gray-300 font-medium transition-colors duration-200 nav-button">
             Logout
         </button>
       </div>
         </nav>
-        <hr className="separator" />
+        {/* <hr className="separator" /> */}
         <br/>
         <form onSubmit={handleSubmit} className="flex flex-col gap-3">
         <input
          onChange={(e) => setNewTitle(e.target.value)}
          value={newTitle}
-         className="border border-slate-500 px-8 py-2" type="text" placeholder="Table Name" />
+         className="border border-slate-500 px-8 py-2 text-black" type="text" placeholder="Table Name" />
         <input
          onChange={(e) => setNewDescription(e.target.value)}
          value={newDescription}
-        className="border border-slate-500 px-8 py-2" type="text" placeholder="Table description" />
-    <button className="bg-green-600 font-bold text-white py-3 px-6 w-fit">
+        className="border border-slate-500 px-8 py-2 text-black" type="text" placeholder="Table description" />
+    <button className="hover:text-gray-300 font-medium transition-colors duration-200 nav-button py-3 px-6 w-fit">
     Update table
     </button>
     </form>

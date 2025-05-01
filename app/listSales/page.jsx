@@ -102,27 +102,27 @@ import SalesReportClient from "../components/orderReportFilter"; // Import the c
 export default async function ListSales() {
     return (
         <>
-            <nav className="flex justify-between items-center bg-slate-800 px-8 py-3 navbar nav-color">
-                <div style={{ flex: 0.07 }}></div>
-                <Link className="page-title font-bold" href="/">
-                    {Array.from("HYBE Food & Drinks").map((char, index) => (
-                        <span key={index} className={`char-${index}`}>{char}</span>
-                    ))}
-                </Link>
+               <nav className="flex justify-between items-center px-8 py-3 navbar" style={{ backgroundColor: "#232b38" }}>
+            <div style={{ flex: 0.4 }}></div>
+      <Link className="absolute left-1/2 transform -translate-x-1/2 font-bold page-title" href={"/"}>
+      HYBE Food & Drinks
+      </Link>
 
                 <div style={{ display: 'flex', gap: '12px' }}>
-                <Link className="px-6 py-2 mt-3 add-table" href={"/orderQuantity"}>
+                <Link className="hover:text-gray-300 font-medium transition-colors duration-200 nav-button" href={"/orderQuantity"}>
                         Order Details
                     </Link>
-                    <Link className="px-6 py-2 mt-3 add-table" href="/listReport">
-                        Back
-                    </Link>
-                    <Link className="px-6 py-2 mt-3 add-table" href="/listComplement">
+                  
+                    <Link className="hover:text-gray-300 font-medium transition-colors duration-200 nav-button" href="/listComplement">
                     Complementary
+                    </Link>
+
+                    <Link className="hover:text-gray-300 font-medium transition-colors duration-200 nav-button" href="/listReport">
+                        Back
                     </Link>
                 </div>
             </nav>
-            <hr className="separator" />
+            {/* <hr className="separator" /> */}
             <div className="report-bg"></div>
             <div>
                 <br />

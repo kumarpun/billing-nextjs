@@ -28,12 +28,10 @@ export default function OrderQuantityDetails() {
 
     return (
         <div>
-            <h2>Order Quantities</h2>
-
             {/* Filter Selection Dropdown */}
             <div className="filter-options">
                 <label htmlFor="filter">Select Filter: </label>
-                <div className="dropdown">
+                <div className="dropdown text-black w-28">
                     <button onClick={() => setIsOpen((prev) => !prev)}>
                         {filter.charAt(0).toUpperCase() + filter.slice(1)} {/* Capitalize filter display */}
                     </button>

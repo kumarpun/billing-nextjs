@@ -66,7 +66,7 @@ export default function EditCustomerForm({ id, customer_status }) {
 
     return (
         <>
-            <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+            <form onSubmit={handleSubmit} className="flex flex-col gap-3 bg-[#283141]">
                 <br />
                 <label className="customer-label">Select If Customer Left:</label>
                 <div className="flex items-center gap-3">
@@ -77,7 +77,7 @@ export default function EditCustomerForm({ id, customer_status }) {
                         styles={customStyles} // Apply custom styles
                         placeholder={touched && !newCustomerStatus ? "Please select customer left (Click here)" : "Select an option"} // Change placeholder if required
                     />
-                    <button className="bg-green-600 font-bold text-white py-3 px-6 w-fit">
+                    <button className="hover:text-gray-300 font-medium transition-colors duration-200 nav-button">
                         Update Customer
                     </button>
                 </div>

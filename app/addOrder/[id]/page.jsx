@@ -551,25 +551,23 @@ export default function AddOrder({ params }) {
       return (
         <>
             <div>
-                <nav className="flex justify-between items-center bg-slate-800 px-8 py-3 w-full navbar nav-color">
-                    <div style={{ flex: 0 }}></div>
-                    <Link className="page-title font-bold" href={"/"}>
-                        {Array.from("HYBE Food & Drinks").map((char, index) => (
-                            <span key={index} className={`char-${index}`}>{char}</span>
-                        ))}
-                    </Link>
-                    <Link className="add-table px-6 py-2 mt-3" href={`/listOrder/${id}`}>
+            <nav className="flex justify-between items-center px-8 py-3 navbar" style={{ backgroundColor: "#232b38" }}>
+            <div style={{ flex: 0.4 }}></div>
+      <Link className="absolute left-1/2 transform -translate-x-1/2 font-bold page-title" href={"/tables"}>
+      HYBE Food & Drinks
+      </Link>
+                    <Link className="hover:text-gray-300 font-medium transition-colors duration-200 nav-button" href={`/listOrder/${id}`}>
                         Back
                     </Link>
                 </nav>
-                <hr className="separator" />
+                {/* <hr className="separator" /> */}
                 <br />
                 <div className="bg-page1">
                     <form onSubmit={handleSubmit} className="flex flex-col gap-3">
     
                         <div className="flex items-center">
                             <label className="mr-4 w-32 order-label">Order Name:</label>
-                            <Select
+                            <Select className="text-black"
                                 options={options}
                                 onChange={Dropdown}
                                 value={{ value: newOrdertitle, label: newOrdertitle }}
@@ -585,7 +583,7 @@ export default function AddOrder({ params }) {
                             <label className="mr-4 w-32 order-label">Price:</label>
                             <input
                                 value={`NRs. ${order_price}`}
-                                className="border border-slate-500 px-8 py-2"
+                                className="border border-slate-500 px-8 py-2 text-black"
                                 type="text"
                                 placeholder="Order price"
                                 disabled
@@ -597,7 +595,7 @@ export default function AddOrder({ params }) {
                             <input
                                 onChange={(e) => setOrderQuantity(e.target.value)}
                                 value={order_quantity}
-                                className="border border-slate-500 px-8 py-2"
+                                className="border border-slate-500 px-8 py-2 text-black"
                                 type="number"
                                 placeholder="Order quantity"
                             />
@@ -617,7 +615,7 @@ export default function AddOrder({ params }) {
                         <div className="flex items-center">
                                 <label className="mr-4 w-32 order-label">Order Type:</label>
                                 <select
-                                    className="border border-slate-500 px-8 py-2"
+                                    className="border border-slate-500 px-8 py-2 text-black"
                                     value={order_type}
                                     onChange={(e) => setOrderType(e.target.value)}
                                     required // Added required attribute
@@ -676,7 +674,7 @@ export default function AddOrder({ params }) {
     
                         <button
                             type="submit"
-                            className="bg-green-600 font-bold text-white py-3 px-6 w-fit order-label">
+                            className="hover:text-gray-300 font-medium transition-colors duration-200 nav-button py-3 px-6 w-fit order-label">
                             Add Order
                         </button>
                     </form>

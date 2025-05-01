@@ -108,7 +108,7 @@ export default async function TableList() {
 
     return (
         <>
-            <hr className="separator" />
+            {/* <hr className="separator" /> */}
             <div className="bg-page">
             <div className="flex items-start gap-4">
                 

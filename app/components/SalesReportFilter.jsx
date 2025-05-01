@@ -298,7 +298,7 @@ export default function SalesReportFilter() {
         <>
             <div className="filter-options">
                 <label htmlFor="filter">Select Filter: </label>
-                <select id="filter" value={selectedFilter} onChange={handleFilterChange}>
+                <select id="filter" value={selectedFilter} className="text-black" onChange={handleFilterChange}>
                     <option value="today">Today</option>
                     <option value="custom">Select Custom Date</option>
                     <option value="lastWeek">Last Week</option>
@@ -341,6 +341,7 @@ export default function SalesReportFilter() {
             <div className="font-bold text-center">Total Sales: NRs. {totalFinalPrice}</div>
             <div className="font-bold text-center">Total Kitchen Sales: NRs. {totalKitchenPrice}</div>
             <div className="font-bold text-center">Total Bar Sales: NRs. {totalBarPrice}</div>
+            <br></br>
             <div className="sales-body">
                 <main className="table" id="customers_table">
                     <section className="table-body">

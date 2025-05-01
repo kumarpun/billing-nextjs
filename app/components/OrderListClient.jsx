@@ -87,18 +87,19 @@ export default function OrderListClient({ orderbyTableId, total_price, totalKitc
 
     return (
         <>
+    <div className="bg-[#283141]">
             <div style={{ display: 'flex', gap: '12px' }}>
             {/* <button className="px-6 py-2 mt-3 add-table" onClick={() => handleOpenModal('add')}
             disabled={totalFinalbill > 0} >
                     Generate Bill
                 </button> */}
                  {totalFinalbill <= 0 && (
-                    <button className="px-6 py-2 mt-3 add-table" onClick={() => handleOpenModal('add')}>
+                    <button className="hover:text-gray-300 font-medium transition-colors duration-200 nav-button" onClick={() => handleOpenModal('add')}>
                         Generate Bill
                     </button>
                 )}
                      {/* {totalFinalbill > 0 && ( */}
-                    <button className="px-6 py-2 mt-3 add-table" onClick={() => handleOpenModal('edit')}>
+                    <button className="hover:text-gray-300 font-medium transition-colors duration-200 nav-button" onClick={() => handleOpenModal('edit')}>
                         Update Bill
                     </button>
                 {/* )} */}
@@ -111,20 +112,20 @@ export default function OrderListClient({ orderbyTableId, total_price, totalKitc
                 </button>
             )} */}
                                   {/* {totalFinalbill > 0 && ( */}
-                <button className="px-6 py-2 mt-3 add-table" onClick={() => handleOpenModal('print')}>
+                <button className="hover:text-gray-300 font-medium transition-colors duration-200 nav-button" onClick={() => handleOpenModal('print')}>
                     Print Bill
                 </button>
             {/* )} */}
             </div>
 
             {
-                !orderbyTableId || orderbyTableId.length === 0 ? 'No orders found for this table.' : ''
+                !orderbyTableId || orderbyTableId.length === 0 ? <span className="font-color1">No orders found for this table.</span> : ''
             }
         <div className="order-list-container max-h-[calc(3*10rem)] overflow-y-scroll custom-scrollbar">
 
             {orderbyTableId.map(order => (
 
-                <div className="p-4 border border-slate-300 my-3 flex justify-between gap-5 items-start relative" key={order._id}>
+                <div className="p-4 border border-slate-300 my-3 flex justify-between gap-5 items-start relative font-color1" key={order._id}>
                     <div>
                         <h3 className="font-bold text-2xl">{order.order_title}</h3>
                         <div>{order.order_description}</div>
@@ -144,7 +145,7 @@ export default function OrderListClient({ orderbyTableId, total_price, totalKitc
                       handleQuantityChange(order._id, order.order_quantity, -1)
                     }
                     disabled={updating === order._id}
-                    className={`px-6 py-4 text-3xl bg-gray-300 hover:bg-gray-400 rounded ${
+                    className={`px-6 py-4 text-3xl hover:text-gray-300 font-medium transition-colors duration-200 nav-button ${
                       updating === order._id ? "opacity-50 cursor-not-allowed" : ""
                     }`}
                   >
@@ -156,7 +157,7 @@ export default function OrderListClient({ orderbyTableId, total_price, totalKitc
                       handleQuantityChange(order._id, order.order_quantity, 1)
                     }
                     disabled={updating === order._id}
-                    className={`px-6 py-4 text-3xl bg-gray-300 hover:bg-gray-400 rounded ${
+                    className={`px-6 py-4 text-3xl hover:text-gray-300 font-medium transition-colors duration-200 nav-button ${
                       updating === order._id ? "opacity-50 cursor-not-allowed" : ""
                     }`}
                   >
@@ -164,7 +165,7 @@ export default function OrderListClient({ orderbyTableId, total_price, totalKitc
                   </button>
                     </div>
 
-                         <div className="absolute right-40 top-1/3 mt-2 mr-2 text-3xl sum">
+                         <div className="absolute right-40 top-1/3 mt-2 mr-2 text-3xl sum font-color1">
                         NRs. {order.final_price}
                     </div>
                 </div>
@@ -174,7 +175,7 @@ export default function OrderListClient({ orderbyTableId, total_price, totalKitc
                     <RemoveOrderBtn id={order._id} />
                         {/* <Link href={`/editOrder/${order._id}`}> */}
                         <Link href={`/editOrder/${order._id}?order_quantity=${order.order_quantity}`}>
-                            <HiPencilAlt className="edit-icon" size={24} />
+                            <HiPencilAlt className="edit-icon font-color1" size={24} />
                         </Link>
                     </div>
                 </div>
@@ -217,13 +218,13 @@ export default function OrderListClient({ orderbyTableId, total_price, totalKitc
                 </table>
             )} */}
 
-            <p className="p-4 border border-slate-300 my-3 flex justify-between gap-5 items-start font-bold">Total bill: NRs. {total_price}</p>  
+            <p className="p-4 border border-slate-300 my-3 flex justify-between gap-5 items-start font-bold font-color1">Total bill: NRs. {total_price}</p>  
             {/* <p className="p-4 border border-slate-300 my-3 flex justify-between gap-5 items-start font-bold">Total Kitchen bill: NRs. {totalKitchenPrice}</p>  
             <p className="p-4 border border-slate-300 my-3 flex justify-between gap-5 items-start font-bold">Total Bar bill: NRs. {totalBarPrice}</p>   */}
 
         
-             <p className="p-4 border border-slate-300 my-3 flex justify-between gap-5 items-start font-bold">Final bill: NRs. {totalFinalbill} status: {billFinalStatus}</p>                
-
+             <p className="p-4 border border-slate-300 my-3 flex justify-between gap-5 items-start font-bold font-color1">Final bill: NRs. {totalFinalbill} status: {billFinalStatus}</p>                
+            </div>
             <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
                 {/* <AddBillForm initialOriginalPrice={total_price} initialBillId={tablebill_id} onBillAdded={handleBillAdded} /> */}
                 {modalContent === 'add' && (

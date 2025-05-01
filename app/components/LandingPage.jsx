@@ -24,7 +24,7 @@ export default function LandingPage() {
   };
 
   return (
-<div className="bg-page min-h-screen flex flex-col items-center justify-start pt-20 bg-gradient-to-br from-gray-100 to-gray-300 p-4 relative overflow-hidden">
+    <div className="min-h-screen flex flex-col items-center justify-start pt-20 bg-[#283141] p-4 relative overflow-hidden">
       
       {/* Animated Blobs */}
       <div className="fixed inset-0 overflow-hidden -z-10">

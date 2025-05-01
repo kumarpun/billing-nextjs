@@ -36,8 +36,9 @@ export default function SalesReportClient() {
         <>
             <div className="filter-options">
                 <label htmlFor="filter">Select Filter: </label>
-                <div className="dropdown">
-                    <button onClick={() => setIsOpen((prev) => !prev)}>
+                <div className="dropdown text-black">
+                    <button onClick={() => setIsOpen((prev) => !prev)}
+                    className="nav-button hover:text-gray-300 font-medium transition-colors duration-200" >
                         {selectedFilter.charAt(0).toUpperCase() + selectedFilter.slice(1)} {/* Capitalize filter display */}
                     </button>
                     {isOpen && (
@@ -53,6 +54,7 @@ export default function SalesReportClient() {
             </div>
 
             <div className="font-bold text-center">Total Sales: NRs. {totalFinalPrice}</div>
+            <br></br>
             <div className="sales-body">
                 <main className="table" id="customers_table">
                     <section className="table-body">

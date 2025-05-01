@@ -135,7 +135,7 @@ export default async function TableList() {
                                         <div className="text-red-600">Empty table</div>
                                     )}
                                 </div>
-                                <div>
+                                <div className="flex flex-col gap-2 -ml-2">
                                     <Link className="icon" href={`/listOrder/${t._id}`}>
                                         <ActionBtn />
                                     </Link>

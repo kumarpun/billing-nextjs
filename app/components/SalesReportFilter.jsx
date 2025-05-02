@@ -296,7 +296,7 @@ export default function SalesReportFilter() {
 
     return (
         <>
-            <div className="filter-options">
+            <div className="filter-options text-black">
                 <label htmlFor="filter">Select Filter: </label>
                 <select id="filter" value={selectedFilter} className="text-black" onChange={handleFilterChange}>
                     <option value="today">Today</option>
@@ -338,14 +338,16 @@ export default function SalesReportFilter() {
                 </div>
             )}
 
-            <div className="font-bold text-center">Total Sales: NRs. {totalFinalPrice}</div>
-            <div className="font-bold text-center">Total Kitchen Sales: NRs. {totalKitchenPrice}</div>
-            <div className="font-bold text-center">Total Bar Sales: NRs. {totalBarPrice}</div>
-            <br></br>
+            <div className="font-bold text-center text-black">Total Sales: NRs. {totalFinalPrice}</div>
+            <div className="font-bold text-center text-black">Total Kitchen Sales: NRs. {totalKitchenPrice}</div>
+            <div className="font-bold text-center text-black">Total Bar Sales: NRs. {totalBarPrice}</div>
             <div className="sales-body">
                 <main className="table" id="customers_table">
-                    <section className="table-body">
-                        <table>
+                    {/* <section className="table-body"> */}
+                    <div>
+                    <div className="border rounded-lg overflow-hidden shadow-sm">
+                    <div className="overflow-x-auto">
+                    <table className="min-w-full divide-y divide-gray-200">
                             <thead>
                                 <tr>
                                     <th>Sn</th>
@@ -385,7 +387,10 @@ export default function SalesReportFilter() {
                                 )}
                             </tbody>
                         </table>
-                    </section>
+                        </div>
+                        </div>
+                        </div>
+                    {/* </section> */}
                 </main>
             </div>
         </>

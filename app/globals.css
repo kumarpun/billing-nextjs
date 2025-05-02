@@ -198,7 +198,7 @@ button:hover {
 }
 
 .sales-body table {
-  width: 100%;
+  /* width: 150%; */
   border-collapse: collapse;
   background-color: #2d3748; /* Dark background */
   color: #e2e8f0; /* Light text */
@@ -305,7 +305,7 @@ margin-top: -32px;
   border: 1px solid #000;
 }
 main.table {
-  width: 82vw;
+  width: 75vw;
   height: 90vh;
   background-color: #fff5;
 
@@ -317,7 +317,7 @@ main.table {
 }
 
 .table-body {
-  /* width: 95%; */
+  /* width: 195%; */
   /* max-height: calc(89% - 1.6rem); */
   /* background-color: #fffb; */
 
@@ -776,7 +776,22 @@ tbody tr {
   }
 }
 
+/* For smoother scrolling */
+.overflow-x-auto {
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+}
 
+/* Custom scrollbar (optional) */
+.overflow-x-auto::-webkit-scrollbar {
+  height: 8px;
+  background: #f1f1f1;
+}
+
+.overflow-x-auto::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
 
 
 

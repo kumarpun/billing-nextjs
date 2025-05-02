@@ -4,6 +4,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { FaTable } from "react-icons/fa";
 import { FaChartBar } from "react-icons/fa";
+import { FaClipboardList } from "react-icons/fa";
 
 export default function LandingPage() {
   const cardVariants = {
@@ -69,7 +70,7 @@ export default function LandingPage() {
         </motion.div>
 
         {/* View Sales Report Card */}
-        <motion.div
+        {/* <motion.div
           variants={cardVariants}
           initial="hidden"
           animate="visible"
@@ -85,8 +86,25 @@ export default function LandingPage() {
             </h2>
             <p className="text-gray-600">View Sales Report</p>
           </Link>
-        </motion.div>
+        </motion.div> */}
 
+        <motion.div
+          variants={cardVariants}
+          initial="hidden"
+          animate="visible"
+          whileHover="hover"
+        >
+          <Link
+            href="/dashReport"
+            className="block border border-gray-400 bg-white bg-opacity-30 backdrop-blur-lg rounded-2xl p-10 flex flex-col items-center justify-center transition-all duration-300 hover:bg-opacity-50 hover:shadow-2xl"
+          >
+            <FaClipboardList className="w-16 h-16 text-purple-500 mb-4" />
+            <h2 className="text-3xl font-bold mb-4 text-gray-800 transition-colors duration-300">
+            Dashboard
+            </h2>
+            <p className="text-gray-600">View Dashboard</p>
+          </Link>
+        </motion.div>
       </div>
 
     </div>

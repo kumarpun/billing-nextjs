@@ -8,7 +8,7 @@ import SalesReportClient from "../components/orderReportFilter";
 // Add this at the top of dashReport.jsx
 const getRunningTablesCount = async () => {
   try {
-    const res = await fetch('http://localhost:3000/api/tables', {
+    const res = await fetch('https://billing-nextjs.vercel.app/api/tables', {
       cache: 'no-store',
     });
 
@@ -25,7 +25,7 @@ const getRunningTablesCount = async () => {
 
     // Fetch orders for each table and count running tables
     const runningTablesCount = await Promise.all(tables.map(async (table) => {
-      const orderRes = await fetch(`http://localhost:3000/api/orders/${table._id}`, {
+        const orderRes = await fetch(`https://billing-nextjs.vercel.app/api/orders/${table._id}`, {
         cache: 'no-store',
       });
       const orders = await orderRes.json();

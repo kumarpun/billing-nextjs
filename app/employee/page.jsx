@@ -11,7 +11,7 @@ export default function Employee() {
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
-        const response = await fetch('https://billing-nextjs.vercel.app/api/employee');
+        const response = await fetch('http://localhost:3000/api/employee');
         if (!response.ok) {
           throw new Error('Failed to fetch employee data');
         }
@@ -23,7 +23,7 @@ export default function Employee() {
           phone: `+977 ${emp.phone.toString().substring(0, 3)}${emp.phone.toString().substring(3)}`,
           dob: emp.dob,
           designation: emp.designation,
-          image: "/mam.jpg" // Using static image for now
+          image: emp.image || "/mam.jpg" // Use API image if available, otherwise fallback
         }));
         setEmployees(formattedEmployees);
       } catch (err) {
@@ -96,6 +96,7 @@ export default function Employee() {
                       layout="fill"
                       objectFit="cover"
                       className="rounded-lg"
+                      unoptimized={employee.image.startsWith("http")} // Disable optimization for external images
                     />
                   </div>
                 </div>

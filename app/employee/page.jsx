@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
@@ -9,7 +11,7 @@ export default function Employee() {
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
-        const response = await fetch('https://billing-nextjs.vercel.app/api/employee');
+        const response = await fetch('http://billing-nextjs.vercel.app/api/employee');
         if (!response.ok) {
           throw new Error('Failed to fetch employee data');
         }

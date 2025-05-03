@@ -4,6 +4,7 @@ import { FaChartBar, FaMoneyBillWave, FaUsers, FaUtensils, FaHome, FaSignOutAlt 
 import { useState, useEffect } from "react";
 import SalesReportFilter from "../components/SalesReportFilter";
 import SalesReportClient from "../components/orderReportFilter";
+import Employee from "../employee/page";
 
 // Add this at the top of dashReport.jsx
 const getRunningTablesCount = async () => {
@@ -214,15 +215,20 @@ export default function DashReport() {
                 </div>
                 )}
 
+          {activeTab === "employee" && (
+                              <div className="ml-64 flex-1 -mt-20"> {/* Content area */} 
+                              <Employee />
+                          </div>
+                          )}      
           {/* Placeholder for Other Tabs */}
-          {(activeTab === "employee" || activeTab === "customers") && (
+          {/* {(activeTab === "employee" || activeTab === "customers") && (
             <div className="bg-white p-8 rounded-lg shadow text-center ml-64">
               <h3 className="text-xl font-semibold mb-4">
                 {activeTab === "employee" ? "Employee Management" : "Customers Management"}
               </h3>
               <p className="text-gray-600">Content will appear here soon!</p>
             </div>
-          )}
+          )} */}
         </div>
       </div>
     </div>

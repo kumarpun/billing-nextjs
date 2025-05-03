@@ -11,7 +11,7 @@ export default function Employee() {
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/employee');
+        const response = await fetch('https://billing-nextjs.vercel.app/api/employee');
         if (!response.ok) {
           throw new Error('Failed to fetch employee data');
         }

@@ -5,6 +5,8 @@ import { useState, useEffect } from "react";
 import SalesReportFilter from "../components/SalesReportFilter";
 import SalesReportClient from "../components/orderReportFilter";
 import Employee from "../employee/page";
+import Inventory from "../inventory/page";
+import EmployeeBirthday from "../empbirthday/page";
 
 // Add this at the top of dashReport.jsx
 const getRunningTablesCount = async () => {
@@ -139,6 +141,15 @@ export default function DashReport() {
 
             <Link
               href="#"
+              className={`flex items-center p-3 rounded-lg hover:bg-[#283141] transition ${activeTab === "inventory" ? "bg-[#283141]" : ""}`}
+              onClick={() => setActiveTab("inventory")}
+            >
+              <FaUtensils className="mr-3" />
+              Inventory
+            </Link>
+
+            <Link
+              href="#"
               className={`flex items-center p-3 rounded-lg hover:bg-[#283141] transition ${activeTab === "employee" ? "bg-[#283141]" : ""}`}
               onClick={() => setActiveTab("employee")}
             >
@@ -171,36 +182,37 @@ export default function DashReport() {
             </h2>
           </div>
 
-          {/* Stats Cards (Visible on Dashboard Tab) */}
           {activeTab === "dashboard" && (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 ml-64 flex-1">
-              <div className="bg-white p-6 rounded-lg shadow">
-                <h3 className="text-lg font-semibold text-gray-700">Today's Revenue</h3>
-                <p className="text-2xl font-bold text-[#283141]">Rs. {totalFinalPrice.toLocaleString("en-IN")}</p>
+  <>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6 ml-64 flex-1">
+      <div className="bg-white p-6 rounded-lg shadow">
+        <h3 className="text-lg font-semibold text-gray-700">Today's Revenue</h3>
+        <p className="text-2xl font-bold text-[#283141]">Rs. {totalFinalPrice.toLocaleString("en-IN")}</p>
+      </div>
+      <div className="bg-white p-6 rounded-lg shadow">
+        <h3 className="text-lg font-semibold text-gray-700">Table running</h3>
+        {isLoadingTables ? (
+          <div className="flex items-center justify-center h-8">
+            <div className="flex items-center space-x-1">
+              <div className="flex space-x-1 items-center">
+                <span className="w-1.5 h-1.5 bg-gray-500 rounded-full animate-bounce"></span>
+                <span className="w-1.5 h-1.5 bg-gray-500 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></span>
+                <span className="w-1.5 h-1.5 bg-gray-500 rounded-full animate-bounce" style={{animationDelay: '0.4s'}}></span>
               </div>
-              <div className="bg-white p-6 rounded-lg shadow">
-                <h3 className="text-lg font-semibold text-gray-700">Table running</h3>
-                {isLoadingTables ? (
-                  <div className="flex items-center justify-center h-8">
-                    <div className="flex items-center space-x-1">
-                      {/* <span className="text-gray-500">Loading</span> */}
-                      <div className="flex space-x-1 items-center">
-                        <span className="w-1.5 h-1.5 bg-gray-500 rounded-full animate-bounce"></span>
-                        <span className="w-1.5 h-1.5 bg-gray-500 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></span>
-                        <span className="w-1.5 h-1.5 bg-gray-500 rounded-full animate-bounce" style={{animationDelay: '0.4s'}}></span>
-                      </div>
-                    </div>
-                  </div>
-                ) : (
-                  <p className="text-2xl font-bold text-[#283141]">{runningTablesCount}</p>
-                )}
-              </div>
-              {/* <div className="bg-white p-6 rounded-lg shadow">
-                <h3 className="text-lg font-semibold text-gray-700">Active Customers</h3>
-                <p className="text-2xl font-bold text-[#283141]">94</p>
-              </div> */}
             </div>
-          )}
+          </div>
+        ) : (
+          <p className="text-2xl font-bold text-[#283141]">{runningTablesCount}</p>
+        )}
+      </div>
+    </div>
+    
+    {/* Employee Birthday Section - Full width below the cards */}
+    <div className="ml-64 flex-1">
+      <EmployeeBirthday />
+    </div>
+  </>
+)}
 
           {/* Sales Report Table (Visible on Sales Tab) */}
             {activeTab === "sales" && (
@@ -214,6 +226,13 @@ export default function DashReport() {
                     <SalesReportClient />
                 </div>
                 )}
+
+        {activeTab === "inventory" && (
+                            <div className="ml-64 flex-1 -mt-20"> {/* Content area */} 
+                            <Inventory />
+                        </div>
+                        )}
+
 
           {activeTab === "employee" && (
                               <div className="ml-64 flex-1 -mt-20"> {/* Content area */} 

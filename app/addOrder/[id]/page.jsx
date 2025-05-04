@@ -275,13 +275,17 @@ export default function AddOrder({ params }) {
   { value: 'Carlsberg', label: 'Carlsberg - Nrs 690', price: 690 },
 
   // Vodka
+  { value: '8848 - 30ml', label: '8848 Vodka - 30ml - NRs 190', price: 190 },
   { value: '8848 - 60ml', label: '8848 Vodka - 60ml - NRs 360', price: 360 },
+  { value: '8848 - 90ml', label: '8848 Vodka - 90ml - NRs 520', price: 520 },
   { value: '8848 - 180ml', label: '8848 Vodka - 180ml - NRs 920', price: 920 },
-  { value: '8848 - Bottle', label: '8848 Vodka - Bottle - NRs 3600', price: 3600 },
+  { value: '8848 - 750ml Bottle', label: '8848 Vodka - Bottle - NRs 3600', price: 3600 },
 
+  { value: 'Nude - 30ml', label: 'Nude Vodka - 30ml - NRs 390', price: 390 },
   { value: 'Nude - 60ml', label: 'Nude Vodka - 60ml - NRs 390', price: 390 },
+  { value: 'Nude - 90ml', label: 'Nude Vodka - 90ml - NRs 390', price: 390 },
   { value: 'Nude - 180ml', label: 'Nude Vodka - 180ml - NRs 990', price: 990 },
-  { value: 'Nude - Bottle', label: 'Nude Vodka - Bottle - NRs 3700', price: 3700 },
+  { value: 'Nude - 750ml Bottle', label: 'Nude Vodka - Bottle - NRs 3700', price: 3700 },
 
   { value: 'Absolute - 60ml', label: 'Absolute Vodka - 60ml - NRs 820', price: 820 },
   { value: 'Absolute - 180ml', label: 'Absolute Vodka - 180ml - NRs 2100', price: 2100 },

@@ -15,8 +15,8 @@ export async function GET() {
 }
 
 export async function POST(request) {
-    const { title,quantity} = await request.json();
+    const { title,quantity,ml} = await request.json();
     await dbConnect(); // Reused MongoDB connection
-    await Inventory.create({title,quantity});
+    await Inventory.create({title,quantity,ml});
     return NextResponse.json({ message: "Inventory added successfully." }, { status: 201 });
 }

@@ -11,6 +11,7 @@ export default function Inventory() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [currentItem, setCurrentItem] = useState(null);
   const [quantity, setQuantity] = useState(0);
+  const [ml, setMl] = useState(0);
 
   // Calculate low stock items count
   const lowStockItems = inventoryItems.filter(item => item.stock <= item.threshold);
@@ -39,12 +40,18 @@ export default function Inventory() {
       const transformedData = inventoryData.inventory.map(item => ({
         id: item._id,
         name: item.title,
-        category: "Beer",
+        category: item.title.includes("8848") || item.title.includes("Nude") ? "Vodka" : "Beer",
         stock: item.quantity,
-        threshold: 5,
+        ml: item.ml || null,
+        threshold: (item.title.includes("8848") || item.title.includes("Nude")) ? 1 : 5,
         lastUpdated: new Date(item.updatedAt).toISOString().split('T')[0],
         price: 650,
-        orderSent: orderData[item.title] || 0,
+        // Handle special cases for 8848 and Nude items
+        orderSent: item.title.includes("8848") 
+          ? orderData.total_8848_ml 
+          : item.title.includes("Nude")
+            ? orderData.total_Nude_ml
+            : orderData[item.title] || 0,
         stockRemaining: item.quantity - (orderData[item.title] || 0)
       }));
       
@@ -61,6 +68,7 @@ export default function Inventory() {
   const handleEditClick = (item) => {
     setCurrentItem(item);
     setQuantity(item.stock);
+    setMl(item.ml);
     setIsEditModalOpen(true);
   };
 
@@ -68,6 +76,10 @@ export default function Inventory() {
   const handleQuantityChange = (e) => {
     setQuantity(parseInt(e.target.value));
   };
+
+  const handleMlChange = (e) => {
+    setMl(parseInt(e.target.value));
+  }
 
   // Handle form submission
   const handleSubmit = async (e) => {
@@ -80,7 +92,8 @@ export default function Inventory() {
         },
         body: JSON.stringify({
           newTitle: currentItem.name,
-          newQuantity: quantity
+          newQuantity: quantity,
+          newMl: ml
         }),
       });
 
@@ -106,6 +119,8 @@ export default function Inventory() {
         return <FaGlassWhiskey className="text-amber-600" />;
       case 'beer':
         return <FaBeer className="text-yellow-500" />;
+      case 'vodka':
+        return <FaWineBottle className="text-blue-500" />;
       default:
         return <FaWineBottle className="text-purple-500" />;
     }
@@ -153,7 +168,18 @@ export default function Inventory() {
                   onChange={handleQuantityChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
                   min="0"
-                  required
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-medium mb-2">
+                  Ml
+                </label>
+                <input
+                  type="number"
+                  value={ml}
+                  onChange={handleMlChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
+                  min="0"
                 />
               </div>
               <div className="flex justify-end space-x-3">
@@ -198,17 +224,16 @@ export default function Inventory() {
         </div>
 
         {lowStockCount > 0 && (
-  <div className="mb-6 bg-gradient-to-r from-pink-50 to-pink-100 p-6 rounded-xl border-l-4 border-pink-500">
-    <div className="flex items-center">
-      <FiAlertTriangle className="h-5 w-5 text-red-500 mr-3" />
-      <h3 className="text-sm font-semibold text-red-800">
-        Low stock - {lowStockCount}{" "}
-        ({lowStockItems.map(item => item.name).join(", ")})
-      </h3>
-    </div>
-  </div>
-)}
-
+          <div className="mb-6 bg-gradient-to-r from-pink-50 to-pink-100 p-6 rounded-xl border-l-4 border-pink-500">
+            <div className="flex items-center">
+              <FiAlertTriangle className="h-5 w-5 text-red-500 mr-3" />
+              <h3 className="text-sm font-semibold text-red-800">
+                Low stock - {lowStockCount}{" "}
+                ({lowStockItems.map(item => item.name).join(", ")})
+              </h3>
+            </div>
+          </div>
+        )}
 
         {/* Inventory Table */}
         <div className="bg-white rounded-xl shadow-sm overflow-hidden">
@@ -258,22 +283,32 @@ export default function Inventory() {
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
                         <div className={`h-2.5 rounded-full ${item.stock <= item.threshold ? 'bg-red-500' : 'bg-green-500'}`} 
-                             style={{ width: `${Math.min(100, (item.stock / (item.threshold * 2)) * 100)}%` }}></div>
+                            style={{ width: `${Math.min(100, (item.stock / (item.threshold * 2)) * 100)}%` }}></div>
                         <span className="ml-2 text-sm font-medium text-gray-700">
-                          {item.stock} {item.stock <= item.threshold && <span className="text-red-500">(Low)</span>}
+                          {item.stock} 
+                          {item.ml && ` (${item.ml}ml)`}
+                          {item.stock <= item.threshold && <span className="text-red-500"> (Low)</span>}
                         </span>
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm font-medium text-gray-700">
-                        {item.orderSent}
+                        {item.name.includes("8848") 
+                          ? `${item.orderSent}ml`
+                          : item.name.includes("Nude")
+                            ? `${item.orderSent}ml`
+                            : item.orderSent}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className={`text-sm font-medium ${
                         item.stockRemaining <= item.threshold ? 'text-red-500' : 'text-gray-700'
                       }`}>
-                        {item.stockRemaining}
+                        {item.name.includes("8848") 
+                          ? `${(item.ml || 750) - (orderData.total_8848_ml || 0)}ml`
+                          : item.name.includes("Nude")
+                            ? `${(item.ml || 180) - (orderData.total_Nude_ml || 0)}ml`
+                            : item.stockRemaining}
                         {item.stockRemaining <= item.threshold && (
                           <span className="ml-1 text-red-500 text-xs">(Reorder needed)</span>
                         )}

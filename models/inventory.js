@@ -4,6 +4,7 @@ const inventorySchema = new Schema(
   {
     title: String,
     quantity: Number,
+    ml: Number,
   },
   {
     timestamps: true,

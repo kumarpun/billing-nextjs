@@ -74,7 +74,7 @@ export default function Inventory() {
 
   // Handle quantity change
   const handleQuantityChange = (e) => {
-    setQuantity(parseInt(e.target.value));
+    setQuantity(parseFloat(e.target.value)); // Use parseFloat instead of parseInt
   };
 
   const handleMlChange = (e) => {
@@ -167,7 +167,7 @@ export default function Inventory() {
                   value={quantity}
                   onChange={handleQuantityChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
-                  min="0"
+                  step="any" // This allows any decimal value
                 />
               </div>
               <div className="mb-4">

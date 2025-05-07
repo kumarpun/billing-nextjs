@@ -24,6 +24,7 @@ export default function Dashboard() {
       {/* <Link className="px-6 py-2 mt-3 add-table" href={"/listReport"}>
         Sales Report
       </Link> */}
+      
       <button
         onClick={(e) => handleLogout(e)} className="hover:text-gray-300 font-medium transition-colors duration-200 nav-button">
             Logout

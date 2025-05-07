@@ -98,6 +98,14 @@ export default function DashReport() {
       {/* <Link className="px-6 py-2 mt-3 add-table" href={"/listReport"}>
         Sales Report
       </Link> */}
+        <a
+                        className="hover:text-gray-300 font-medium transition-colors duration-200 nav-button"
+                        href="https://docs.google.com/spreadsheets/d/1bsYPfCKZkcrKZrWfRqS4RiKmwOXwLMQ3USFfJ9wiKwg/edit?gid=1009457690#gid=1009457690"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Credit
+                    </a>
     <Link className="hover:text-gray-300 font-medium transition-colors duration-200 nav-button" href={"/"}>
          Home
       </Link>

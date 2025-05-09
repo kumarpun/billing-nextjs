@@ -268,6 +268,7 @@ export default function AddOrder({ params }) {
 
   // BEER
   { value: 'Gorkha Strong', label: 'Gorkha Strong - NRs 520', price: 520 },
+  { value: 'Gorkha Strong (Prime)', label: 'Gorkha Strong (Prime) - NRs 290', price: 290 },
   { value: 'Gorkha Premium', label: 'Gorkha Premium - NRs 600', price: 600 },
   { value: 'Tuborg Strong', label: 'Tuborg Strong - NRs 550', price: 550 },
   { value: 'Tuborg Gold', label: 'Tuborg Gold - NRs 650', price: 650 },

@@ -32,7 +32,6 @@ input {
   border-radius: 25px;
   gap: 2rem;
   width: 260px;
-
   background-color: rgb(15, 15, 15); /* Solid yellow background */
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional shadow for better visibility */
   z-index: 1; /* Ensures it stays on top of other elements */
@@ -61,6 +60,11 @@ input {
   width: 290px;
 }
 
+.card-text {
+  display: flex;
+  white-space: nowrap;
+  margin-left: -50px;
+}
 .icon {
   color: #343432;
   padding: 1rem;
@@ -187,6 +191,12 @@ button:hover {
   animation-delay: 4s;
 }
 
+/* Add to your CSS */
+.card-bill {
+  font-size: 0.8rem;
+  margin-top: 8px;
+  display: flex;
+}
 .report-bg{
   position: absolute;
   /* background-image: url('assets/vivid-logo.jpg'); */

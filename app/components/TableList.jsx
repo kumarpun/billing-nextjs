@@ -31,7 +31,14 @@ const getTables = async () => {
             });
 
             const orders = await orderRes.json();
-            return { ...table, orders };
+            const totalPrice = orders.orderbyTableId?.reduce((sum, order) => {
+                return sum + (order.final_price || 0);
+            }, 0) || 0;
+
+            return { ...table, 
+                        orders,
+                        totalPrice
+             };
         }));
 
         return tablesWithOrders;
@@ -127,13 +134,19 @@ export default async function TableList() {
                         <div key={t._id} className="dashboard">
                             <div className="card color1">
                                 <div>
-                                    <div className="font-bold text-2xl">{t.title}</div>
-                                    <div>{t.description}</div>
+                                    <div className="font-bold text-2xl card-text">{t.title}</div>
+                                    <div className="card-text">{t.description}</div>
                                     {t.orders.orderbyTableId.length > 0 ? (
-                                        <div className="text-green-600">Table running</div>
+                                        <div className="text-green-600 card-text">Table running</div>
                                     ) : (
-                                        <div className="text-red-600">Empty table</div>
+                                        <div className="text-red-600 card-text">Empty table</div>
                                     )}
+                                    {/* Display total bill if orders exist */}
+                                {t.orders.orderbyTableId.length > 0 && (
+                                    <div className="font-bold mt-2 card-bill card-text">
+                                        रू {t.totalPrice}
+                                    </div>
+                                )}
                                 </div>
                                 <div className="flex flex-col gap-2 -ml-2">
                                     <Link className="icon" href={`/listOrder/${t._id}`}>
@@ -155,13 +168,18 @@ export default async function TableList() {
                         <div key={t._id} className="dashboard">
                             <div className="card color1">
                                 <div>
-                                    <div className="font-bold text-2xl">{t.title}</div>
-                                    <div>{t.description}</div>
+                                    <div className="font-bold text-2xl card-text">{t.title}</div>
+                                    <div className="card-text">{t.description}</div>
                                     {t.orders.orderbyTableId.length > 0 ? (
-                                        <div className="text-green-600">Table running</div>
+                                        <div className="text-green-600 card-text">Table running</div>
                                     ) : (
-                                        <div className="text-red-600">Empty table</div>
+                                        <div className="text-red-600 card-text">Empty table</div>
                                     )}
+                                       {t.orders.orderbyTableId.length > 0 && (
+                                    <div className="font-bold mt-2 card-bill card-text">
+                                        रू {t.totalPrice}
+                                    </div>
+                                )}
                                 </div>
                                 <div>
                                     <Link className="icon" href={`/listOrder/${t._id}`}>
@@ -183,13 +201,18 @@ export default async function TableList() {
                         <div key={t._id} className="dashboard">
                             <div className="card color1">
                                 <div>
-                                    <div className="font-bold text-2xl">{t.title}</div>
-                                    <div>{t.description}</div>
+                                    <div className="font-bold text-2xl card-text">{t.title}</div>
+                                    <div className="card-text">{t.description}</div>
                                     {t.orders.orderbyTableId.length > 0 ? (
-                                        <div className="text-green-600">Table running</div>
+                                        <div className="text-green-600 card-text">Table running</div>
                                     ) : (
-                                        <div className="text-red-600">Empty table</div>
+                                        <div className="text-red-600 card-text">Empty table</div>
                                     )}
+                                       {t.orders.orderbyTableId.length > 0 && (
+                                    <div className="font-bold mt-2 card-bill card-text">
+                                        रू {t.totalPrice}
+                                    </div>
+                                )}
                                 </div>
                                 <div>
                                     <Link className="icon" href={`/listOrder/${t._id}`}>
@@ -211,13 +234,18 @@ export default async function TableList() {
                         <div key={t._id} className="dashboard">
                             <div className="card card-terrace color1">
                                 <div>
-                                    <div className="font-bold text-2xl">{t.title}</div>
-                                    <div>{t.description}</div>
+                                    <div className="font-bold text-2xl card-text">{t.title}</div>
+                                    <div className="card-text">{t.description}</div>
                                     {t.orders.orderbyTableId.length > 0 ? (
-                                        <div className="text-green-600">Table running</div>
+                                        <div className="text-green-600 card-text">Table running</div>
                                     ) : (
-                                        <div className="text-red-600">Empty table</div>
+                                        <div className="text-red-600 card-text">Empty table</div>
                                     )}
+                                       {t.orders.orderbyTableId.length > 0 && (
+                                    <div className="font-bold mt-2 card-bill card-text">
+                                        रू {t.totalPrice}
+                                    </div>
+                                )}
                                 </div>
                                 <div>
                                     <Link className="icon" href={`/listOrder/${t._id}`}>

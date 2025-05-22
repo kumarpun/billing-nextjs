@@ -338,6 +338,7 @@ export default function AddOrder({ params }) {
 
   // Hookah
   { value: 'Hookah (Cloud)', label: 'Hookah (Cloud) - NRs 390', price: 390 },
+  { value: 'Ice Hookah', label: 'Ice Hookah - NRs 430', price: 430 },
   { value: 'Lemon Hookah', label: 'Lemon Hookah - NRs 450', price: 450 },
   { value: 'Hybe Hookah (Seasonal Fruit)', label: 'Hybe Hookah (Seasonal Fruit) - NRs 550', price: 550 },
   { value: 'Hybe Hookah (Blueberry)', label: 'Hybe Hookah (Blueberry) - NRs 590', price: 590 },

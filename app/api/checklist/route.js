@@ -30,3 +30,33 @@ export async function POST(request) {
         );
     }
 }
+
+export async function PUT(request) {
+    await dbConnect();
+    
+    try {
+        // Update all checked items (isChecked: true) to false
+        const result = await Checklist.updateMany(
+            { isChecked: true }, // Only find checked items
+            { 
+                $set: { 
+                    isChecked: false,
+                    updatedAt: new Date() 
+                } 
+            }
+        );
+
+        return NextResponse.json({
+            success: true,
+            message: `All checked items (${result.modifiedCount}) have been unchecked`,
+            updatedCount: result.modifiedCount
+        });
+
+    } catch (error) {
+        console.error("Error unchecking all items:", error);
+        return NextResponse.json(
+            { error: "Internal server error" },
+            { status: 500 }
+        );
+    }
+}

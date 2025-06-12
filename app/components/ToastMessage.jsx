@@ -1,20 +1,22 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { XMarkIcon } from "@heroicons/react/24/outline";
 
 export default function ToastMessage() {
-  const [activeToast, setActiveToast] = useState(0); // 0 = thirsty, 1 = inventory, null = none
+  const [activeToast, setActiveToast] = useState(0); // 0 = thirsty, 1 = inventory
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
+    const twentyMinutesInMs = 20 * 60 * 1000;
+    
+    // Show first toast immediately
+    setActiveToast(0);
+    
+    // Then cycle every 20 minutes
     const timer = setInterval(() => {
-      setActiveToast(prev => {
-        if (prev === null) return 0;
-        return (prev + 1) % 2; // Cycle between 0 and 1
-      });
-    }, 20 * 60 * 1000); // 20 minutes in milliseconds
+      setActiveToast(prev => (prev + 1) % 2);
+    }, twentyMinutesInMs);
 
     return () => clearInterval(timer);
   }, []);
@@ -24,6 +26,23 @@ export default function ToastMessage() {
   const handleClose = () => {
     setActiveToast(null);
   };
+
+  // Custom close icon SVG
+  const CloseIcon = () => (
+    <svg 
+      xmlns="http://www.w3.org/2000/svg" 
+      viewBox="0 0 24 24" 
+      fill="none" 
+      stroke="currentColor" 
+      strokeWidth="2" 
+      strokeLinecap="round" 
+      strokeLinejoin="round"
+      className="w-5 h-5"
+    >
+      <line x1="18" y1="6" x2="6" y2="18"></line>
+      <line x1="6" y1="6" x2="18" y2="18"></line>
+    </svg>
+  );
 
   return (
     <div className="fixed top-20 right-4 z-50">
@@ -46,7 +65,7 @@ export default function ToastMessage() {
             className="text-green-500 hover:text-green-700 transition-colors duration-200"
             aria-label="Close toast"
           >
-            <XMarkIcon className="h-5 w-5" />
+            <CloseIcon />
           </button>
         </div>
       )}
@@ -71,7 +90,7 @@ export default function ToastMessage() {
             className="text-blue-500 hover:text-blue-700 transition-colors duration-200"
             aria-label="Close toast"
           >
-            <XMarkIcon className="h-5 w-5" />
+            <CloseIcon />
           </button>
         </div>
       )}

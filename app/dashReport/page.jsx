@@ -88,7 +88,7 @@ export default function DashReport() {
     <div className="min-h-screen bg-gray-100 flex flex-col">
  <nav className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-8 py-3 bg-[#232b38]">            
             <div style={{ flex: 0.4 }}></div>
-      <Link className="absolute left-1/2 transform -translate-x-1/2 font-bold page-title" href={"/"}>
+      <Link className="absolute left-1/2 transform -translate-x-1/2 font-bold page-title" href={"/dashReport"}>
       HYBE Food & Drinks
       </Link>
         {/* {Array.from("HYBE Food & Drinks").map((char, index) => (
@@ -98,6 +98,9 @@ export default function DashReport() {
       {/* <Link className="px-6 py-2 mt-3 add-table" href={"/listReport"}>
         Sales Report
       </Link> */}
+       <Link className="hover:text-gray-300 font-medium transition-colors duration-200 nav-button" href={"/tables"}>
+         Tables
+      </Link>
         <a
                         className="hover:text-gray-300 font-medium transition-colors duration-200 nav-button"
                         href="https://docs.google.com/spreadsheets/d/1bsYPfCKZkcrKZrWfRqS4RiKmwOXwLMQ3USFfJ9wiKwg/edit?gid=1009457690#gid=1009457690"
@@ -106,9 +109,7 @@ export default function DashReport() {
                     >
                         Credit
                     </a>
-    <Link className="hover:text-gray-300 font-medium transition-colors duration-200 nav-button" href={"/"}>
-         Home
-      </Link>
+   
       </div>
         </nav>
       {/* Sidebar + Main Content Layout */}

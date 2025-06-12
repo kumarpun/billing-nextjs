@@ -2,6 +2,12 @@ import RemoveBtn from "./RemoveBtn";
 import Link from "next/link";
 import { HiPencilAlt } from "react-icons/hi";
 import ActionBtn from  "./ActionBtn";
+import dynamic from "next/dynamic";
+
+const ChecklistWrapper = dynamic(() => import("./ChecklistWrapper"), {
+    ssr: false,
+    loading: () => null // Don't show loading state
+  });
 
 const getTables = async () => {
     try {
@@ -117,6 +123,9 @@ export default async function TableList() {
         <>
             {/* <hr className="separator" /> */}
             <div className="bg-page">
+
+            <ChecklistWrapper />
+
             <div className="flex items-start gap-4">
                 
                 {/* Bar section */}

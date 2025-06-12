@@ -3,31 +3,23 @@
 import { useState, useEffect } from "react";
 
 export default function ToastMessage() {
-  const [activeToast, setActiveToast] = useState(0); // 0 = thirsty, 1 = inventory
+  const [activeToast, setActiveToast] = useState(null);
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
-    const twentyMinutesInMs = 20 * 60 * 1000;
-    
-    // Show first toast immediately
-    setActiveToast(0);
-    
-    // Then cycle every 20 minutes
-    const timer = setInterval(() => {
-      setActiveToast(prev => (prev + 1) % 2);
-    }, twentyMinutesInMs);
 
-    return () => clearInterval(timer);
+    // Show a random toast (0 or 1) on first load
+    const randomToast = Math.floor(Math.random() * 2);
+    setActiveToast(randomToast);
   }, []);
 
-  if (!isMounted) return null;
+  if (!isMounted || activeToast === null) return null;
 
   const handleClose = () => {
     setActiveToast(null);
   };
 
-  // Custom close icon SVG
   const CloseIcon = () => (
     <svg 
       xmlns="http://www.w3.org/2000/svg" 

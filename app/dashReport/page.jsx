@@ -50,7 +50,7 @@ export default function DashReport() {
   const [isLoadingTables, setIsLoadingTables] = useState(true); // New loading state
   const [showInventoryWarning, setShowInventoryWarning] = useState(false);
   const [inventoryLastUpdated, setInventoryLastUpdated] = useState(null);
-
+  
   const [salesData] = useState([
     { id: 1, date: "2023-10-01", amount: 1200, items: 45 },
     { id: 2, date: "2023-10-02", amount: 1850, items: 62 },
@@ -167,13 +167,14 @@ export default function DashReport() {
                   <p className="mt-2">Please update your inventory to ensure accurate stock levels.</p>
                 </div>
                 <div className="mt-4 flex justify-end">
-                  <button
+                  <Link
                     type="button"
                     className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-                    onClick={() => setShowInventoryWarning(false)}
+                    // onClick={() => setShowInventoryWarning(false)}
+                    href={"/inventory"}
                   >
                     I Understand
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>

@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { FiPlus, FiSearch, FiFilter, FiRefreshCw, FiX, FiAlertTriangle } from "react-icons/fi";
 import { FaWineBottle, FaGlassWhiskey, FaBeer } from "react-icons/fa";
 import { useEffect, useState } from "react";
@@ -144,6 +145,35 @@ export default function Inventory() {
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
+       <nav className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-8 py-3 bg-[#232b38]">            
+            <div style={{ flex: 0.4 }}></div>
+      <Link className="absolute left-1/2 transform -translate-x-1/2 font-bold page-title" href={"/dashReport"}>
+      HYBE Food & Drinks
+      </Link>
+        {/* {Array.from("HYBE Food & Drinks").map((char, index) => (
+        <span key={index} className={`char-${index}`}>{char}</span>
+    ))}     */}
+      <div style={{ display: 'flex', gap: '12px' }}>
+      {/* <Link className="px-6 py-2 mt-3 add-table" href={"/listReport"}>
+        Sales Report
+      </Link> */}
+       <Link className="hover:text-gray-300 font-medium transition-colors duration-200 nav-button" href={"/tables"}>
+         Tables
+      </Link>
+        <a
+                        className="hover:text-gray-300 font-medium transition-colors duration-200 nav-button"
+                        href="https://docs.google.com/spreadsheets/d/1bsYPfCKZkcrKZrWfRqS4RiKmwOXwLMQ3USFfJ9wiKwg/edit?gid=1009457690#gid=1009457690"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Credit
+                    </a>
+   
+      </div>
+        </nav>
+        <br>
+        </br>
+
       {/* Edit Modal */}
       {isEditModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">

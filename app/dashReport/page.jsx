@@ -174,7 +174,7 @@ export default function DashReport() {
                     // onClick={() => setShowInventoryWarning(false)}
                     href={"/inventory"}
                   >
-                    I Understand
+                    Update Inventory
                   </Link>
                 </div>
               </div>

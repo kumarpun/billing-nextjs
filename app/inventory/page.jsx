@@ -236,7 +236,7 @@ export default function Inventory() {
         {/* Header */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-gray-800">Bar Inventory</h1>
+            <h1 className="text-3xl font-bold text-gray-800">Please update Bar Inventory daily</h1>
           </div>
           <div className="flex space-x-3 mt-4 md:mt-0">
             <button className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">

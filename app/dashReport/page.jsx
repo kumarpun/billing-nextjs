@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { FaChartBar, FaMoneyBillWave, FaUsers, FaUtensils, FaHome, FaSignOutAlt } from "react-icons/fa";
+import { FaChartBar, FaMoneyBillWave, FaUsers, FaUtensils, FaHome, FaSignOutAlt, FaExclamationTriangle } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import SalesReportFilter from "../components/SalesReportFilter";
 import SalesReportClient from "../components/orderReportFilter";
@@ -48,6 +48,8 @@ export default function DashReport() {
   const [totalFinalPrice, setTotalFinalPrice] = useState(0);
   const [runningTablesCount, setRunningTablesCount] = useState(0);
   const [isLoadingTables, setIsLoadingTables] = useState(true); // New loading state
+  const [showInventoryWarning, setShowInventoryWarning] = useState(false);
+  const [inventoryLastUpdated, setInventoryLastUpdated] = useState(null);
 
   const [salesData] = useState([
     { id: 1, date: "2023-10-01", amount: 1200, items: 45 },
@@ -58,6 +60,37 @@ export default function DashReport() {
   const handleLogout = (e) => {
     e.preventDefault();
     alert("Logging out..."); // Replace with actual logout logic
+  };
+
+  const checkInventoryUpdates = async () => {
+    try {
+      const res = await fetch('/api/inventory', { cache: 'no-store' });
+      if (!res.ok) throw new Error("Failed to fetch inventory");
+      const data = await res.json();
+      
+      const today = new Date().toISOString().split('T')[0];
+      
+      // Check if ANY item was updated today
+      const anyUpdatedToday = data.inventory.some(item => {
+        const updatedDate = new Date(item.updatedAt).toISOString().split('T')[0];
+        return updatedDate === today;
+      });
+      
+      if (!anyUpdatedToday) {
+        // Find the oldest update date among all items
+        const oldestUpdate = data.inventory.reduce((oldest, item) => {
+          const itemDate = new Date(item.updatedAt);
+          return itemDate < oldest ? itemDate : oldest;
+        }, new Date());
+        
+        setInventoryLastUpdated(oldestUpdate.toISOString().split('T')[0]);
+        setShowInventoryWarning(true);
+      } else {
+        setShowInventoryWarning(false); // Hide warning if any item was updated today
+      }
+    } catch (error) {
+      console.error("Error checking inventory updates:", error);
+    }
   };
 
   useEffect(() => {
@@ -71,6 +104,8 @@ export default function DashReport() {
 
             const count = await getRunningTablesCount();
             setRunningTablesCount(count);
+
+            await checkInventoryUpdates();
         } catch (error) {
             console.error("Error loading report:", error);
             setTotalFinalPrice(0);
@@ -112,6 +147,40 @@ export default function DashReport() {
    
       </div>
         </nav>
+
+        {showInventoryWarning && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 max-w-md w-full">
+            <div className="flex items-start">
+              <div className="flex-shrink-0">
+                <FaExclamationTriangle className="h-6 w-6 text-yellow-500" />
+              </div>
+              <div className="ml-3">
+                <h3 className="text-lg font-medium text-gray-900">Inventory Update Required</h3>
+                <div className="mt-2 text-sm text-gray-500">
+                  {/* <p>Some inventory items haven't been updated today. Last update was on {inventoryLastUpdated}.</p> */}
+                  <p>Some inventory items haven't been updated today. Last update was on {new Date(inventoryLastUpdated).toLocaleDateString('en-US', { 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                  })}.</p>
+                  <p className="mt-2">Please update your inventory to ensure accurate stock levels.</p>
+                </div>
+                <div className="mt-4 flex justify-end">
+                  <button
+                    type="button"
+                    className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                    onClick={() => setShowInventoryWarning(false)}
+                  >
+                    I Understand
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Sidebar + Main Content Layout */}
       <div className="flex">
         {/* Sidebar (Dark Theme) */}

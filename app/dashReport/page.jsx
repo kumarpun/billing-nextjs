@@ -165,6 +165,7 @@ export default function DashReport() {
                     day: 'numeric' 
                   })}.</p>
                   <p className="mt-2">Please update your inventory to ensure accurate stock levels.</p>
+                  <p className="mt-2">Then only you can access report page.</p>
                 </div>
                 <div className="mt-4 flex justify-end">
                   <Link

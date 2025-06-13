@@ -4,6 +4,7 @@ import { HiPencilAlt } from "react-icons/hi";
 import ActionBtn from  "./ActionBtn";
 import dynamic from "next/dynamic";
 import ToastMessage from "./ToastMessage";
+import InventoryWarning from "./InventoryWarning";
 
 const ChecklistWrapper = dynamic(() => import("./ChecklistWrapper"), {
     ssr: false,
@@ -122,7 +123,7 @@ export default async function TableList() {
 
     return (
         <>
-
+            <InventoryWarning />
             {/* <hr className="separator" /> */}
             <div className="bg-page">
             <ToastMessage />

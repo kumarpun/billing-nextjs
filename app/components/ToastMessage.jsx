@@ -50,7 +50,7 @@ export default function ToastMessage() {
               </span>
               <strong className="block font-semibold">🌿 I am thirsty</strong>
             </div>
-            <p className="mt-1 ml-7 text-sm">Please water me (Plants)</p>
+            <p className="mt-1 ml-7 text-sm">Please water me (Outdoor Plants)</p>
           </div>
           <button
             onClick={handleClose}

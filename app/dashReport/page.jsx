@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { FaChartBar, FaMoneyBillWave, FaUsers, FaUtensils, FaHome, FaSignOutAlt, FaExclamationTriangle } from "react-icons/fa";
+import { FaChartBar, FaMoneyBillWave, FaUsers, FaUtensils, FaHome, FaSignOutAlt, FaExclamationTriangle, FaBriefcase } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import SalesReportFilter from "../components/SalesReportFilter";
 import SalesReportClient from "../components/orderReportFilter";
@@ -208,7 +208,7 @@ export default function DashReport() {
               className={`flex items-center p-3 rounded-lg hover:bg-[#283141] transition ${activeTab === "duty" ? "bg-[#283141]" : ""}`}
               onClick={() => setActiveTab("duty")}
             >
-              <FaChartBar className="mr-3" />
+              <FaBriefcase className="mr-3" />
               Duty Roster
             </Link>
             <Link

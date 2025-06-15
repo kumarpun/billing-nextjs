@@ -198,6 +198,7 @@ export default function DutyRoster() {
         ) : (
           <div className="bg-white rounded-xl shadow-md overflow-hidden">
             {/* Staff on Leave Section */}
+            <p className="p-4 border-b text-black">Staff on Leave</p>
             {groupedStaff.leave.length > 0 && (
               <div className="p-4 border-b">
                 {renderStaffOnLeave(groupedStaff.leave)}
@@ -211,7 +212,7 @@ export default function DutyRoster() {
                   <FiSun className="text-white text-xl mr-2" />
                   <h3 className="text-white font-semibold">Morning Shift</h3>
                   <span className="ml-auto bg-white text-amber-600 px-2 py-1 rounded-full text-xs font-medium">
-                    10 AM - 11 PM
+                    10 AM - 9 PM
                   </span>
                 </div>
                 <div className="bg-white rounded-b-lg p-3">
@@ -368,7 +369,7 @@ export default function DutyRoster() {
                         onChange={(e) => handleStaffChange('shift', e.target.value)}
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 text-black"
                       >
-                        <option value="Morning (10 AM - 11 PM)">Morning (10 AM - 11 PM)</option>
+                        <option value="Morning (10 AM - 9 PM)">Morning (10 AM - 9 PM)</option>
                         <option value="Afternoon (12 PM - 11 PM)">Afternoon (12 PM - 11 PM)</option>
                       </select>
                     </div>

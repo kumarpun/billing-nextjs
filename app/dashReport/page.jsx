@@ -7,6 +7,8 @@ import SalesReportClient from "../components/orderReportFilter";
 import Employee from "../employee/page";
 import Inventory from "../inventory/page";
 import EmployeeBirthday from "../empbirthday/page";
+import DutyRoster from "../dutyRoster/page";
+import DutyRosterWarning from "../components/dutyWarning";
 
 // Add this at the top of dashReport.jsx
 const getRunningTablesCount = async () => {
@@ -147,7 +149,7 @@ export default function DashReport() {
    
       </div>
         </nav>
-
+        <DutyRosterWarning />
         {showInventoryWarning && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 max-w-md w-full">
@@ -200,6 +202,14 @@ export default function DashReport() {
             >
               <FaHome className="mr-3" />
               Dashboard
+            </Link>
+            <Link
+              href="#"
+              className={`flex items-center p-3 rounded-lg hover:bg-[#283141] transition ${activeTab === "duty" ? "bg-[#283141]" : ""}`}
+              onClick={() => setActiveTab("duty")}
+            >
+              <FaChartBar className="mr-3" />
+              Duty Roster
             </Link>
             <Link
               href="#"
@@ -293,6 +303,12 @@ export default function DashReport() {
     </div>
   </>
 )}
+
+{activeTab === "duty" && (
+            <div className="ml-64 flex-1 -mt-20"> {/* Content area */} 
+            <DutyRoster />
+          </div>
+          )}
 
           {/* Sales Report Table (Visible on Sales Tab) */}
             {activeTab === "sales" && (

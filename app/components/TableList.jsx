@@ -123,7 +123,7 @@ export default async function TableList() {
 
     return (
         <>
-            <InventoryWarning />
+            {/* <InventoryWarning /> */}
             {/* <hr className="separator" /> */}
             <div className="bg-page">
             <ToastMessage />

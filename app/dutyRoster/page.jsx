@@ -13,6 +13,17 @@ export default function DutyRoster() {
   const [searchTerm, setSearchTerm] = useState('');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
+  // Date helper functions
+  const getTodayDate = () => {
+    const today = new Date();
+    return today.toISOString().split('T')[0];
+  };
+
+  const formatDisplayDate = (dateString) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
+
   // Fetch staff data from API
   useEffect(() => {
     const fetchStaff = async () => {
@@ -20,7 +31,6 @@ export default function DutyRoster() {
         const response = await fetch('/api/duty');
         const data = await response.json();
         
-        // Transform all staff data but we'll filter in the display logic
         const transformedData = data.duty.map(staff => ({
           id: staff._id,
           name: staff.name,
@@ -57,13 +67,23 @@ export default function DutyRoster() {
         body: JSON.stringify({
           id: staffToUpdate.id,
           shift: staffToUpdate.shift,
-          date: staffToUpdate.date,
+          date: getTodayDate(), // Always use today's date when updating
           leave: staffToUpdate.leave
         }),
       });
 
-      // Update the staff list with the new data
-      setStaffList(editableStaff);
+      // Update the local state with the new data
+      const updatedStaffList = staffList.map(staff => 
+        staff.id === selectedStaff.id ? { 
+          ...staff, 
+          shift: selectedStaff.shift,
+          leave: selectedStaff.leave,
+          date: getTodayDate() // Update the date to today
+        } : staff
+      );
+      
+      setStaffList(updatedStaffList);
+      setEditableStaff(updatedStaffList);
       setSelectedStaff(null);
       setSearchTerm('');
       setIsModalOpen(false);
@@ -85,14 +105,12 @@ export default function DutyRoster() {
     }));
   };
 
-  // Filter staff based on search term
   const filteredStaff = editableStaff.filter(staff =>
     staff.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Filter and group today's staff by shift and leave status
   const getTodayStaff = () => {
-    const today = '2025-06-15';
+    const today = getTodayDate();
     const todayStaff = staffList.filter(staff => staff.date === today);
     
     return todayStaff.reduce((acc, staff) => {
@@ -109,7 +127,6 @@ export default function DutyRoster() {
 
   const groupedStaff = getTodayStaff();
 
-  // Function to render staff on leave in a compact format
   const renderStaffOnLeave = (leaveStaff) => {
     if (leaveStaff.length === 0) return null;
     
@@ -148,37 +165,30 @@ export default function DutyRoster() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
-           <nav className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-8 py-3 bg-[#232b38]">            
-            <div style={{ flex: 0.4 }}></div>
-      <Link className="absolute left-1/2 transform -translate-x-1/2 font-bold page-title" href={"/dashReport"}>
-      HYBE Food & Drinks
-      </Link>
-        {/* {Array.from("HYBE Food & Drinks").map((char, index) => (
-        <span key={index} className={`char-${index}`}>{char}</span>
-    ))}     */}
-      <div style={{ display: 'flex', gap: '12px' }}>
-      {/* <Link className="px-6 py-2 mt-3 add-table" href={"/listReport"}>
-        Sales Report
-      </Link> */}
-       <Link className="hover:text-gray-300 font-medium transition-colors duration-200 nav-button" href={"/tables"}>
-         Tables
-      </Link>
-        <a
-                        className="hover:text-gray-300 font-medium transition-colors duration-200 nav-button"
-                        href="https://docs.google.com/spreadsheets/d/1bsYPfCKZkcrKZrWfRqS4RiKmwOXwLMQ3USFfJ9wiKwg/edit?gid=1009457690#gid=1009457690"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        Credit
-                    </a>
-   
-      </div>
-        </nav>
-        <br></br>
+      <nav className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-8 py-3 bg-[#232b38]">            
+        <div style={{ flex: 0.4 }}></div>
+        <Link className="absolute left-1/2 transform -translate-x-1/2 font-bold page-title" href={"/dashReport"}>
+          HYBE Food & Drinks
+        </Link>
+        <div style={{ display: 'flex', gap: '12px' }}>
+          <Link className="hover:text-gray-300 font-medium transition-colors duration-200 nav-button" href={"/tables"}>
+            Tables
+          </Link>
+          <a
+            className="hover:text-gray-300 font-medium transition-colors duration-200 nav-button"
+            href="https://docs.google.com/spreadsheets/d/1bsYPfCKZkcrKZrWfRqS4RiKmwOXwLMQ3USFfJ9wiKwg/edit?gid=1009457690#gid=1009457690"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Credit
+          </a>
+        </div>
+      </nav>
+      <br></br>
       <div className="max-w-6xl mx-auto">
         <header className="mb-8">
           <h1 className="text-3xl font-bold text-indigo-800">Duty Roster</h1>
-          <p className="text-gray-600">Showing roster for: June 15, 2025</p>
+          <p className="text-gray-600">Showing roster for: {formatDisplayDate(getTodayDate())}</p>
         </header>
 
         <div className="flex justify-end mb-6">
@@ -197,7 +207,6 @@ export default function DutyRoster() {
           </div>
         ) : (
           <div className="bg-white rounded-xl shadow-md overflow-hidden">
-            {/* Staff on Leave Section */}
             <p className="p-4 border-b text-black">Staff on Leave</p>
             {groupedStaff.leave.length > 0 && (
               <div className="p-4 border-b">
@@ -212,7 +221,7 @@ export default function DutyRoster() {
                   <FiSun className="text-white text-xl mr-2" />
                   <h3 className="text-white font-semibold">Morning Shift</h3>
                   <span className="ml-auto bg-white text-amber-600 px-2 py-1 rounded-full text-xs font-medium">
-                    10 AM - 9 PM
+                    10 AM - 8 PM
                   </span>
                 </div>
                 <div className="bg-white rounded-b-lg p-3">
@@ -284,7 +293,7 @@ export default function DutyRoster() {
           <div className="bg-white rounded-xl shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
             <div className="border-b p-4 flex justify-between items-center sticky top-0 bg-white z-10">
               <h3 className="text-lg font-semibold text-gray-900">
-                Update Roster (June 15, 2025)
+                Update Roster ({formatDisplayDate(getTodayDate())})
               </h3>
               <button onClick={() => {
                 setIsModalOpen(false);
@@ -295,7 +304,6 @@ export default function DutyRoster() {
               </button>
             </div>
             <div className="p-6 space-y-6">
-              {/* Combined Search and Select Field */}
               <div className="relative">
                 <label className="block text-sm font-medium text-gray-700 mb-1">Select Staff</label>
                 <div className="relative">
@@ -326,7 +334,10 @@ export default function DutyRoster() {
                             key={staff.id}
                             className="p-3 hover:bg-indigo-50 cursor-pointer text-black"
                             onClick={() => {
-                              setSelectedStaff(staff);
+                              setSelectedStaff({
+                                ...staff,
+                                date: getTodayDate() // Set today's date when selecting staff
+                              });
                               setIsDropdownOpen(false);
                             }}
                           >
@@ -336,8 +347,6 @@ export default function DutyRoster() {
                               </div>
                               <div>
                                 <p className="font-medium">{staff.name}</p>
-                                {/* <p className="text-xs text-gray-500">{staff.designation}</p> */}
-                                {/* <p className="text-xs text-gray-400">Current date: {staff.date}</p> */}
                               </div>
                             </div>
                           </li>
@@ -348,7 +357,6 @@ export default function DutyRoster() {
                 </div>
               </div>
 
-              {/* Staff Details Form */}
               {selectedStaff && (
                 <div className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -356,9 +364,9 @@ export default function DutyRoster() {
                       <label className="block text-sm font-medium text-gray-700 mb-1">Date</label>
                       <input
                         type="date"
-                        value={selectedStaff.date}
-                        onChange={(e) => handleStaffChange('date', e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 text-black"
+                        value={getTodayDate()}
+                        readOnly
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-100 text-black"
                       />
                     </div>
                     
@@ -369,7 +377,7 @@ export default function DutyRoster() {
                         onChange={(e) => handleStaffChange('shift', e.target.value)}
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 text-black"
                       >
-                        <option value="Morning (10 AM - 9 PM)">Morning (10 AM - 9 PM)</option>
+                        <option value="Morning (10 AM - 8 PM)">Morning (10 AM - 8 PM)</option>
                         <option value="Afternoon (12 PM - 11 PM)">Afternoon (12 PM - 11 PM)</option>
                       </select>
                     </div>

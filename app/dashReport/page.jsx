@@ -149,7 +149,6 @@ export default function DashReport() {
    
       </div>
         </nav>
-        <DutyRosterWarning />
         {showInventoryWarning && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 max-w-md w-full">
@@ -184,7 +183,7 @@ export default function DashReport() {
           </div>
         </div>
       )}
-
+        <DutyRosterWarning />
       {/* Sidebar + Main Content Layout */}
       <div className="flex">
         {/* Sidebar (Dark Theme) */}

@@ -207,7 +207,7 @@ export default function DutyRoster() {
           </div>
         ) : (
           <div className="bg-white rounded-xl shadow-md overflow-hidden">
-            <p className="p-4 border-b text-black">Staff on Leave</p>
+            {/* <p className="p-4 border-b text-black">Staff on Leave</p> */}
             {groupedStaff.leave.length > 0 && (
               <div className="p-4 border-b">
                 {renderStaffOnLeave(groupedStaff.leave)}

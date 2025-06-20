@@ -34,6 +34,7 @@ export default function SalesReportClient() {
 
     return (
         <>
+        <br></br>
             <div className="filter-options text-black">
                 <label htmlFor="filter">Select Filter: </label>
                 <div className="dropdown text-black">

@@ -296,6 +296,7 @@ export default function SalesReportFilter() {
 
     return (
         <>
+        <br></br>
             <div className="filter-options text-black">
                 <label htmlFor="filter">Select Filter: </label>
                 <select id="filter" value={selectedFilter} className="text-black" onChange={handleFilterChange}>

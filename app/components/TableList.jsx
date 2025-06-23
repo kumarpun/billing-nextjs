@@ -76,7 +76,7 @@ export default async function TableList() {
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900 px-4 py-6 sm:px-8 transition-colors duration-300 relative">
       {/* Background Gradient Layer */}
-      <div className="fixed inset-0 bg-gradient-to-br from-gray-50 via-gray-100 to-white dark:from-gray-900 dark:via-gray-800 dark:to-black -z-10" />
+      <div className="fixed inset-0 back-table from-gray-50 via-gray-100 to-white dark:from-gray-900 dark:via-gray-800 dark:to-black -z-10" />
       
       {/* Content Container */}
       <div className="relative z-10">

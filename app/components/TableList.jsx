@@ -87,7 +87,7 @@ export default async function TableList() {
 
 
  return (
-   <div className="min-h-screen bg-gradient-to-br from-gray-50 via-gray-100 to-white dark:from-gray-900 dark:via-gray-800 dark:to-black px-4 py-6 sm:px-8 transition-colors duration-300 table-top">
+   <div className="min-h-screen back-table from-gray-50 via-gray-100 to-white dark:from-gray-900 dark:via-gray-800 dark:to-black px-4 py-6 sm:px-8 transition-colors duration-300 table-top">
      {/* Header */}
      {/* <div className="mb-8 text-center">
        <h1 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-amber-600 to-amber-800 dark:from-amber-400 dark:to-amber-600 mb-2">

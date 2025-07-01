@@ -23,7 +23,7 @@ export default function AddOrder({ params }) {
       // kitchen menu
       { value: 'Kitchen menu', label: 'Kitchen menu', price: 0 },
      // veg starter
-     { value: 'Dynamite Fries - veg', label: 'Dynamite Fries veg - NRs 290', price: 290 },
+     { value: 'Dynamite Fries - veg', label: 'Dynamite Fries veg - NRs 260', price: 260 },
      { value: 'Veg Crispy', label: 'Veg Crispy - NRs 250', price: 250 },
      { value: 'Chilly Paneer', label: 'Chilly Paneer - NRs 440', price: 440 },
      { value: 'Corn salt & Pepper', label: 'Corn salt & Pepper - NRs 280', price: 280 },
@@ -53,7 +53,7 @@ export default function AddOrder({ params }) {
      { value: 'Timur Chicken', label: 'Timur Chicken - NRs 350', price: 350 },
    
      // NON-VEG STARTER
-     { value: 'Dynamite Fries non veg', label: 'Dynamite Fries non veg - NRs 260', price: 260 },
+     { value: 'Dynamite Fries non veg', label: 'Dynamite Fries non veg - NRs 290', price: 290 },
      { value: 'Chilly Chicken', label: 'Chilly Chicken - NRs 410', price: 410 },
      { value: 'Hot Wings', label: 'Hot Wings - NRs 440', price: 440 },
      { value: 'Kungpao Chicken', label: 'Kungpao Chicken - NRs 440', price: 440 },

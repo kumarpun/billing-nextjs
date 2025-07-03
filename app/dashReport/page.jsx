@@ -9,6 +9,7 @@ import Inventory from "../inventory/page";
 import EmployeeBirthday from "../empbirthday/page";
 import DutyRoster from "../dutyRoster/page";
 import DutyRosterWarning from "../components/dutyWarning";
+import PriceList from "../priceList/page";
 
 // Add this at the top of dashReport.jsx
 const getRunningTablesCount = async () => {
@@ -202,6 +203,16 @@ export default function DashReport() {
               <FaHome className="mr-3" />
               Dashboard
             </Link>
+
+            <Link
+              href="#"
+              className={`flex items-center p-3 rounded-lg hover:bg-[#283141] transition ${activeTab === "price" ? "bg-[#283141]" : ""}`}
+              onClick={() => setActiveTab("price")}
+            >
+              <FaBriefcase className="mr-3" />
+              Item Price
+            </Link>
+
             <Link
               href="#"
               className={`flex items-center p-3 rounded-lg hover:bg-[#283141] transition ${activeTab === "duty" ? "bg-[#283141]" : ""}`}
@@ -302,6 +313,12 @@ export default function DashReport() {
     </div>
   </>
 )}
+
+{activeTab === "price" && (
+            <div className="ml-64 flex-1 -mt-20"> {/* Content area */} 
+            <PriceList />
+          </div>
+          )}
 
 {activeTab === "duty" && (
             <div className="ml-64 flex-1 -mt-20"> {/* Content area */} 

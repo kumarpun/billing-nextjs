@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { FaExclamationTriangle } from "react-icons/fa";
+import { FaExclamationTriangle, FaTimes } from "react-icons/fa";
 import Link from "next/link";
 
 export default function InventoryWarning() {
@@ -47,7 +47,14 @@ export default function InventoryWarning() {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg p-6 max-w-md w-full">
+      <div className="bg-white rounded-lg p-6 max-w-md w-full relative">
+        <button 
+          onClick={() => setShowInventoryWarning(false)}
+          className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+          aria-label="Close warning"
+        >
+          <FaTimes className="h-5 w-5" />
+        </button>
         <div className="flex items-start">
           <div className="flex-shrink-0">
             <FaExclamationTriangle className="h-6 w-6 text-yellow-500" />

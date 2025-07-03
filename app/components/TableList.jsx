@@ -7,6 +7,7 @@ import ToastMessage from "./ToastMessage";
 import { FaCrown, FaGlassCheers, FaUmbrellaBeach } from "react-icons/fa";
 import { GiRoundTable } from "react-icons/gi";
 import React from 'react';
+import InventoryWarning from "./InventoryWarning";
 
 const ChecklistWrapper = dynamic(() => import("./ChecklistWrapper"), {
   ssr: false,
@@ -84,6 +85,7 @@ export default async function TableList() {
         <div className="mb-8 space-y-4 max-w-4xl mx-auto">
           <ToastMessage />
           <ChecklistWrapper />
+          <InventoryWarning />
         </div>
 
         <div className="space-y-[-8px] max-w-7xl mx-auto">

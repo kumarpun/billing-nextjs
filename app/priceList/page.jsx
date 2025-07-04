@@ -323,7 +323,6 @@ export default function PriceList() {
                     value={formData.phone}
                     onChange={handleInputChange}
                     className="w-full px-4 py-3 border-2 border-black rounded-none focus:outline-none focus:ring-2 focus:ring-black"
-                    required
                     disabled={isLoading}
                   />
                 </div>

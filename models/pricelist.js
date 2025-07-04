@@ -5,6 +5,8 @@ const priceSchema = new Schema(
     title: String,
     quantity: String,
     price: Number,
+    vendor: String,
+    phone: String
   },
   {
     timestamps: true,

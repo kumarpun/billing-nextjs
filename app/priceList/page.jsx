@@ -10,7 +10,9 @@ export default function PriceList() {
   const [formData, setFormData] = useState({
     title: '',
     quantity: '',
-    price: ''
+    price: '',
+    vendor: '',
+    phone: ''
   });
   const [isEditing, setIsEditing] = useState(false);
   const [currentId, setCurrentId] = useState(null);
@@ -78,7 +80,7 @@ export default function PriceList() {
       }
       
       setIsModalOpen(false);
-      setFormData({ title: '', quantity: '', price: '' });
+      setFormData({ title: '', quantity: '', price: '', vendor: '', phone: '' });
       setIsEditing(false);
       setCurrentId(null);
     } catch (error) {
@@ -92,7 +94,9 @@ export default function PriceList() {
     setFormData({
       title: price.title,
       quantity: price.quantity,
-      price: price.price
+      price: price.price,
+      vendor: price.vendor,
+      phone: price.phone
     });
     setIsEditing(true);
     setCurrentId(price._id);
@@ -176,6 +180,8 @@ export default function PriceList() {
                   <th className="py-4 px-6 border-b text-left font-medium font-serif text-black">Title</th>
                   <th className="py-4 px-6 border-b text-left font-medium font-serif text-black">Quantity</th>
                   <th className="py-4 px-6 border-b text-left font-medium font-serif text-black">Price</th>
+                  <th className="py-4 px-6 border-b text-left font-medium font-serif text-black">Vendor</th>
+                  <th className="py-4 px-6 border-b text-left font-medium font-serif text-black">Phone</th>
                   <th className="py-4 px-6 border-b text-left font-medium font-serif text-black">Actions</th>
                 </tr>
               </thead>
@@ -186,6 +192,8 @@ export default function PriceList() {
                       <td className="py-4 px-6 border-b border-gray-100">{price.title}</td>
                       <td className="py-4 px-6 border-b border-gray-100">{price.quantity}</td>
                       <td className="py-4 px-6 border-b border-gray-100">Rs. {price.price}</td>
+                      <td className="py-4 px-6 border-b border-gray-100">{price.vendor}</td>
+                      <td className="py-4 px-6 border-b border-gray-100">{price.phone}</td>
                       <td className="py-4 px-6 border-b border-gray-100">
                         <div className="flex gap-3">
                           <button
@@ -210,7 +218,7 @@ export default function PriceList() {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="4" className="py-8 text-center text-gray-500 italic">
+                    <td colSpan="8" className="py-8 text-center text-gray-500 italic">
                       No item found. Add one to get started.
                     </td>
                   </tr>
@@ -231,7 +239,7 @@ export default function PriceList() {
                   onClick={() => {
                     setIsModalOpen(false);
                     setIsEditing(false);
-                    setFormData({ title: '', quantity: '', price: '' });
+                    setFormData({ title: '', quantity: '', price: '', vendor: '', phone: '' });
                   }}
                   className="text-black hover:text-gray-600 text-xl"
                 >
@@ -287,6 +295,38 @@ export default function PriceList() {
                     disabled={isLoading}
                   />
                 </div>
+
+                <div className="mb-5">
+                  <label className="block text-gray-800 mb-2 font-medium uppercase text-sm tracking-wider" htmlFor="quantity">
+                    Vendor
+                  </label>
+                  <input
+                    type="text"
+                    id="vendor"
+                    name="vendor"
+                    value={formData.vendor}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-3 border-2 border-black rounded-none focus:outline-none focus:ring-2 focus:ring-black"
+                    required
+                    disabled={isLoading}
+                  />
+                </div>
+
+                <div className="mb-5">
+                  <label className="block text-gray-800 mb-2 font-medium uppercase text-sm tracking-wider" htmlFor="quantity">
+                    Phone
+                  </label>
+                  <input
+                    type="text"
+                    id="phone"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-3 border-2 border-black rounded-none focus:outline-none focus:ring-2 focus:ring-black"
+                    required
+                    disabled={isLoading}
+                  />
+                </div>
                 
                 <div className="flex justify-end gap-3">
                   <button
@@ -294,7 +334,7 @@ export default function PriceList() {
                     onClick={() => {
                       setIsModalOpen(false);
                       setIsEditing(false);
-                      setFormData({ title: '', quantity: '', price: '' });
+                      setFormData({ title: '', quantity: '', price: '', vendor: '', phone: '' });
                     }}
                     className="px-6 py-3 border-2 border-black bg-white text-black hover:bg-gray-100 font-medium transition-colors duration-200"
                     disabled={isLoading}

@@ -14,9 +14,9 @@ export async function GET() {
 }
 
 export async function POST(request) {
-    const { title, quantity, price } = await request.json();
+    const { title, quantity, price, vendor, phone } = await request.json();
     await dbConnect();
-    const newPrice = await Price.create({ title, quantity, price });
+    const newPrice = await Price.create({ title, quantity, price, vendor, phone });
     return NextResponse.json({ message: "Price added successfully.", price: newPrice }, { status: 201 });
 }
 

@@ -12,7 +12,7 @@ export default function EmployeeBirthday() {
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
-        const response = await fetch('https://billing-nextjs.vercel.app/api/employee');
+        const response = await fetch('/api/employee');
         if (!response.ok) {
           throw new Error('Failed to fetch employee data');
         }

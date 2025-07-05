@@ -1,8 +1,8 @@
 "use client";
-
 import { useState, useEffect } from 'react';
 import { FiPlus, FiX, FiUser, FiSun, FiMoon, FiChevronDown, FiSearch } from 'react-icons/fi';
-import Link from "next/link";
+import SideNav from "../components/sidenav";
+import TopNav from "../components/topnav";
 
 export default function DutyRoster() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -12,6 +12,11 @@ export default function DutyRoster() {
   const [selectedStaff, setSelectedStaff] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+
+  const toggleSidebar = () => {
+    setIsSidebarCollapsed(!isSidebarCollapsed);
+  };
 
   // Date helper functions
   const getTodayDate = () => {
@@ -164,127 +169,115 @@ export default function DutyRoster() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
-      <nav className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-8 py-3 bg-[#232b38]">            
-        <div style={{ flex: 0.4 }}></div>
-        <Link className="absolute left-1/2 transform -translate-x-1/2 font-bold page-title" href={"/dashReport"}>
-          HYBE Food & Drinks
-        </Link>
-        <div style={{ display: 'flex', gap: '12px' }}>
-          <Link className="hover:text-gray-300 font-medium transition-colors duration-200 nav-button" href={"/tables"}>
-            Tables
-          </Link>
-          <a
-            className="hover:text-gray-300 font-medium transition-colors duration-200 nav-button"
-            href="https://docs.google.com/spreadsheets/d/1bsYPfCKZkcrKZrWfRqS4RiKmwOXwLMQ3USFfJ9wiKwg/edit?gid=1009457690#gid=1009457690"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Credit
-          </a>
-        </div>
-      </nav>
-      <br></br>
-      <div className="max-w-6xl mx-auto">
-        <header className="mb-8">
-          <h1 className="text-3xl font-bold text-indigo-800">Duty Roster</h1>
-          <p className="text-gray-600">Showing roster for: {formatDisplayDate(getTodayDate())}</p>
-        </header>
+    <div className="flex min-h-screen bg-white">
+      <SideNav isCollapsed={isSidebarCollapsed} />
+      
+      <TopNav isSidebarCollapsed={isSidebarCollapsed} toggleSidebar={toggleSidebar} />
 
-        <div className="flex justify-end mb-6">
-          <button
-            onClick={() => setIsModalOpen(true)}
-            className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg flex items-center transition-colors"
-          >
-            <FiPlus className="mr-2" />
-            Update Roster
-          </button>
-        </div>
+      <div className={`flex-1 ${isSidebarCollapsed ? "ml-24" : "ml-64"} transition-all duration-300`}>
+        <div className="p-6 bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
+          <br></br>
+          <div className="max-w-6xl mx-auto">
+            <header className="mb-8">
+              <h1 className="text-3xl font-bold text-indigo-800">Duty Roster</h1>
+              <p className="text-gray-600">Showing roster for: {formatDisplayDate(getTodayDate())}</p>
+            </header>
 
-        {isLoading ? (
-          <div className="flex justify-center items-center h-64">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
-          </div>
-        ) : (
-          <div className="bg-white rounded-xl shadow-md overflow-hidden">
-            {/* <p className="p-4 border-b text-black">Staff on Leave</p> */}
-            {groupedStaff.leave.length > 0 && (
-              <div className="p-4 border-b">
-                {renderStaffOnLeave(groupedStaff.leave)}
+            <div className="flex justify-end mb-6">
+              <button
+                onClick={() => setIsModalOpen(true)}
+                className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg flex items-center transition-colors"
+              >
+                <FiPlus className="mr-2" />
+                Update Roster
+              </button>
+            </div>
+
+            {isLoading ? (
+              <div className="flex justify-center items-center h-64">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
+              </div>
+            ) : (
+              <div className="bg-white rounded-xl shadow-md overflow-hidden">
+                {groupedStaff.leave.length > 0 && (
+                  <div className="p-4 border-b">
+                    {renderStaffOnLeave(groupedStaff.leave)}
+                  </div>
+                )}
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-4">
+                  {/* Morning Shift */}
+                  <div className="bg-amber-50 rounded-lg p-4">
+                    <div className="bg-gradient-to-r from-amber-400 to-amber-500 p-3 rounded-t-lg flex items-center">
+                      <FiSun className="text-white text-xl mr-2" />
+                      <h3 className="text-white font-semibold">Morning Shift</h3>
+                      <span className="ml-auto bg-white text-amber-600 px-2 py-1 rounded-full text-xs font-medium">
+                        10 AM - 8 PM
+                      </span>
+                    </div>
+                    <div className="bg-white rounded-b-lg p-3">
+                      {groupedStaff.morning.length > 0 ? (
+                        <ul className="divide-y divide-gray-100">
+                          {groupedStaff.morning.map(staff => (
+                            <li key={staff.id} className="py-3 flex items-center">
+                              <div className="flex items-center">
+                                <div className="bg-indigo-100 p-2 rounded-full mr-3">
+                                  <FiUser className="text-indigo-600" />
+                                </div>
+                                <div>
+                                  <p className="font-medium text-gray-900">{staff.name}</p>
+                                  <p className="text-sm text-gray-500">{staff.designation}</p>
+                                </div>
+                              </div>
+                            </li>
+                          ))}
+                        </ul>
+                      ) : (
+                        <div className="text-center py-4 text-gray-400">
+                          No staff assigned to morning shift
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Afternoon Shift */}
+                  <div className="bg-indigo-50 rounded-lg p-4">
+                    <div className="bg-gradient-to-r from-indigo-500 to-purple-600 p-3 rounded-t-lg flex items-center">
+                      <FiMoon className="text-white text-xl mr-2" />
+                      <h3 className="text-white font-semibold">Afternoon Shift</h3>
+                      <span className="ml-auto bg-white text-indigo-600 px-2 py-1 rounded-full text-xs font-medium">
+                        12 PM - 11 PM
+                      </span>
+                    </div>
+                    <div className="bg-white rounded-b-lg p-3">
+                      {groupedStaff.afternoon.length > 0 ? (
+                        <ul className="divide-y divide-gray-100">
+                          {groupedStaff.afternoon.map(staff => (
+                            <li key={staff.id} className="py-3 flex items-center">
+                              <div className="flex items-center">
+                                <div className="bg-purple-100 p-2 rounded-full mr-3">
+                                  <FiUser className="text-purple-600" />
+                                </div>
+                                <div>
+                                  <p className="font-medium text-gray-900">{staff.name}</p>
+                                  <p className="text-sm text-gray-500">{staff.designation}</p>
+                                </div>
+                              </div>
+                            </li>
+                          ))}
+                        </ul>
+                      ) : (
+                        <div className="text-center py-4 text-gray-400">
+                          No staff assigned to afternoon shift
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
               </div>
             )}
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-4">
-              {/* Morning Shift */}
-              <div className="bg-amber-50 rounded-lg p-4">
-                <div className="bg-gradient-to-r from-amber-400 to-amber-500 p-3 rounded-t-lg flex items-center">
-                  <FiSun className="text-white text-xl mr-2" />
-                  <h3 className="text-white font-semibold">Morning Shift</h3>
-                  <span className="ml-auto bg-white text-amber-600 px-2 py-1 rounded-full text-xs font-medium">
-                    10 AM - 8 PM
-                  </span>
-                </div>
-                <div className="bg-white rounded-b-lg p-3">
-                  {groupedStaff.morning.length > 0 ? (
-                    <ul className="divide-y divide-gray-100">
-                      {groupedStaff.morning.map(staff => (
-                        <li key={staff.id} className="py-3 flex items-center">
-                          <div className="flex items-center">
-                            <div className="bg-indigo-100 p-2 rounded-full mr-3">
-                              <FiUser className="text-indigo-600" />
-                            </div>
-                            <div>
-                              <p className="font-medium text-gray-900">{staff.name}</p>
-                              <p className="text-sm text-gray-500">{staff.designation}</p>
-                            </div>
-                          </div>
-                        </li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <div className="text-center py-4 text-gray-400">
-                      No staff assigned to morning shift
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {/* Afternoon Shift */}
-              <div className="bg-indigo-50 rounded-lg p-4">
-                <div className="bg-gradient-to-r from-indigo-500 to-purple-600 p-3 rounded-t-lg flex items-center">
-                  <FiMoon className="text-white text-xl mr-2" />
-                  <h3 className="text-white font-semibold">Afternoon Shift</h3>
-                  <span className="ml-auto bg-white text-indigo-600 px-2 py-1 rounded-full text-xs font-medium">
-                    12 PM - 11 PM
-                  </span>
-                </div>
-                <div className="bg-white rounded-b-lg p-3">
-                  {groupedStaff.afternoon.length > 0 ? (
-                    <ul className="divide-y divide-gray-100">
-                      {groupedStaff.afternoon.map(staff => (
-                        <li key={staff.id} className="py-3 flex items-center">
-                          <div className="flex items-center">
-                            <div className="bg-purple-100 p-2 rounded-full mr-3">
-                              <FiUser className="text-purple-600" />
-                            </div>
-                            <div>
-                              <p className="font-medium text-gray-900">{staff.name}</p>
-                              <p className="text-sm text-gray-500">{staff.designation}</p>
-                            </div>
-                          </div>
-                        </li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <div className="text-center py-4 text-gray-400">
-                      No staff assigned to afternoon shift
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
           </div>
-        )}
+        </div>
       </div>
 
       {/* Update Roster Modal */}

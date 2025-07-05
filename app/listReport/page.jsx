@@ -114,49 +114,10 @@
 // }
 
 import SalesReportFilter from "../components/SalesReportFilter";
-import Link from "next/link";
 
 export default function ListReport() {
     return (
         <>
-            <nav className="flex justify-between items-center px-8 py-3 navbar" style={{ backgroundColor: "#232b38" }}>
-            <div style={{ flex: 0.4 }}></div>
-      <Link className="absolute left-1/2 transform -translate-x-1/2 font-bold page-title" href={"/dashReport"}>
-      HYBE Food & Drinks
-      </Link>
-
-                <div style={{ display: 'flex', gap: '12px' }}>
-                 {/* <a
-                     className="px-6 py-2 mt-3 add-table"
-                href="https://docs.google.com/spreadsheets/d/1LnrugVBIRQ9ZPBkJqHcLTVdJuBnq1O-ovg9xcZJ9M3I/edit?gid=0#gid=0"
-                target="_blank"
-                rel="noopener noreferrer"
-                >
-                Inventory
-                </a> */}
-                  <a
-                        className="hover:text-gray-300 font-medium transition-colors duration-200 nav-button"
-                        href="https://docs.google.com/spreadsheets/d/1bsYPfCKZkcrKZrWfRqS4RiKmwOXwLMQ3USFfJ9wiKwg/edit?gid=1009457690#gid=1009457690"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        Credit
-                    </a>
-                 <Link className="hover:text-gray-300 font-medium transition-colors duration-200 nav-button" href={"/salesCalculation"}>
-                        Sales Calc
-                    </Link>
-
-                    <Link className="hover:text-gray-300 font-medium transition-colors duration-200 nav-button" href={"/listSales"}>
-                        Order Report
-                    </Link>
-                    <Link className="hover:text-gray-300 font-medium transition-colors duration-200 nav-button" href="/">
-                        Back
-                    </Link>
-                </div>
-            </nav>
-            {/* <hr className="separator" /> */}
-
-            {/* Now just render the SalesReportFilter client component */}
             <SalesReportFilter />
         </>
     );

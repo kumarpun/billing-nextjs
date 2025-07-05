@@ -102,26 +102,6 @@ import SalesReportClient from "../components/orderReportFilter"; // Import the c
 export default async function ListSales() {
     return (
         <>
-               <nav className="flex justify-between items-center px-8 py-3 navbar" style={{ backgroundColor: "#232b38" }}>
-            <div style={{ flex: 0.4 }}></div>
-      <Link className="absolute left-1/2 transform -translate-x-1/2 font-bold page-title" href={"/dashReport"}>
-      HYBE Food & Drinks
-      </Link>
-
-                <div style={{ display: 'flex', gap: '12px' }}>
-                <Link className="hover:text-gray-300 font-medium transition-colors duration-200 nav-button" href={"/orderQuantity"}>
-                        Order Details
-                    </Link>
-                  
-                    <Link className="hover:text-gray-300 font-medium transition-colors duration-200 nav-button" href="/listComplement">
-                    Complementary
-                    </Link>
-
-                    <Link className="hover:text-gray-300 font-medium transition-colors duration-200 nav-button" href="/listReport">
-                        Back
-                    </Link>
-                </div>
-            </nav>
             {/* <hr className="separator" /> */}
             <div className="report-bg"></div>
             <div>

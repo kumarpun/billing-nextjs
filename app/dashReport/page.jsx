@@ -7,6 +7,7 @@ import EmployeeBirthday from "../empbirthday/page";
 import DutyRosterWarning from "../components/dutyWarning";
 import SideNav from "../components/sidenav";
 import TopNav from "../components/topnav";
+import SalesTrendChart from "../components/SalesTrends";
 
 const getRunningTablesCount = async () => {
   try {
@@ -96,9 +97,25 @@ export default function DashReport() {
       if (!res.ok) throw new Error("Failed to fetch top items");
       const data = await res.json();
       
-      const itemsArray = Object.entries(data)
-        .filter(([itemName]) => !["Shikhar Ice", "Water"].includes(itemName))
-        .map(([name, quantity]) => ({ name, quantity }))
+      // Group hookah items
+      let hookahCount = 0;
+      const otherItems = [];
+      
+      Object.entries(data).forEach(([name, quantity]) => {
+        if (name.toLowerCase().includes('hookah')) {
+          hookahCount += quantity;
+        } else if (!["Shikhar Ice", "Water"].includes(name)) {
+          otherItems.push({ name, quantity });
+        }
+      });
+
+      // Add combined hookah if there are any hookah items
+      if (hookahCount > 0) {
+        otherItems.push({ name: "Hookah (All Types)", quantity: hookahCount });
+      }
+
+      // Sort and get top 5
+      const itemsArray = otherItems
         .sort((a, b) => b.quantity - a.quantity)
         .slice(0, 5);
       
@@ -110,6 +127,7 @@ export default function DashReport() {
       setIsLoadingTopItems(false);
     }
   };
+
 
   useEffect(() => {
     const fetchReport = async () => {
@@ -315,9 +333,10 @@ export default function DashReport() {
                   <FaChartLine className="text-teal-500 text-sm" />
                   <h3 className="text-md font-semibold text-gray-800">Sales Trend</h3>
                 </div>
-                <div className="flex items-center justify-center h-28 bg-gray-50 rounded">
+                {/* <div className="flex items-center justify-center h-28 bg-gray-50 rounded">
                   <p className="text-sm text-gray-500">Chart visualization coming soon</p>
-                </div>
+                </div> */}
+                <SalesTrendChart />
               </motion.div>
             </div>
 

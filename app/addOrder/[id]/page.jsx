@@ -22,7 +22,10 @@ export default function AddOrder({ params }) {
     const options = [
       // kitchen menu
       { value: 'Kitchen menu', label: 'Kitchen menu', price: 0 },
+      
+     { value: 'Water', label: 'Water - NRs 50', price: 50 },
      // veg starter
+
      { value: 'Dynamite Fries - veg', label: 'Dynamite Fries veg - NRs 290', price: 290 },
      { value: 'Veg Crispy', label: 'Veg Crispy - NRs 250', price: 250 },
      { value: 'Chilly Paneer', label: 'Chilly Paneer - NRs 440', price: 440 },
@@ -493,7 +496,6 @@ export default function AddOrder({ params }) {
 { value: 'Strawberry Ice Cream', label: 'Strawberry Ice Cream - NRs 150', price: 150 },
 { value: 'Butterscotch Ice Cream', label: 'Butterscotch Ice Cream - NRs 150', price: 150 },
 
-        { value: 'Water', label: 'Water - NRs 50', price: 50 },
 
     // Breakfast
     { value: 'Continental breakfast', label: 'Continental breakfast - NRs 520', price: 520 },

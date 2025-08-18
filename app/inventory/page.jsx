@@ -242,6 +242,14 @@ export default function Inventory() {
                 <h3 className="text-3xl font-bold text-gray-800">Bar Inventory</h3>
               </div>
               <div className="flex space-x-3 mt-4 md:mt-0">
+              <a
+                        className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+                        href="https://docs.google.com/spreadsheets/d/1x3qq9BJPoRAQv_SqSz3p8t121VuIFIMPYQoRXUHcXcE/edit?gid=143267826#gid=143267826"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Beverage stock
+                    </a>
                 <button className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
                   <FiPlus className="mr-2" />
                   Add Item

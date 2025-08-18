@@ -27,14 +27,9 @@ export default function TopNav({ isSidebarCollapsed, toggleSidebar }) {
        <Link className="hover:text-gray-300 font-medium transition-colors duration-200 nav-button" href={"/tables"}>
          Tables
       </Link>
-        <a
-                        className="hover:text-gray-300 font-medium transition-colors duration-200 nav-button"
-                        href="https://docs.google.com/spreadsheets/d/1bsYPfCKZkcrKZrWfRqS4RiKmwOXwLMQ3USFfJ9wiKwg/edit?gid=1009457690#gid=1009457690"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        Credit
-                    </a>
+      <Link className="hover:text-gray-300 font-medium transition-colors duration-200 nav-button" href={"/orderQuantity"}>
+         Order Quantity
+      </Link>
    
       </div>
         </nav>

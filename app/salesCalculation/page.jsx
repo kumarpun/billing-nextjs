@@ -33,21 +33,13 @@ export default function SalesCalculation() {
         <>
             <nav className="flex justify-between items-center px-8 py-3 navbar" style={{ backgroundColor: "#232b38" }}>
             <div style={{ flex: 0.4 }}></div>
-      <Link className="absolute left-1/2 transform -translate-x-1/2 font-bold page-title" href={"/listReport"}>
+      <Link className="absolute left-1/2 transform -translate-x-1/2 font-bold page-title" href={"/orderQuantity"}>
       HYBE Food & Drinks
       </Link>
                 <div style={{ display: 'flex', gap: '12px' }}>
-                    <a
-                        className="hover:text-gray-300 font-medium transition-colors duration-200 nav-button"
-                        href="https://docs.google.com/spreadsheets/d/1LnrugVBIRQ9ZPBkJqHcLTVdJuBnq1O-ovg9xcZJ9M3I/edit?gid=0#gid=0"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        Inventory
-                    </a>
-                    <Link className="hover:text-gray-300 font-medium transition-colors duration-200 nav-button" href="/">
-                        Back
-                    </Link>
+                <Link className="hover:text-gray-300 font-medium transition-colors duration-200 nav-button" href={"/tables"}>
+         Tables
+      </Link>
                 </div>
             </nav>
 

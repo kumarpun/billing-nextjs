@@ -4,11 +4,13 @@ import { FaChartBar, FaUsers, FaHome, FaSignOutAlt, FaReceipt, FaBars, FaTimes, 
 
 const navLinks = [
   { key: "dashboard", label: "Dashboard", icon: FaHome, path: "/dashReport" },
-  { key: "price", label: "Item Price", icon: FaDollarSign, path: "/priceList" },
-  { key: "duty", label: "Duty Roster", icon: FaClipboardList, path: "/dutyRoster" },
+  { key: "stock", label: "Stock", icon: FaClipboardList, path: "/stock" },
+  { key: "inventory", label: "Inventory", icon: FaWineBottle, path: "/inventory" },
   { key: "sales", label: "Sales Report", icon: FaChartBar, path: "/listReport" },
   { key: "orders", label: "Order Report", icon: FaReceipt, path: "/listSales" },
-  { key: "inventory", label: "Inventory", icon: FaWineBottle, path: "/inventory" },
+  { key: "orderQuantity", label: "Oder Quantity", icon: FaChartBar, path: "/orderQuantity" },
+  { key: "duty", label: "Duty Roster", icon: FaClipboardList, path: "/dutyRoster" },
+  { key: "price", label: "Item Price", icon: FaDollarSign, path: "/priceList" },
   { key: "employee", label: "Employee", icon: FaUsers, path: "/employee" },
 ];
 

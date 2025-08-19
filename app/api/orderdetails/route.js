@@ -4,12 +4,15 @@ import { dbConnect } from "../dbConnect";
 import dayjs from "dayjs";
 
 export async function GET(request) {
-    await dbConnect(); // Reused MongoDB connection
+    await dbConnect();
 
     const url = new URL(request.url);
     const today = url.searchParams.get("today");
     const lastWeek = url.searchParams.get("lastWeek");
     const lastMonth = url.searchParams.get("lastMonth");
+    const custom = url.searchParams.get("custom");
+    const startDateParam = url.searchParams.get("startDate");
+    const endDateParam = url.searchParams.get("endDate");
 
     const matchStage = {};
 
@@ -26,6 +29,10 @@ export async function GET(request) {
         const oneMonthAgo = dayjs().subtract(1, 'month').startOf('day').toDate();
         const todayEnd = dayjs().endOf('day').toDate();
         matchStage.createdAt = { $gte: oneMonthAgo, $lte: todayEnd };
+    } else if (custom === "true" && startDateParam && endDateParam) {
+        const startDate = dayjs(startDateParam).startOf('day').toDate();
+        const endDate = dayjs(endDateParam).endOf('day').toDate();
+        matchStage.createdAt = { $gte: startDate, $lte: endDate };
     }
 
     try {

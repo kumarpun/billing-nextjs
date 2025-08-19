@@ -1,24 +1,33 @@
-import Link from "next/link";
+"use client";
+import { useState } from "react";
 import OrderQuantityDetails from "../components/orderDetailsClient";
+import SideNav from "../components/sidenav";
+import TopNav from "../components/topnav";
 
-export default async function OrderQuantity() {
-    return (
-        <>
-             <nav className="flex justify-between items-center px-8 py-3 navbar" style={{ backgroundColor: "#232b38" }}>
-            <div style={{ flex: 0.4 }}></div>
-      <Link className="absolute left-1/2 transform -translate-x-1/2 font-bold page-title" href={"/listSales"}>
-      HYBE Food & Drinks
-      </Link>
+export default function OrderQuantity() {
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
-                <div style={{ display: 'flex', gap: '12px' }}>
-                    <Link className="hover:text-gray-300 font-medium transition-colors duration-200 nav-button" href="/listSales">
-                        Back
-                    </Link>
-                </div>
-            </nav>
+  const toggleSidebar = () => {
+    setIsSidebarCollapsed(!isSidebarCollapsed);
+  };
+
+  return (
+    <div className="flex bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen w-full">
+      <SideNav activeTab="orderQuantity" isCollapsed={isSidebarCollapsed} />
+      <div className="flex-1 flex flex-col">
+        <TopNav 
+          isSidebarCollapsed={isSidebarCollapsed} 
+          toggleSidebar={toggleSidebar} 
+        />
+        
+        <div className={`flex-1 p-6 transition-all duration-300 ${isSidebarCollapsed ? "ml-20" : "ml-64"}`}>
+          <div className="max-w-7xl mx-auto">        
             <div>
-                <OrderQuantityDetails /> {/* Use the client component here */}
+              <OrderQuantityDetails />
             </div>
-        </>
-    )
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }

@@ -27,10 +27,6 @@ export default function TopNav({ isSidebarCollapsed, toggleSidebar }) {
        <Link className="hover:text-gray-300 font-medium transition-colors duration-200 nav-button" href={"/tables"}>
          Tables
       </Link>
-      <Link className="hover:text-gray-300 font-medium transition-colors duration-200 nav-button" href={"/orderQuantity"}>
-         Order Quantity
-      </Link>
-   
       </div>
         </nav>
     </div>

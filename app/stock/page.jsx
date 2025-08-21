@@ -75,6 +75,8 @@ export default function Stock() {
         />
         <br></br>
         <br></br>
+        <br></br> 
+        <br></br> 
         <div className={`flex-1 p-6 transition-all duration-300 ${isSidebarCollapsed ? "ml-20" : "ml-64"}`}>
           <div className="max-w-7xl mx-auto">
             <motion.div 

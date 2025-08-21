@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from 'react';
-import { FiPlus, FiX, FiUser, FiSun, FiMoon, FiChevronDown, FiSearch } from 'react-icons/fi';
+import { FiPlus, FiX, FiUser, FiSun, FiMoon, FiChevronDown, FiSearch, FiAlertCircle } from 'react-icons/fi';
 import SideNav from "../components/sidenav";
 import TopNav from "../components/topnav";
 
@@ -13,6 +13,7 @@ export default function DutyRoster() {
   const [searchTerm, setSearchTerm] = useState('');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [missingStaff, setMissingStaff] = useState([]); // New state for missing staff
 
   const toggleSidebar = () => {
     setIsSidebarCollapsed(!isSidebarCollapsed);
@@ -47,6 +48,11 @@ export default function DutyRoster() {
         
         setStaffList(transformedData);
         setEditableStaff([...transformedData]);
+        
+        // Find missing staff (staff with dates not equal to today)
+        const today = getTodayDate();
+        const missing = transformedData.filter(staff => staff.date !== today);
+        setMissingStaff(missing);
       } catch (error) {
         console.error("Error fetching staff:", error);
       } finally {
@@ -89,6 +95,12 @@ export default function DutyRoster() {
       
       setStaffList(updatedStaffList);
       setEditableStaff(updatedStaffList);
+      
+      // Update missing staff list
+      const today = getTodayDate();
+      const missing = updatedStaffList.filter(staff => staff.date !== today);
+      setMissingStaff(missing);
+      
       setSelectedStaff(null);
       setSearchTerm('');
       setIsModalOpen(false);
@@ -181,6 +193,27 @@ export default function DutyRoster() {
             <header className="mb-8">
               <h1 className="text-3xl font-bold text-indigo-800">Duty Roster</h1>
               <p className="text-gray-600">Showing roster for: {formatDisplayDate(getTodayDate())}</p>
+              
+              {/* Missing Staff Warning Message */}
+              {missingStaff.length > 0 && (
+                <div className="mt-4 bg-yellow-50 border border-yellow-200 rounded-lg p-4 flex items-start">
+                  <FiAlertCircle className="text-yellow-500 mr-3 mt-0.5 flex-shrink-0" size={20} />
+                  <div>
+                    <p className="text-yellow-800 font-medium">Attention: Duty roster not added for following staff:</p>
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      {missingStaff.map((staff, index) => (
+                        <span key={staff.id} className="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm font-medium">
+                          {staff.name}
+                          {index < missingStaff.length - 1 && ','}
+                        </span>
+                      ))}
+                    </div>
+                    <p className="text-yellow-700 text-sm mt-2">
+                      Please update their duty to today's date.
+                    </p>
+                  </div>
+                </div>
+              )}
             </header>
 
             <div className="flex justify-end mb-6">

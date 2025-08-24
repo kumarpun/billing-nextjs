@@ -111,44 +111,44 @@ export async function GET(request) {
             }
         ]);
 
-        // Create ML products mapping
+        // Create ML products mapping (using lowercase for case-insensitive matching)
         const mlProducts = {
             "8848": 0,
-            "Nude": 0,
-            "Absolute": 0,
-            "Old Durbar Regular": 0,
-            "Chimney": 0,
-            "Gurkhas & Guns": 0,
-            "Jack Daniel": 0,
-            "Glenfiddich": 0,
-            "JW Double": 0,
-            "JW Black": 0,
-            "Chivas": 0,
-            "Jameson": 0,
-            "Baileys": 0,
-            "Triple": 0,
-            "Khukri Rum light": 0,
-            "Khukri Rum dark": 0,
-            "Khukri Spiced Rum": 0,
-            "Beefeater": 0,
-            "Snow man": 0,
-            "Agavita": 0
+            "nude": 0,
+            "absolute": 0,
+            "old durbar regular": 0,
+            "chimney": 0,
+            "gurkhas & guns": 0,
+            "jack daniel": 0,
+            "glenfiddich": 0,
+            "jw double": 0,
+            "jw black": 0,
+            "chivas": 0,
+            "jameson": 0,
+            "baileys": 0,
+            "triple": 0,
+            "khukri rum light": 0,
+            "khukri rum dark": 0,
+            "khukri spiced rum": 0,
+            "beefeater": 0,
+            "snow man": 0,
+            "agavita": 0
         };
 
-        // Create sales map for regular items (non-ML)
+        // Create sales map for regular items (non-ML) with lowercase keys
         const salesMap = {};
 
         // Calculate ML sales for all ML-based products
         ordersWithSales.forEach(order => {
             const title = order._id;
             const quantity = order.total_quantity;
-            const normalizedTitle = title.toLowerCase();
+            const normalizedTitle = title.toLowerCase().trim();
             
             let isMlProduct = false;
             
             // Check if this is an ML-based product
             for (const product in mlProducts) {
-                if (normalizedTitle.includes(product.toLowerCase())) {
+                if (normalizedTitle.includes(product)) {
                     const mlMatch = title.match(/(\d+)ml/i);
                     const mlValue = mlMatch ? parseInt(mlMatch[1]) : 750;
                     mlProducts[product] += quantity * mlValue;
@@ -157,59 +157,30 @@ export async function GET(request) {
                 }
             }
             
-            // If not an ML product, add to regular sales map
+            // If not an ML product, add to regular sales map with normalized key
             if (!isMlProduct) {
-                salesMap[title] = (salesMap[title] || 0) + quantity;
+                // Use normalized title for case-insensitive matching
+                const salesKey = normalizedTitle;
+                salesMap[salesKey] = (salesMap[salesKey] || 0) + quantity;
             }
         });
 
         // Check if we're querying a specific date range or latest records
         const hasDateFilter = today || lastWeek || lastMonth || startDate || endDate || date;
 
+        let inventoryRecords = [];
+
         if (hasDateFilter) {
             // Get inventory for the date range
-            const dailyRecords = await Inventory.find({ 
+            inventoryRecords = await Inventory.find({ 
                 date: {
                     $gte: targetDate,
                     $lt: nextDay
                 }
             });
-
-            // Update sales field with actual order data
-            const updatedRecords = dailyRecords.map(record => {
-                let sales = 0;
-                let closing = 0;
-                
-                // Check if this is an ML-based product
-                let isMlProduct = false;
-                for (const product in mlProducts) {
-                    if (record.title.toLowerCase().includes(product.toLowerCase())) {
-                        sales = mlProducts[product];
-                        // CORRECTED: Include manualOrderAdjustment in closing calculation
-                        closing = record.opening + record.received - sales - record.manualOrderAdjustment;
-                        isMlProduct = true;
-                        break;
-                    }
-                }
-                
-                // If not ML-based, use regular sales
-                if (!isMlProduct) {
-                    sales = salesMap[record.title] || 0;
-                    // CORRECTED: Include manualOrderAdjustment in closing calculation
-                    closing = record.opening + record.received - sales - record.manualOrderAdjustment;
-                }
-                
-                return {
-                    ...record.toObject(),
-                    sales: sales,
-                    closing: closing
-                };
-            });
-
-            return NextResponse.json({ inventory: updatedRecords });
         } else {
             // Get current inventory - show latest records for each item (no date filter)
-            const latestRecords = await Inventory.aggregate([
+            inventoryRecords = await Inventory.aggregate([
                 {
                     $sort: { date: -1 }
                 },
@@ -223,42 +194,45 @@ export async function GET(request) {
                     $replaceRoot: { newRoot: "$doc" }
                 }
             ]);
-
-            // Update sales and closing for latest records
-            const updatedRecords = latestRecords.map(record => {
-                let sales = 0;
-                let closing = 0;
-                
-                // Check if this is an ML-based product
-                let isMlProduct = false;
-                for (const product in mlProducts) {
-                    if (record.title.toLowerCase().includes(product.toLowerCase())) {
-                        sales = mlProducts[product];
-                        // CORRECTED: Include manualOrderAdjustment in closing calculation
-                        closing = record.opening + record.received - sales - record.manualOrderAdjustment;
-                        isMlProduct = true;
-                        break;
-                    }
-                }
-                
-                // If not ML-based, use regular sales
-                if (!isMlProduct) {
-                    sales = salesMap[record.title] || 0;
-                    // CORRECTED: Include manualOrderAdjustment in closing calculation
-                    closing = record.opening + record.received - sales - record.manualOrderAdjustment;
-                }
-                
-                return {
-                    ...record,
-                    sales: sales,
-                    closing: closing
-                };
-            });
-
-            return NextResponse.json({ 
-                inventory: updatedRecords
-            });
         }
+
+        // Update sales field with actual order data
+        const updatedRecords = inventoryRecords.map(record => {
+            let sales = 0;
+            let closing = 0;
+            
+            const normalizedTitle = record.title.toLowerCase().trim();
+            
+            // Check if this is an ML-based product
+            let isMlProduct = false;
+            for (const product in mlProducts) {
+                if (normalizedTitle.includes(product)) {
+                    sales = mlProducts[product];
+                    // Include manualOrderAdjustment in closing calculation
+                    closing = record.opening + record.received - sales - (record.manualOrderAdjustment || 0);
+                    isMlProduct = true;
+                    break;
+                }
+            }
+            
+            // If not ML-based, use regular sales from salesMap
+            if (!isMlProduct) {
+                sales = salesMap[normalizedTitle] || 0;
+                // Include manualOrderAdjustment in closing calculation
+                closing = record.opening + record.received - sales - (record.manualOrderAdjustment || 0);
+            }
+            
+            return {
+                ...record.toObject ? record.toObject() : record,
+                sales: sales,
+                closing: closing
+            };
+        });
+
+        return NextResponse.json({ 
+            inventory: updatedRecords
+        });
+
     } catch (error) {
         console.error("Error fetching inventory:", error);
         return NextResponse.json({ error: "Error fetching inventory" }, { status: 500 });

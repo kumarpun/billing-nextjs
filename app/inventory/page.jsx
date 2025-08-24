@@ -17,6 +17,7 @@ export default function Inventory() {
   const [opening, setOpening] = useState(0);
   const [received, setReceived] = useState(0);
   const [sales, setSales] = useState(0);
+  const [title, setTitle] = useState(0);
   const [manualOrderAdjustment, setManualOrderAdjustment] = useState(0);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [isAddLoading, setIsAddLoading] = useState(false);
@@ -282,6 +283,7 @@ export default function Inventory() {
     setOpening(item.opening);
     setReceived(item.received);
     setSales(item.sales);
+    setTitle(item.name);
     setManualOrderAdjustment(item.manualOrderAdjustment);
     setIsEditModalOpen(true);
   };
@@ -299,6 +301,7 @@ export default function Inventory() {
           opening: parseFloat(opening),
           received: parseFloat(received),
           sales: parseFloat(sales),
+          title: title,
           manualOrderAdjustment: parseFloat(manualOrderAdjustment)
         }),
       });
@@ -394,6 +397,18 @@ export default function Inventory() {
                   </button>
                 </div>
                 <form onSubmit={handleEditSubmit}>
+                <div className="mb-4">
+                    <label className="block text-gray-700 text-sm font-medium mb-2">
+                      Title
+                    </label>
+                    <input
+                      type="text"
+                      value={title}
+                      onChange={(e) => setTitle(e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
+                      step="any"
+                    />
+                  </div>
                   <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-medium mb-2">
                       Opening Stock

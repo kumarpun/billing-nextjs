@@ -11,6 +11,7 @@ const navLinks = [
   { key: "orderQuantity", label: "Oder Quantity", icon: FaChartBar, path: "/orderQuantity" },
   { key: "duty", label: "Duty Roster", icon: FaClipboardList, path: "/dutyRoster" },
   { key: "price", label: "Item Price", icon: FaDollarSign, path: "/priceList" },
+  { key: "credit", label: "Credit", icon: FaUsers, path: "/credit" },
   { key: "employee", label: "Employee", icon: FaUsers, path: "/employee" },
 ];
 

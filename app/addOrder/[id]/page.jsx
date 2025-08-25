@@ -426,6 +426,10 @@ export default function AddOrder({ params }) {
   { value: 'Jager bomb', label: 'Jager bomb - NRs 595', price: 595 },
   { value: 'Flaming Lambo', label: 'Flaming Lambo - NRs 1400', price: 1400 },
 
+  { value: 'Jägermeister -30ml', label: 'Jägermeister 30ml - NRs 400', price: 400 },
+  { value: 'Jägermeister -60ml', label: 'Jägermeister -60ml - NRs 750', price: 750 },
+
+
         // Espresso Brew (Barista Menu)
         { value: 'Ristretto', label: 'Ristretto - NRs 90', price: 90 },
         { value: 'Espresso', label: 'Espresso - NRs 100', price: 100 },

@@ -171,7 +171,7 @@ export default function Credit() {
         <TopNav isSidebarCollapsed={isSidebarCollapsed} toggleSidebar={toggleSidebar} />
         <div className={`flex-1 p-6 transition-all duration-300 ${isSidebarCollapsed ? "ml-20" : "ml-64"}`}>
             <br></br>
-          <div className="flex justify-between items-center mb-6">
+          <div className="flex justify-between items-center mb-4"> {/* Reduced margin-bottom from mb-6 to mb-4 */}
             <button 
               onClick={()=>{setFormData({ name: "", date: new Date().toISOString().split("T")[0], amount: "", paid: false, remarks: "" }); setEditingId(null); setShowModal(true);}} 
               className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:from-blue-600 hover:to-indigo-700 flex items-center group"
@@ -184,7 +184,7 @@ export default function Credit() {
           </div>
 
           {successMessage && (
-            <div className="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6 rounded-md shadow-sm flex items-center animate-fade-in">
+            <div className="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-4 rounded-md shadow-sm flex items-center animate-fade-in"> {/* Reduced margin-bottom from mb-6 to mb-4 */}
               <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
               </svg>
@@ -193,12 +193,12 @@ export default function Credit() {
           )}
 
           {/* Summary Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-shadow duration-300">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4"> {/* Reduced gap from gap-6 to gap-4, margin-bottom from mb-8 to mb-4 */}
+            <div className="bg-white rounded-2xl p-5 shadow-lg border border-gray-100 hover:shadow-xl transition-shadow duration-300"> {/* Reduced padding from p-6 to p-5 */}
               <div className="flex justify-between items-start">
                 <div>
                   <p className="text-sm text-gray-500 font-medium">Total Credits</p>
-                  <h3 className="text-2xl font-bold mt-2 text-gray-800">{formatCurrency(totalAmount)}</h3>
+                  <h3 className="text-2xl font-bold mt-1 text-gray-800">{formatCurrency(totalAmount)}</h3> {/* Reduced margin-top from mt-2 to mt-1 */}
                 </div>
                 <div className="bg-blue-100 p-3 rounded-xl">
                   <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -208,11 +208,11 @@ export default function Credit() {
               </div>
             </div>
             
-            <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-shadow duration-300">
+            <div className="bg-white rounded-2xl p-5 shadow-lg border border-gray-100 hover:shadow-xl transition-shadow duration-300"> {/* Reduced padding from p-6 to p-5 */}
               <div className="flex justify-between items-start">
                 <div>
                   <p className="text-sm text-gray-500 font-medium">Paid Amount</p>
-                  <h3 className="text-2xl font-bold mt-2 text-gray-800">{formatCurrency(totalPaid)}</h3>
+                  <h3 className="text-2xl font-bold mt-1 text-gray-800">{formatCurrency(totalPaid)}</h3> {/* Reduced margin-top from mt-2 to mt-1 */}
                 </div>
                 <div className="bg-green-100 p-3 rounded-xl">
                   <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -222,11 +222,11 @@ export default function Credit() {
               </div>
             </div>
             
-            <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-shadow duration-300">
+            <div className="bg-white rounded-2xl p-5 shadow-lg border border-gray-100 hover:shadow-xl transition-shadow duration-300"> {/* Reduced padding from p-6 to p-5 */}
               <div className="flex justify-between items-start">
                 <div>
                   <p className="text-sm text-gray-500 font-medium">Pending Amount</p>
-                  <h3 className="text-2xl font-bold mt-2 text-gray-800">{formatCurrency(totalPending)}</h3>
+                  <h3 className="text-2xl font-bold mt-1 text-gray-800">{formatCurrency(totalPending)}</h3> {/* Reduced margin-top from mt-2 to mt-1 */}
                 </div>
                 <div className="bg-amber-100 p-3 rounded-xl">
                   <svg className="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -238,8 +238,8 @@ export default function Credit() {
           </div>
 
           {/* Filters Section - Fixed layout */}
-          <div className="bg-white rounded-2xl shadow-sm p-5 mb-5 border border-gray-100">    
-            <div className="grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
+          <div className="bg-white rounded-2xl shadow-sm p-4 mb-4 border border-gray-100"> {/* Reduced padding from p-5 to p-4, margin-bottom from mb-5 to mb-4 */}    
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-3 items-end"> {/* Reduced gap from gap-4 to gap-3 */}
               <div className="md:col-span-2">
                 <div className="flex space-x-2">
                   <input 
@@ -302,7 +302,7 @@ export default function Credit() {
 
           {/* Table */}
           {loading ? (
-            <div className="py-12 text-center bg-white rounded-2xl shadow-sm border border-gray-100">
+            <div className="py-8 text-center bg-white rounded-2xl shadow-sm border border-gray-100"> {/* Reduced padding from py-12 to py-8 */}
               <div className="inline-flex items-center text-gray-500">
                 <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
@@ -317,78 +317,61 @@ export default function Credit() {
                 <table className="min-w-full">
                   <thead>
                     <tr className="bg-gray-50 text-gray-600 text-sm uppercase font-semibold border-b border-gray-200">
-                      <th className="py-4 px-6 text-left">Name</th>
-                      <th className="py-4 px-6 text-left">Date</th>
-                      <th className="py-4 px-6 text-right">Amount</th>
-                      <th className="py-4 px-6 text-center">Status</th>
-                      <th className="py-4 px-6 text-left">Remarks</th>
-                      <th className="py-4 px-6 text-center">Action</th>
+                      <th className="py-3 px-4 text-left">Name</th> {/* Reduced padding from py-4 px-6 to py-3 px-4 */}
+                      <th className="py-3 px-4 text-left">Date</th>
+                      <th className="py-3 px-4 text-right">Amount</th>
+                      <th className="py-3 px-4 text-center">Status</th>
+                      <th className="py-3 px-4 text-left">Remarks</th>
+                      <th className="py-3 px-4 text-center">Action</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100">
                     {filteredCredits.length > 0 ? (
                       filteredCredits.map(c => (
                         <tr key={c._id} className="hover:bg-blue-50 transition-colors duration-150">
-                          <td className="py-4 px-6 font-medium text-gray-800">{c.name}</td>
-                          <td className="py-4 px-6 text-gray-600">{formatDate(c.date)}</td>
-                          <td className="py-4 px-6 text-right font-semibold text-gray-800">{formatCurrency(c.amount)}</td>
-                          <td className="py-4 px-6 text-center">
+                          <td className="py-3 px-4 font-medium text-gray-800">{c.name}</td> {/* Reduced padding from py-4 px-6 to py-3 px-4 */}
+                          <td className="py-3 px-4 text-gray-600">{formatDate(c.date)}</td>
+                          <td className="py-3 px-4 text-right font-semibold text-gray-800">{formatCurrency(c.amount)}</td>
+                          <td className="py-3 px-4 text-center">
                             {c.paid ? (
-                              <span className="inline-flex items-center bg-green-100 text-green-700 text-xs font-semibold px-3 py-1 rounded-full border border-green-200">
-                                <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                              <span className="inline-flex items-center bg-green-100 text-green-700 text-xs font-semibold px-2 py-0.5 rounded-full border border-green-200"> {/* Reduced padding from px-3 py-1 to px-2 py-0.5 */}
+                                <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"> {/* Reduced icon size from w-4 h-4 to w-3 h-3 */}
                                   <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                                 </svg>
                                 Paid
                               </span>
                             ) : (
-                              <span className="inline-flex items-center bg-amber-100 text-amber-700 text-xs font-semibold px-3 py-1 rounded-full border border-amber-200">
-                                <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                              <span className="inline-flex items-center bg-amber-100 text-amber-700 text-xs font-semibold px-2 py-0.5 rounded-full border border-amber-200"> {/* Reduced padding from px-3 py-1 to px-2 py-0.5 */}
+                                <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"> {/* Reduced icon size from w-4 h-4 to w-3 h-3 */}
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                                 Pending
                               </span>
                             )}
                           </td>
-                          <td className="py-4 px-6 max-w-xs text-gray-600">{c.remarks}</td>
-                          <td className="py-4 px-6 text-center">
+                          <td className="py-3 px-4 max-w-xs text-gray-600">{c.remarks}</td> {/* Reduced padding from py-4 px-6 to py-3 px-4 */}
+                          <td className="py-3 px-4 text-center"> {/* Reduced padding from py-4 px-6 to py-3 px-4 */}
                             <div className="flex justify-center space-x-2">
                               <button 
                                 onClick={() => handleEdit(c)} 
                                 className="text-blue-500 hover:text-blue-700 p-1 rounded-lg hover:bg-blue-100 transition-colors duration-150"
                                 title="Edit"
                               >
-                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"> {/* Reduced icon size from w-5 h-5 to w-4 h-4 */}
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                 </svg>
                               </button>
-                              {/* <button 
-                                onClick={() => handleDelete(c._id)} 
-                                disabled={deletingId === c._id}
-                                className="text-red-500 hover:text-red-700 p-1 rounded-lg hover:bg-red-100 transition-colors duration-150"
-                                title="Delete"
-                              >
-                                {deletingId === c._id ? (
-                                  <svg className="animate-spin h-5 w-5 text-red-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                  </svg>
-                                ) : (
-                                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                  </svg>
-                                )}
-                              </button> */}
                             </div>
                           </td>
                         </tr>
                       ))
                     ) : (
                       <tr>
-                        <td colSpan="6" className="py-12 text-center text-gray-500">
-                          <svg className="mx-auto h-12 w-12 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <td colSpan="6" className="py-8 text-center text-gray-500"> {/* Reduced padding from py-12 to py-8 */}
+                          <svg className="mx-auto h-10 w-10 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"> {/* Reduced icon size from h-12 w-12 to h-10 w-10 */}
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                           </svg>
-                          <p className="mt-4 text-gray-400">No credit records found. Try adjusting your filters or add a new credit.</p>
+                          <p className="mt-2 text-gray-400">No credit records found. Try adjusting your filters or add a new credit.</p> {/* Reduced margin-top from mt-4 to mt-2 */}
                         </td>
                       </tr>
                     )}

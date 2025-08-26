@@ -382,7 +382,7 @@ export default function Inventory() {
           isSidebarCollapsed={isSidebarCollapsed} 
           toggleSidebar={toggleSidebar} 
         />
-        <div className={`flex-1 p-6 transition-all duration-300 ${isSidebarCollapsed ? "ml-20" : "ml-64"}`}>
+        <div className={`flex-1 p-4 transition-all duration-300 ${isSidebarCollapsed ? "ml-20" : "ml-64"}`}>
           {/* Edit Modal */}
           {isEditModalOpen && (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -750,9 +750,9 @@ export default function Inventory() {
                   <tbody className="bg-white divide-y divide-gray-200">
                     {inventoryItems.map((item) => (
                       <tr key={item.id} className="hover:bg-gray-50">
-                        <td className="px-6 py-4 whitespace-nowrap">
+                        <td className="px-2 py-1 whitespace-nowrap">
                           <div className="flex items-center">
-                            <div className="flex-shrink-0 h-10 w-10 flex items-center justify-center bg-gray-100 rounded-lg">
+                            <div className="flex-shrink-0 h-6 w-6 flex items-center justify-center bg-gray-100 rounded-lg">
                               {getCategoryIcon(item.category)}
                             </div>
                             <div className="ml-4">

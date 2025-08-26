@@ -8,7 +8,7 @@ export async function PUT(request, { params }) {
     
     try {
         const updateData = await request.json();
-        const { title, ml, bottle, received, category, threshold, opening, sales, manualOrderAdjustment } = updateData;
+        const { title, isMl, ml, bottle, received, category, threshold, opening, sales, manualOrderAdjustment } = updateData;
 
         // If any quantity fields are being updated, recalculate closing
         if (opening !== undefined || received !== undefined || sales !== undefined) {

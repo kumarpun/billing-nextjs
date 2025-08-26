@@ -94,9 +94,9 @@ export default async function ListOrder({ params }) {
   
         <div>
         {/* <hr className="separator" /> */}
-        <div className="table-info">
+        {/* <div className="table-info">
               <h1 className="font-bold text-3xl table-title">{table.title}</h1>
-        </div>
+        </div> */}
 
         {/* <EditCustomerForm id={id} /> */}
         {totalFinalbill <= 0 && <EditCustomerForm id={id} />}

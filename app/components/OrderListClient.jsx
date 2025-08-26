@@ -1,10 +1,14 @@
+
+
+
+
 "use client";
 
 import { useState } from 'react';
 import Link from "next/link";
 import { HiPencilAlt } from "react-icons/hi";
+import { FiPlus, FiMinus, FiPrinter, FiDollarSign, FiEdit, FiFileText } from "react-icons/fi";
 import RemoveOrderBtn from "./RemoveOrderBtn";
-import EditCustomerForm from "./EditCustomerForm";
 import AddBillForm from "./AddBillForm";
 import Modal from "./ModalForm";
 import EditBillForm from "./EditBillForm";
@@ -13,10 +17,10 @@ import { toast } from "react-hot-toast";
 
 export default function OrderListClient({ orderbyTableId, total_price, totalKitchenPrice, totalBarPrice, tablebill_id, tableTitle, tableId, billById, totalFinalbill, billFinalStatus, order_type }) {
     const [isModalOpen, setModalOpen] = useState(false);
-    // const [finalBill, setFinalBill] = useState(null); // Manage final bill state
-    // const [finalBill, setFinalBill] = useState(finalBillFromAPI); // Initialize with the value from API
-    const [modalContent, setModalContent] = useState(null); // to track which form to display
-    const [discount, setDiscount] = useState(''); // State to track discount value
+    const [modalContent, setModalContent] = useState(null);
+    const [discount, setDiscount] = useState('');
+    const [updating, setUpdating] = useState(null);
+    const router = useRouter();
 
     const handleOpenModal = (content) => {
         setModalContent(content);
@@ -29,12 +33,10 @@ export default function OrderListClient({ orderbyTableId, total_price, totalKitc
     }
 
     const handleBillAdded = () => {
-        // setFinalBill(finalPrice); // Update final bill when the bill is added
-        setModalOpen(false); // Close modal after adding the bill
+        setModalOpen(false);
     }
 
     const handlePrint = () => {
-        // window.print();
         const discountElement = document.getElementById('discount-section');
         if (discount === '') {
             discountElement.style.display = 'none';
@@ -43,200 +45,201 @@ export default function OrderListClient({ orderbyTableId, total_price, totalKitc
         discountElement.style.display = '';
     }
 
-    const [updating, setUpdating] = useState(null); // Track updating item ID
-    const router = useRouter(); // To refresh the data after update
     const handleQuantityChange = async (orderId, currentQuantity, change) => {
         const newQuantity = currentQuantity + change;
-        if (newQuantity < 1) return; // Prevent quantity going below 1
-    
-        setUpdating(orderId); // Set the loading state for this order
-    
+        if (newQuantity < 1) return;
+
+        setUpdating(orderId);
+
         try {
-          const res = await fetch(
-            `https://billing-nextjs.vercel.app/api/orders/${orderId}`,
-            {
-              method: "PUT",
-              headers: {
-                "Content-type": "application/json",
-              },
-              body: JSON.stringify({
-                newOrderTitle: null, // Optional placeholder, adjust if needed
-                newOrderDescription: null,
-                newOrderStatus: null,
-                newOrderQuantity: newQuantity,
-              }),
+            const res = await fetch(
+                `https://billing-nextjs.vercel.app/api/orders/${orderId}`,
+                {
+                    method: "PUT",
+                    headers: {
+                        "Content-type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        newOrderTitle: null,
+                        newOrderDescription: null,
+                        newOrderStatus: null,
+                        newOrderQuantity: newQuantity,
+                    }),
+                }
+            );
+
+            if (!res.ok) {
+                throw new Error("Failed to update order quantity");
             }
-          );
-    
-          if (!res.ok) {
-            throw new Error("Failed to update order quantity");
-          }
-    
-          // Show success message
-          toast.success("Order quantity updated!");
-    
-          // Refresh data
-          router.refresh();
+
+            toast.success("Order quantity updated!");
+            router.refresh();
         } catch (error) {
-          console.error("Error updating quantity:", error);
-          toast.error("Failed to update order quantity");
+            console.error("Error updating quantity:", error);
+            toast.error("Failed to update order quantity");
         } finally {
-          setUpdating(null); // Reset loading state
+            setUpdating(null);
         }
-      };
+    };
 
     return (
         <>
-    <div className="bg-[#283141]">
-            <div style={{ display: 'flex', gap: '12px' }}>
-            {/* <button className="px-6 py-2 mt-3 add-table" onClick={() => handleOpenModal('add')}
-            disabled={totalFinalbill > 0} >
-                    Generate Bill
-                </button> */}
-                 {totalFinalbill <= 0 && (
-                    <button className="hover:text-gray-300 font-medium transition-colors duration-200 nav-button" onClick={() => handleOpenModal('add')}>
-                        Generate Bill
-                    </button>
-                )}
-                     {/* {totalFinalbill > 0 && ( */}
-                    <button className="hover:text-gray-300 font-medium transition-colors duration-200 nav-button" onClick={() => handleOpenModal('edit')}>
-                        Update Bill
-                    </button>
-                {/* )} */}
-                {/* <button className="px-6 py-2 mt-3 add-table" onClick={() => handleOpenModal('edit')}>
-                    Update Bill
-                </button> */}
-                                     {/* {total_price > 0 && (
-                <button className="px-6 py-2 mt-3 add-table" onClick={() => handleOpenModal('print')}>
-                    Print Bill
-                </button>
-            )} */}
-                                  {/* {totalFinalbill > 0 && ( */}
-                <button className="hover:text-gray-300 font-medium transition-colors duration-200 nav-button" onClick={() => handleOpenModal('print')}>
-                    Print Bill
-                </button>
-            {/* )} */}
-            </div>
-
-            {
-                !orderbyTableId || orderbyTableId.length === 0 ? <span className="font-color1">No orders found for this table.</span> : ''
-            }
-        <div className="order-list-container max-h-[calc(3*10rem)] overflow-y-scroll custom-scrollbar">
-
-            {orderbyTableId.map(order => (
-
-                <div className="p-4 border border-slate-300 my-3 flex justify-between gap-5 items-start relative font-color1" key={order._id}>
+            <div className="bg-gradient-to-br from-gray-900 to-gray-800 min-h-screen text-gray-100 p-4">
+                {/* Header Section - Made more compact */}
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 p-4 bg-gray-800 rounded-lg shadow">
                     <div>
-                        <h3 className="font-bold text-2xl">{order.order_title}</h3>
-                        <div>{order.order_description}</div>
-                        <div>{order.order_status}</div>
-                        <div>{order.customer_status}</div>
-                        <div>Order price: NRs. {order.order_price}</div>
-                        <div>Order quantity: {order.order_quantity}</div>
-                        {/* <div>Sum: NRs. {order.final_price}</div> */}
-                        <div className="bg-green-600">Order type: {order.order_type}</div>
+                        <h1 className="text-xl font-bold table-title mb-1">{tableTitle} - Orders</h1>
                     </div>
-
-                    <div className="flex items-center gap-2 mt-2">
-
-                    <div className="flex items-center gap-2 mt-2 absolute left-1/2 transform -translate-x-1/2 top-1/2 -translate-y-1/2">     
-                  <button
-                    onClick={() =>
-                      handleQuantityChange(order._id, order.order_quantity, -1)
-                    }
-                    disabled={updating === order._id}
-                    className={`px-6 py-4 text-3xl hover:text-gray-300 font-medium transition-colors duration-200 nav-button ${
-                      updating === order._id ? "opacity-50 cursor-not-allowed" : ""
-                    }`}
-                  >
-                    -
-                  </button>
-                  <span className="text-2xl font-bold">{order.order_quantity}</span>
-                  <button
-                    onClick={() =>
-                      handleQuantityChange(order._id, order.order_quantity, 1)
-                    }
-                    disabled={updating === order._id}
-                    className={`px-6 py-4 text-3xl hover:text-gray-300 font-medium transition-colors duration-200 nav-button ${
-                      updating === order._id ? "opacity-50 cursor-not-allowed" : ""
-                    }`}
-                  >
-                    +
-                  </button>
-                    </div>
-
-                         <div className="absolute right-40 top-1/3 mt-2 mr-2 text-3xl sum font-color1">
-                        NRs. {order.final_price}
+                    <div className="flex flex-wrap gap-2 mt-3 md:mt-0">
+                        {totalFinalbill <= 0 && (
+                            <button 
+                                className="flex items-center gap-1 px-3 py-2 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 rounded-md font-medium text-sm transition-all duration-200 shadow hover:shadow-md"
+                                onClick={() => handleOpenModal('add')}
+                            >
+                                <FiDollarSign className="text-sm" />
+                                Generate Bill
+                            </button>
+                        )}
+                        
+                        <button 
+                            className="flex items-center gap-1 px-3 py-2 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 rounded-md font-medium text-sm transition-all duration-200 shadow hover:shadow-md"
+                            onClick={() => handleOpenModal('edit')}
+                        >
+                            <FiEdit className="text-sm" />
+                            Update Bill
+                        </button>
+                        
+                        <button 
+                            className="flex items-center gap-1 px-3 py-2 bg-gradient-to-r from-green-500 to-teal-500 hover:from-green-600 hover:to-teal-600 rounded-md font-medium text-sm transition-all duration-200 shadow hover:shadow-md"
+                            onClick={() => handleOpenModal('print')}
+                        >
+                            <FiPrinter className="text-sm" />
+                            Print Bill
+                        </button>
                     </div>
                 </div>
 
+                {/* Orders List - Made more compact */}
+                <div className="mb-6">
+                    <div className="flex justify-between items-center mb-4">
+                        <h2 className="text-lg font-semibold">Order Items</h2>
+                        <span className="text-gray-400 text-sm">{orderbyTableId.length} items</span>
+                    </div>
 
-                    <div>
-                    <RemoveOrderBtn id={order._id} />
-                        {/* <Link href={`/editOrder/${order._id}`}> */}
-                        <Link href={`/editOrder/${order._id}?order_quantity=${order.order_quantity}`}>
-                            <HiPencilAlt className="edit-icon font-color1" size={24} />
-                        </Link>
+                    {!orderbyTableId || orderbyTableId.length === 0 ? (
+                        <div className="bg-gray-800 rounded-lg p-6 text-center">
+                            <div className="text-3xl mb-3">🍽️</div>
+                            <h3 className="text-lg font-medium mb-1">No orders found</h3>
+                            <p className="text-gray-400 text-sm">This table doesn't have any orders yet.</p>
+                        </div>
+                    ) : (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                            {orderbyTableId.map(order => (
+                                <div key={order._id} className="bg-gray-800 rounded-lg p-4 shadow hover:shadow-md transition-all duration-200 border border-gray-700">
+                                    <div className="flex justify-between items-start mb-3">
+                                        <h3 className="text-base font-semibold text-white truncate">{order.order_title}</h3>
+                                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${order.order_type === 'kitchen' ? 'bg-amber-500/20 text-amber-300' : 'bg-blue-500/20 text-blue-300'}`}>
+                                            {order.order_type}
+                                        </span>
+                                    </div>
+                                    
+                                    <p className="text-gray-400 text-xs mb-3 truncate">{order.order_description}</p>
+                                    
+                                    <div className="flex justify-between items-center mb-3">
+                                        <div className="text-xs">
+                                            <span className="text-gray-400">Price: </span>
+                                            <span className="font-medium">NRs. {order.order_price}</span>
+                                        </div>
+                                        <div className="text-xs">
+                                            <span className="text-gray-400">Status: </span>
+                                            <span className="font-medium">{order.order_status}</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div className="flex items-center justify-between mb-3">
+                                        <div className="flex items-center gap-2">
+                                            <button
+                                                onClick={() => handleQuantityChange(order._id, order.order_quantity, -1)}
+                                                disabled={updating === order._id}
+                                                className={`p-1 rounded-md bg-gray-700 hover:bg-gray-600 transition-colors ${updating === order._id ? "opacity-50 cursor-not-allowed" : ""}`}
+                                            >
+                                                <FiMinus className="text-sm" />
+                                            </button>
+                                            
+                                            <span className="text-base font-bold px-1 min-w-[1.5rem] text-center">
+                                                {order.order_quantity}
+                                            </span>
+                                            
+                                            <button
+                                                onClick={() => handleQuantityChange(order._id, order.order_quantity, 1)}
+                                                disabled={updating === order._id}
+                                                className={`p-1 rounded-md bg-gray-700 hover:bg-gray-600 transition-colors ${updating === order._id ? "opacity-50 cursor-not-allowed" : ""}`}
+                                            >
+                                                <FiPlus className="text-sm" />
+                                            </button>
+                                        </div>
+                                        
+                                        <div className="text-base font-bold text-white">
+                                            NRs. {order.final_price}
+                                        </div>
+                                    </div>
+                                    
+                                    <div className="flex justify-between items-center pt-3 border-t border-gray-700">
+                                        <RemoveOrderBtn id={order._id} />
+                                        
+                                        <Link 
+                                            href={`/editOrder/${order._id}?order_quantity=${order.order_quantity}`}
+                                            className="p-1 rounded-md bg-gray-700 hover:bg-gray-600 transition-colors"
+                                        >
+                                            <HiPencilAlt size={16} />
+                                        </Link>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
+
+                {/* Summary Section - Made more compact */}
+                <div className="bg-gray-800 rounded-lg p-4 shadow">
+                    <h2 className="text-lg font-semibold mb-4 pb-2 border-b border-gray-700">Bill Summary</h2>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                        <div className="bg-gray-900 p-3 rounded-md">
+                            <div className="text-gray-400 text-xs mb-1">Total Amount</div>
+                            <div className="text-xl font-bold text-white">NRs. {total_price}</div>
+                        </div>
+                        
+                        <div className="bg-gradient-to-r from-indigo-600 to-purple-600 p-3 rounded-md">
+                            <div className="text-xs text-indigo-200 mb-1">Final Bill Amount</div>
+                            <div className="text-2xl font-bold text-white">NRs. {totalFinalbill}</div>
+                            <div className="text-indigo-200 text-xs mt-1">Status: {billFinalStatus}</div>
+                        </div>
                     </div>
                 </div>
-            ))}
             </div>
-    
-{/* {orderbyTableId.length > 0 && (
-                <table className="order-table w-full border-collapse border border-gray-300 mt-4">
-                    <thead>
-                        <tr>
-                            <th className="border border-gray-300 p-2 text-left">Order Title</th>
-                            <th className="border border-gray-300 p-2 text-left">Description</th>
-                            <th className="border border-gray-300 p-2 text-left">Status</th>
-                            <th className="border border-gray-300 p-2 text-left">Customer Status</th>
-                            <th className="border border-gray-300 p-2 text-left">Order Price</th>
-                            <th className="border border-gray-300 p-2 text-left">Quantity</th>
-                            <th className="border border-gray-300 p-2 text-left">Sum</th>
-                            <th className="border border-gray-300 p-2 text-left">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {orderbyTableId.map(order => (
-                            <tr key={order._id}>
-                                <td className="border border-gray-300 p-2">{order.order_title}</td>
-                                <td className="border border-gray-300 p-2">{order.order_description}</td>
-                                <td className="border border-gray-300 p-2">{order.order_status}</td>
-                                <td className="border border-gray-300 p-2">{order.customer_status}</td>
-                                <td className="border border-gray-300 p-2">NRs. {order.order_price}</td>
-                                <td className="border border-gray-300 p-2">{order.order_quantity}</td>
-                                <td className="border border-gray-300 p-2">NRs. {order.final_price}</td>
-                                <td className="border border-gray-300 p-2">
-                                    <RemoveOrderBtn id={order._id} />
-                                    <Link href={`/editOrder/${order._id}`}>
-                                        <HiPencilAlt className="edit-icon" size={24} />
-                                    </Link>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            )} */}
 
-            <p className="p-4 border border-slate-300 my-3 flex justify-between gap-5 items-start font-bold font-color1">Total bill: NRs. {total_price}</p>  
-            {/* <p className="p-4 border border-slate-300 my-3 flex justify-between gap-5 items-start font-bold">Total Kitchen bill: NRs. {totalKitchenPrice}</p>  
-            <p className="p-4 border border-slate-300 my-3 flex justify-between gap-5 items-start font-bold">Total Bar bill: NRs. {totalBarPrice}</p>   */}
-
-        
-             <p className="p-4 border border-slate-300 my-3 flex justify-between gap-5 items-start font-bold font-color1">Final bill: NRs. {totalFinalbill} status: {billFinalStatus}</p>                
-            </div>
+            {/* Modal */}
             <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
-                {/* <AddBillForm initialOriginalPrice={total_price} initialBillId={tablebill_id} onBillAdded={handleBillAdded} /> */}
                 {modalContent === 'add' && (
-                    <AddBillForm initialOriginalPrice={total_price}
-                    initialKitchenPrice={totalKitchenPrice}
-                    initialBarPrice={totalBarPrice}
-                    initialBillId={tablebill_id} order_type={order_type} onBillAdded={handleBillAdded} />
+                    <AddBillForm 
+                        initialOriginalPrice={total_price}
+                        initialKitchenPrice={totalKitchenPrice}
+                        initialBarPrice={totalBarPrice}
+                        initialBillId={tablebill_id} 
+                        order_type={order_type} 
+                        onBillAdded={handleBillAdded} 
+                    />
                 )}
                 {modalContent === 'edit' && (
-                    <EditBillForm id={tablebill_id} bill={totalFinalbill} onBillAdded={handleBillAdded} />
+                    <EditBillForm 
+                        id={tablebill_id} 
+                        bill={totalFinalbill} 
+                        onBillAdded={handleBillAdded} 
+                    />
                 )}
-                    {modalContent === 'print' && (
+           
+           {modalContent === 'print' && (
     <div className="bill-print text-black" style={{ display: 'flex', flexDirection: 'column', height: '100%', justifyContent: 'flex-start' }}>
         <div style={{ display: 'flex', gap: '12px' }}>
             <button className="px-6 py-2 mt-3 add-table ml-auto" onClick={handlePrint}>
@@ -306,7 +309,6 @@ export default function OrderListClient({ orderbyTableId, total_price, totalKitc
         </pre>
     </div>
 )}
-
 
             </Modal>
         </>

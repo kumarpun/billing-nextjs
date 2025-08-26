@@ -240,7 +240,7 @@ export async function GET(request) {
 }
 
 export async function POST(request) {
-  const { title, ml, bottle, received, category, threshold, opening } = await request.json();
+  const { title, ml, isMl, bottle, received, category, threshold, opening } = await request.json();
   await dbConnect();
   
   try {
@@ -252,6 +252,7 @@ export async function POST(request) {
       title, 
       ml, 
       bottle,
+      isMl,
       category: category || "Other",
       threshold: threshold || 5,
       opening: opening || 0,

@@ -68,13 +68,14 @@ export default function EditCustomerForm({ id, customer_status }) {
         <>
             <form onSubmit={handleSubmit} className="flex flex-col gap-3 bg-[#283141]">
                 <br />
-                <label className="customer-label">Select If Customer Left:</label>
-                <div className="flex items-center gap-3">
+                <label className="customer-label ml-4">Select If Customer Left:</label>
+                <div className="flex items-center gap-3 ml-4">
                     <Select
                         options={options}
                         onChange={Dropdown}
                         value={options.find(option => option.value === newCustomerStatus) || null} // Handle value for react-select
                         styles={customStyles} // Apply custom styles
+                        className="text-black"
                         placeholder={touched && !newCustomerStatus ? "Please select customer left (Click here)" : "Select an option"} // Change placeholder if required
                     />
                     <button className="hover:text-gray-300 font-medium transition-colors duration-200 nav-button">

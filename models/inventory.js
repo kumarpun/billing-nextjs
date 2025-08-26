@@ -19,6 +19,10 @@ const inventorySchema = new Schema(
       type: Date,
       default: Date.now,
     },
+    isMl: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,

@@ -1,4 +1,5 @@
 "use client";
+
 import { FiPlus, FiSearch, FiFilter, FiRefreshCw, FiX, FiAlertTriangle, FiCalendar } from "react-icons/fi";
 import { FaWineBottle, FaGlassWhiskey, FaBeer } from "react-icons/fa";
 import { useEffect, useState } from "react";
@@ -26,6 +27,7 @@ export default function Inventory() {
   const [customEndDate, setCustomEndDate] = useState('');
   const [showFilters, setShowFilters] = useState(false);
   const [filtersApplied, setFiltersApplied] = useState(false);
+  const [isMl, setIsMl] = useState(false);
 
   // Form state for adding new item
   const [formData, setFormData] = useState({
@@ -35,7 +37,8 @@ export default function Inventory() {
     bottle: '',
     received: '',
     category: '',
-    threshold: ''
+    threshold: '',
+    isMl: false
   });
 
   // Toggle sidebar collapse state
@@ -169,7 +172,8 @@ export default function Inventory() {
           lastUpdated: item.updatedAt || item.date,
           orderSent: totalOrderSent,
           customerOrder: orderSentValue,
-          manualOrderAdjustment: item.manualOrderAdjustment || 0
+          manualOrderAdjustment: item.manualOrderAdjustment || 0,
+          isMl: item.isMl || false
         };
       });
       
@@ -236,10 +240,10 @@ export default function Inventory() {
 
   // Handle input change for add form
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [name]: type === 'checkbox' ? checked : value
     }));
   };
 
@@ -261,13 +265,14 @@ export default function Inventory() {
           bottle: formData.bottle || null,
           received: parseFloat(formData.received) || 0,
           category: formData.category || "Other",
-          threshold: parseFloat(formData.threshold) || 5
+          threshold: parseFloat(formData.threshold) || 5,
+          isMl: formData.isMl
         }),
       });
       
       if (!response.ok) throw new Error('Failed to add inventory item');
 
-      setFormData({ title: '', opening: '', ml: '', received: '', category: '', threshold: '', bottle: '' });
+      setFormData({ title: '', opening: '', ml: '', received: '', category: '', threshold: '', bottle: '', isMl: false });
       setIsAddModalOpen(false);
       fetchData();
     } catch (err) {
@@ -285,6 +290,7 @@ export default function Inventory() {
     setSales(item.sales);
     setTitle(item.name);
     setManualOrderAdjustment(item.manualOrderAdjustment);
+    setIsMl(item.isMl);
     setIsEditModalOpen(true);
   };
 
@@ -302,7 +308,8 @@ export default function Inventory() {
           received: parseFloat(received),
           sales: parseFloat(sales),
           title: title,
-          manualOrderAdjustment: parseFloat(manualOrderAdjustment)
+          manualOrderAdjustment: parseFloat(manualOrderAdjustment),
+          isMl: isMl
         }),
       });
 
@@ -460,6 +467,19 @@ export default function Inventory() {
                       Customer orders: {currentItem?.customerOrder || 0}
                     </p>
                   </div>
+                  <div className="mb-4 flex items-center">
+                  <input
+                    type="checkbox"
+                    id="isMlEdit"
+                    checked={isMl}
+                    onChange={(e) => setIsMl(e.target.checked)}
+                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                  />
+                  <label htmlFor="isMlEdit" className="ml-2 block text-gray-700 text-sm font-medium">
+                    Track in ML (for liquor items)
+                  </label>
+                </div>
+
                   <div className="flex justify-end space-x-3">
                     <button
                       type="button"
@@ -514,6 +534,21 @@ export default function Inventory() {
                       required
                       disabled={isAddLoading}
                     />
+                  </div>
+
+                  <div className="mb-5 flex items-center">
+                    <input
+                      type="checkbox"
+                      id="isMl"
+                      name="isMl"
+                      checked={formData.isMl}
+                      onChange={handleInputChange}
+                      className="h-4 w-4 text-black focus:ring-black border-2 border-black rounded"
+                      disabled={isAddLoading}
+                    />
+                    <label htmlFor="isMl" className="ml-2 block text-gray-800 font-medium uppercase text-sm tracking-wider">
+                      Track in ML (for liquor items)
+                    </label>
                   </div>
                   
                   <div className="mb-5">
@@ -572,7 +607,7 @@ export default function Inventory() {
                       type="button"
                       onClick={() => {
                         setIsAddModalOpen(false);
-                        setFormData({ title: '', opening: '', ml: '', received: '', category: '', threshold: '', bottle: '' });
+                        setFormData({ title: '', opening: '', ml: '', received: '', category: '', threshold: '', bottle: '', isMl: false });
                       }}
                       className="px-6 py-3 border-2 border-black bg-white text-black hover:bg-gray-100 font-medium transition-colors duration-200"
                       disabled={isAddLoading}
@@ -766,11 +801,16 @@ export default function Inventory() {
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="text-sm font-medium text-gray-700">
                             {item.opening} {item.ml && `(${item.ml}ml)`}
-                            {item.bottle && (
+                            {item.isMl && (
+                          <span className="text-xs px-2 py-1 bg-blue-100 text-blue-800 rounded">
+                            ML
+                          </span>
+                        )}
+                            {/* {item.bottle && (
                             <span className="text-xs text-gray-500 ml-1">
                               ({item.bottle})
                             </span>
-                          )}
+                          )} */}
                           </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
@@ -789,6 +829,10 @@ export default function Inventory() {
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="text-sm font-medium text-gray-700">
                             {item.closing} {item.ml && `(${item.ml}ml)`}
+                            {item.isMl && (
+                          <span className="text-xs px-2 py-1 bg-blue-100 text-blue-800 rounded">
+                            ML
+                          </span>)}
                           </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">

@@ -223,6 +223,10 @@ export default function AddOrder({ params }) {
        { value: 'Cheese Roll (Chicken)', label: 'Cheese Roll (Chicken) - NRs 410', price: 410 },
        { value: 'Cheese Roll (Paneer)', label: 'Cheese Roll (Paneer) - NRs 450', price: 450 },
 
+       { value: 'Chicken mocha', label: 'Chicken mocha - NRs 230', price: 230 },
+       { value: 'Buff mocha', label: 'Buff mocha - NRs 250', price: 250 },
+
+
        { value: 'Peanut', label: 'Peanut - NRs 80', price: 80 },
        { value: 'Honey', label: 'Honey - NRs 50', price: 50 },
        

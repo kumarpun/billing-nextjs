@@ -193,10 +193,6 @@ export default function AddOrder({ params }) {
        { value: 'Jeera Rice', label: 'Jeera Rice - NRs 190', price: 190 },
        { value: 'Veg Biryani', label: 'Veg Biryani - NRs 410', price: 410 },
        { value: 'Non-Veg Biryani', label: 'Non-Veg Biryani - NRs 530', price: 530 },
-
-       { value: 'Hakka Noodles half (Veg)', label: 'Hakka Noodles half (Veg) - NRs 100', price: 100 },
-       { value: 'Hakka Noodles half (Chicken)', label: 'Hakka Noodles half(Chicken) - NRs 120', price: 120 },
-       { value: 'Hakka Noodles half (Buff)', label: 'Hakka Noodles half (Buff) - NRs 140', price: 140 },
      
        // NOODLES
        { value: 'Keema Noodles', label: 'Keema Noodles - NRs 390', price: 390 },
@@ -214,6 +210,11 @@ export default function AddOrder({ params }) {
        { value: 'Pan Fried noodles (veg))', label: 'Pan fried noodles (veg) - NRs 250', price: 250 },
        { value: 'burnt garlic pot noodles(Non Veg)', label: 'Burnt garlic pot noodles (Non Veg) - NRs 350', price: 350 },
        { value: 'burnt garlic pot noodles(Veg)', label: 'Burnt garlic pot noodles (Veg) - NRs 250', price: 250 },
+
+       { value: 'Hakka Noodles half (Veg)', label: 'Hakka Noodles half (Veg) - NRs 100', price: 100 },
+       { value: 'Hakka Noodles half (Chicken)', label: 'Hakka Noodles half(Chicken) - NRs 120', price: 120 },
+       { value: 'Hakka Noodles half (Buff)', label: 'Hakka Noodles half (Buff) - NRs 140', price: 140 },
+
        // ROLL
        { value: 'Kathi Roll (Veg)', label: 'Kathi Roll (Veg) - NRs 240', price: 240 },
        { value: 'Kathi Roll (Egg)', label: 'Kathi Roll (Egg) - NRs 300', price: 300 },

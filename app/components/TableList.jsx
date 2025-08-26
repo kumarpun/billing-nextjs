@@ -83,7 +83,7 @@ export default async function TableList() {
       <div className="relative z-10">
         {/* Notifications */}
         <div className="mb-8 space-y-4 max-w-4xl mx-auto">
-          <ToastMessage />
+          {/* <ToastMessage /> */}
           <ChecklistWrapper />
           <InventoryWarning />
         </div>

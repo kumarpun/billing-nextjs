@@ -240,86 +240,76 @@ export default function OrderListClient({ orderbyTableId, total_price, totalKitc
                 )}
            
            {modalContent === 'print' && (
-    <div className="bill-print text-black p-4 bg-white rounded-md" style={{ maxWidth: '80mm' }}>
-        <div className="flex justify-between items-center mb-3">
-            <h2 className="text-lg font-bold">Print Bill</h2>
-            <button 
-                className="px-3 py-1 bg-blue-500 text-white text-sm rounded hover:bg-blue-600 transition-colors"
-                onClick={handlePrint}
-            >
-                Print Now
+    <div className="bill-print text-black" style={{ display: 'flex', flexDirection: 'column', height: '100%', justifyContent: 'flex-start' }}>
+        <div style={{ display: 'flex', gap: '12px' }}>
+            <button className="px-6 py-2 mt-3 add-table ml-auto" onClick={handlePrint}>
+                Print
             </button>
         </div>
 
-        <div className="text-center mb-4">
-            <div className="text-xs border-b border-dashed border-gray-400 pb-1 mb-1">
+        <div className="receipt-container">
+            <pre className="receipt-text">
                 *************************************************
-            </div>
-            <div className="font-bold text-base">THE HYBE ({tableTitle})</div>
-            <div className="text-xs border-t border-dashed border-gray-400 pt-1 mt-1">
-                *************************************************
-            </div>
+                {'\n'}   THE HYBE ({tableTitle})
+                {'\n'}*************************************************
+            </pre>
         </div>
 
-        <div className="text-xs text-center text-gray-600 mb-3">
+        <pre className="receipt-text">
             TERMINAL#132f2wd33
-        </div>
+            {/* {'\n'}_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _  */}
+        </pre>
 
-        <table className="w-full text-xs mb-3">
-            <thead>
-                <tr className="border-b border-gray-300">
-                    <th className="text-left pb-1 w-3/5">Order</th>
-                    <th className="text-center pb-1 w-1/10">Qty</th>
-                    <th className="text-right pb-1 w-1/10">Price</th>
-                    <th className="text-right pb-1 w-1/5">Total</th>
-                </tr>
-            </thead>
-            <tbody>
-                {orderbyTableId.map(order => (
-                    <tr key={order._id} className="border-b border-gray-200">
-                        <td className="py-1 text-xs truncate w-3/5">{order.order_title}</td>
-                        <td className="text-center py-1 text-xs w-1/10">{order.order_quantity}</td>
-                        <td className="text-right py-1 text-xs w-1/10">{order.order_price}</td>
-                        <td className="text-right py-1 text-xs w-1/5">{order.final_price}</td>
+        <br />
+
+        <div className="table-wrapper">
+            <table className="order-table w-full border-collapse border border-gray-300">
+                <thead>
+                    <tr>
+                        <th className="border border-gray-300 p-2 text-left">Order</th>
+                        <th className="border border-gray-300 p-2 text-left">Qty</th>
+                        <th className="border border-gray-300 p-2 text-left">Price</th>
+                        <th className="border border-gray-300 p-2 text-left">Total</th>
                     </tr>
-                ))}
-            </tbody>
-        </table>
-
-        <div className="text-xs border-t border-gray-300 pt-1 mb-3">
-            <div className="flex justify-between mb-1">
-                <span>Subtotal:</span>
-                <span>NRs. {total_price}</span>
-            </div>
-            
-            <div id="discount-section" className="flex justify-between items-center mb-1">
-                <span>Discount:</span>
-                <input
-                    className="w-16 px-1 py-0.5 border border-gray-300 rounded text-right text-xs"
-                    type="text"
-                    placeholder="0"
-                    value={discount}
-                    onChange={(e) => setDiscount(e.target.value)}
-                />
-            </div>
-            
-            <div className="flex justify-between font-bold mt-1">
-                <span>Final Amount:</span>
-                <span>NRs. {totalFinalbill}</span>
-            </div>
+                </thead>
+                <tbody>
+                    {orderbyTableId.map(order => (
+                        <tr key={order._id}>
+                            <td className="border border-gray-300 p-2">{order.order_title}</td>
+                            <td className="border border-gray-300 p-2">{order.order_quantity}</td>
+                            <td className="border border-gray-300 p-2">{order.order_price}</td>
+                            <td className="border border-gray-300 p-2">{order.final_price}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
         </div>
 
-        <div className="text-center text-xs mt-4">
-            <div className="border-t border-dashed border-gray-400 pt-1">
-                ***************************
-            </div>
-            <div className="font-bold my-1">THANK YOU!</div>
-            <div className="border-b border-dashed border-gray-400 pb-1">
-                ***************************
-            </div>
-        </div>
+        <br />
+
+        <p>Total bill: NRs. {total_price}</p>
+
+        <p id="discount-section">
+            Discount: 
+            <input
+                className="px-8 py-2 border-none border-b border-gray-500 focus:outline-none focus:ring-0"
+                type="text"
+                placeholder="discount"
+                value={discount}
+                onChange={(e) => setDiscount(e.target.value)}
+            />
+        </p>
+
+        <p>Final bill: NRs. {totalFinalbill}</p>
+
+        <pre className="receipt-text">
+            _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+            {'\n'}*************************** THANK YOU! ***************************
+            {'\n'}_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+        </pre>
     </div>
 )}
+
             </Modal>
         </>
     );

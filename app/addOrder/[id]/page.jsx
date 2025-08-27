@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Navbar from "../../components/Navbar";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Select from 'react-select';
@@ -18,6 +17,7 @@ export default function AddOrder({ params }) {
     const [order_quantity, setOrderQuantity] = useState(1);
     // const [order_type, setOrderType] = useState("Kitchen");
     const [order_type, setOrderType] = useState(""); // Initially empty
+    const [errors, setErrors] = useState({});
 
     const options = [
       // kitchen menu
@@ -520,189 +520,292 @@ export default function AddOrder({ params }) {
 
       ];
 
-    const router = useRouter();
+    
+      const router = useRouter();
+
+    const validateForm = () => {
+        const newErrors = {};
+        
+        if (!newOrdertitle) {
+            newErrors.order_title = "Please select an item";
+        }
+        
+        if (!order_type) {
+            newErrors.order_type = "Please select order type";
+        }
+        
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!newOrdertitle || !order_status || !customer_status || !order_type) {
-            alert("Title is required.");
+        
+        if (!validateForm()) {
             return;
-          }
-      
-          try {
+        }
+
+        try {
             const res = await fetch("https://billing-nextjs.vercel.app/api/orders", {
-              method: "POST",
-              headers: {
-                "Content-type": "application/json",
-              },
-              body: JSON.stringify({ 
-                table_id: id, 
-                order_title: newOrdertitle, 
-                order_description,
-                order_status,
-                customer_status,
-                order_price,
-                order_quantity,
-                order_type
-             }),
+                method: "POST",
+                headers: {
+                    "Content-type": "application/json",
+                },
+                body: JSON.stringify({ 
+                    table_id: id, 
+                    order_title: newOrdertitle, 
+                    order_description,
+                    order_status,
+                    customer_status,
+                    order_price,
+                    order_quantity,
+                    order_type
+                }),
             });
-      
+
             if (res.ok) {
-              router.push(`/listOrder/${id}`);
-              router.refresh();
+                router.push(`/listOrder/${id}`);
+                router.refresh();
             } else {
-              throw new Error("Failed to create a topic");
+                throw new Error("Failed to create a topic");
             }
-          } catch (error) {
+        } catch (error) {
             console.log(error);
-          }
-        };
-        const Dropdown = (selectedOption) => {
-            console.log('Selected:', selectedOption)
-            setnewOrdertitle(selectedOption.value)
-            setOrderPrice(selectedOption.price);
-          }
+        }
+    };
+
+    const Dropdown = (selectedOption) => {
+        console.log('Selected:', selectedOption)
+        setnewOrdertitle(selectedOption.value)
+        setOrderPrice(selectedOption.price);
+        
+        // Clear error if item is selected
+        if (selectedOption.value && errors.order_title) {
+            setErrors(prev => ({...prev, order_title: ""}));
+        }
+    }
+
+    const incrementQuantity = () => {
+        setOrderQuantity(prev => prev + 1);
+    };
+
+    const decrementQuantity = () => {
+        if (order_quantity > 1) {
+            setOrderQuantity(prev => prev - 1);
+        }
+    };
+
+    const handleOrderTypeSelect = (type) => {
+        setOrderType(type);
+        
+        // Clear error if type is selected
+        if (type && errors.order_type) {
+            setErrors(prev => ({...prev, order_type: ""}));
+        }
+    };
 
     try {
-
-      return (
-        <>
-            <div>
-            <nav className="flex justify-between items-center px-8 py-3 navbar" style={{ backgroundColor: "#232b38" }}>
-            <div style={{ flex: 0.4 }}></div>
-      <Link className="absolute left-1/2 transform -translate-x-1/2 font-bold page-title" href={"/tables"}>
-      HYBE Food & Drinks
-      </Link>
-                    <Link className="hover:text-gray-300 font-medium transition-colors duration-200 nav-button" href={`/listOrder/${id}`}>
-                        Back
+        return (
+            <>
+                <div className="min-h-screen" style={{ backgroundColor: "#1a202c" }}>
+                <nav className="flex justify-between items-center px-4 py-2 navbar" style={{ backgroundColor: "#232b38" }}>
+                    <div style={{ flex: 0.4 }}></div>
+                    <Link className="absolute left-1/2 transform -translate-x-1/2 font-bold text-lg page-title" href={"/tables"}>
+                    HYBE Food & Drinks
                     </Link>
-                </nav>
-                {/* <hr className="separator" /> */}
-                <br />
-                <div className="bg-page1">
-                    <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-    
-                        <div className="flex items-center">
-                            <label className="mr-4 w-32 order-label">Order Name:</label>
-                            <Select className="text-black"
-                                options={options}
-                                onChange={Dropdown}
-                                value={{ value: newOrdertitle, label: newOrdertitle }}
-                                styles={{
-                                    control: (provided) => ({ ...provided, width: 400 }),
-                                    menu: (provided) => ({ ...provided, width: 400 })
-                                }}
-                                placeholder="Select an option"
-                            />
+                            <Link className="hover:text-gray-300 text-sm transition-colors duration-200 nav-button" href={`/listOrder/${id}`}>
+                                Back
+                            </Link>
+                        </nav>
+                    
+                    <div className="max-w-3xl mx-auto p-4 mt-8">
+                        <div className="bg-gray-800 rounded-lg shadow-lg p-4 border border-gray-700">
+                            <h2 className="text-xl font-bold text-white mb-4 text-center">Add New Order</h2>
+                            
+                            <form onSubmit={handleSubmit} className="space-y-3">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                    {/* Order Selection */}
+                                    <div className="md:col-span-2">
+                                        <label className="block text-gray-300 mb-1 text-sm font-medium">Select Item</label>
+                                        <Select 
+                                            options={options}
+                                            onChange={Dropdown}
+                                            value={{ value: newOrdertitle, label: newOrdertitle }}
+                                            styles={{
+                                                control: (provided, state) => ({ 
+                                                    ...provided, 
+                                                    backgroundColor: '#2d3748',
+                                                    borderColor: errors.order_title ? '#e53e3e' : state.isFocused ? '#4a5568' : '#4a5568',
+                                                    color: 'white',
+                                                    minHeight: '40px',
+                                                    fontSize: '14px',
+                                                    boxShadow: errors.order_title ? '0 0 0 1px #e53e3e' : provided.boxShadow,
+                                                }),
+                                                menu: (provided) => ({ 
+                                                    ...provided, 
+                                                    backgroundColor: '#2d3748',
+                                                    color: 'white'
+                                                }),
+                                                singleValue: (provided) => ({
+                                                    ...provided,
+                                                    color: 'white',
+                                                    fontSize: '14px'
+                                                }),
+                                                input: (provided) => ({
+                                                    ...provided,
+                                                    color: 'white',
+                                                    fontSize: '14px'
+                                                }),
+                                                option: (provided, state) => ({
+                                                    ...provided,
+                                                    backgroundColor: state.isFocused ? '#4a5568' : '#2d3748',
+                                                    color: 'white',
+                                                    fontSize: '14px',
+                                                    padding: '8px 12px'
+                                                })
+                                            }}
+                                            placeholder="Search for menu items..."
+                                        />
+                                        {errors.order_title && (
+                                            <p className="text-red-400 text-xs mt-1 flex items-center">
+                                                <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                                                </svg>
+                                                {errors.order_title}
+                                            </p>
+                                        )}
+                                    </div>
+                                    
+                                    {/* Price Display */}
+                                    <div>
+                                        <label className="block text-gray-300 mb-1 text-sm font-medium">Price</label>
+                                        <div className="bg-gray-700 text-white p-2 rounded border border-gray-600 text-sm">
+                                            NRs. {order_price || "0"}
+                                        </div>
+                                    </div>
+                                    
+                                    {/* Quantity Selector */}
+                                    <div>
+                                        <label className="block text-gray-300 mb-1 text-sm font-medium">Quantity</label>
+                                        <div className="flex items-center h-9">
+                                            <button 
+                                                type="button"
+                                                onClick={decrementQuantity}
+                                                className="bg-gray-600 hover:bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white font-bold py-1 px-3 rounded-l"
+                                            >
+                                                -
+                                            </button>
+                                            <div className="bg-gray-700 text-white text-center py-1 px-4 w-12 border-y border-gray-600 text-sm">
+                                                {order_quantity}
+                                            </div>
+                                
+                                            <button 
+                                                type="button"
+                                                onClick={incrementQuantity}
+                                                className="bg-gray-600 hover:bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white font-bold py-1 px-3 rounded-r"
+                                            >
+                                                +
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    {/* Order Type Selection */}
+                                    <div className="md:col-span-2">
+                                        <label className="block text-gray-300 mb-1 text-sm font-medium">Order Type</label>
+                                        {errors.order_type && (
+                                            <p className="text-red-400 text-xs mb-1 flex items-center">
+                                                <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                                                </svg>
+                                                {errors.order_type}
+                                            </p>
+                                        )}
+                                        <div className="flex space-x-2">
+                                            <button
+                                                type="button"
+                                                onClick={() => handleOrderTypeSelect("Kitchen")}
+                                                className={`flex-1 py-2 px-3 rounded text-center text-sm font-medium transition-all duration-200 ${
+                                                    order_type === "Kitchen" 
+                                                    ? "bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white shadow" 
+                                                    : errors.order_type 
+                                                        ? "bg-red-900 text-white border border-red-600" 
+                                                        : "bg-gray-700 text-gray-300 hover:bg-gray-600"
+                                                }`}
+                                            >
+                                                Kitchen
+                                            </button>
+                                            <button
+                                                type="button"
+                                                onClick={() => handleOrderTypeSelect("Bar")}
+                                                className={`flex-1 py-2 px-3 rounded text-center text-sm font-medium transition-all duration-200 ${
+                                                    order_type === "Bar" 
+                                                    ? "bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white shadow" 
+                                                    : errors.order_type 
+                                                        ? "bg-red-900 text-white border border-red-600" 
+                                                        : "bg-gray-700 text-gray-300 hover:bg-gray-600"
+                                                }`}
+                                            >
+                                                Bar
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    {/* Description */}
+                                    <div className="md:col-span-2">
+                                        <label className="block text-gray-300 mb-1 text-sm font-medium">Special Instructions</label>
+                                        <input
+                                            onChange={(e) => setDescription(e.target.value)}
+                                            value={order_description}
+                                            className="w-full bg-gray-700 text-white border border-gray-600 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
+                                            type="text"
+                                            placeholder="Any special requests or notes"
+                                        />
+                                    </div>
+                                    
+                                    {/* Table ID Display */}
+                                    <div className="md:col-span-2">
+                                        <label className="block text-gray-300 mb-1 text-sm font-medium">Table Number</label>
+                                        <div className="bg-gray-700 text-white p-2 rounded border border-gray-600 text-sm">
+                                            {id}
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                {/* Submit Button */}
+                                <div className="pt-2">
+                                    <button
+                                        type="submit"
+                                        className="w-4xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium py-2 px-4 rounded shadow transition-all duration-200"
+                                    >
+                                        Add Order
+                                    </button>
+                                </div>
+                            </form>
                         </div>
-    
-                        <div className="flex items-center">
-                            <label className="mr-4 w-32 order-label">Price:</label>
-                            <input
-                                value={`NRs. ${order_price}`}
-                                className="border border-slate-500 px-8 py-2 text-black"
-                                type="text"
-                                placeholder="Order price"
-                                disabled
-                            />
-                        </div>
-    
-                        <div className="flex items-center">
-                            <label className="mr-4 w-32 order-label">Quantity:</label>
-                            <input
-                                onChange={(e) => setOrderQuantity(e.target.value)}
-                                value={order_quantity}
-                                className="border border-slate-500 px-8 py-2 text-black"
-                                type="number"
-                                placeholder="Order quantity"
-                            />
-                        </div>
-    
-                        {/* <div className="flex items-center">
-                            <label className="mr-4 w-32 order-label">Order Type:</label>
-                            <select
-                                className="border border-slate-500 px-8 py-2"
-                                value={order_type}
-                                onChange={(e) => setOrderType(e.target.value)}
-                            >
-                                <option value="Kitchen">Kitchen</option>
-                                <option value="Bar">Bar</option>
-                            </select>
-                        </div> */}
-                        <div className="flex items-center">
-                                <label className="mr-4 w-32 order-label">Order Type:</label>
-                                <select
-                                    className="border border-slate-500 px-8 py-2 text-black"
-                                    value={order_type}
-                                    onChange={(e) => setOrderType(e.target.value)}
-                                    required // Added required attribute
-                                >
-                                    <option value="">Select Order Type</option> {/* Default option for selection */}
-                                    <option value="Kitchen">Kitchen</option>
-                                    <option value="Bar">Bar</option>
-                                </select>
-                            </div>
-    
-                        <div className="flex items-center">
-                            <label className="mr-4 w-32 order-label">Description:</label>
-                            <input
-                                onChange={(e) => setDescription(e.target.value)}
-                                value={order_description}
-                                className="border border-slate-500 px-8 py-2"
-                                type="text"
-                                placeholder="Order description"
-                            />
-                        </div>
-    
-                        <div className="flex items-center">
-                            <label className="mr-4 w-32 order-label">Order Status:</label>
-                            <input
-                                onChange={(e) => setOrderStatus(e.target.value)}
-                                value={order_status}
-                                className="border border-slate-500 px-8 py-2"
-                                type="text"
-                                placeholder="Order status"
-                                disabled
-                            />
-                        </div>
-    
-                        <div className="flex items-center">
-                            <label className="mr-4 w-32 order-label">Customer Status:</label>
-                            <input
-                                onChange={(e) => setCustomerStatus(e.target.value)}
-                                value={customer_status}
-                                className="border border-slate-500 px-8 py-2"
-                                type="text"
-                                placeholder="Customer status"
-                                disabled
-                            />
-                        </div>
-
-                        <div className="flex items-center">
-                            <label className="mr-4 w-32 order-label">Order ID:</label>
-                            <input
-                                value={id}
-                                className="border border-slate-500 px-8 py-2"
-                                type="text"
-                                placeholder="Order id"
-                                disabled
-                            />
-                        </div>
-    
-                        <button
-                            type="submit"
-                            className="hover:text-gray-300 font-medium transition-colors duration-200 nav-button py-3 px-6 w-fit order-label">
-                            Add Order
-                        </button>
-                    </form>
+                    </div>
+                </div>
+                
+                <style jsx>{`
+                    .navbar {
+                        box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.06);
+                    }
+                `}</style>
+            </>
+        );
+    } catch (error) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-gray-900">
+                <div className="bg-red-900 text-white p-4 rounded-lg shadow-lg max-w-md text-center">
+                    <h2 className="text-xl font-bold mb-2">Error Adding Order</h2>
+                    <p>Please try again later or contact support if the problem persists.</p>
+                    <Link 
+                        href={`/listOrder/${id}`}
+                        className="inline-block mt-4 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                    >
+                        Back to Orders
+                    </Link>
                 </div>
             </div>
-        </>
-    );
-    
-    
-    } catch (error) {
-        return <div>Error Adding orders. Please try again later.</div>;
+        );
     }
 }
-

@@ -47,7 +47,7 @@ export default function AddOrder({ params }) {
      { value: 'Chicken Tass', label: 'Chicken Tass - NRs 400', price: 400 },
      { value: 'Chicken Sadheko Fry/Boill', label: 'Chicken Sadheko Fry/Boill - NRs 290', price: 290 },
      { value: 'Peanul Sadheko', label: 'Peanul Sadheko - NRs 200', price: 200 },
-     { value: 'Wal Wal Sadheko', label: 'Wal Wal Sadheko - NRs 160', price: 160 },
+     { value: 'Wai Wai Sadheko', label: 'Wai Wai Sadheko - NRs 160', price: 160 },
      { value: 'Chicken Sutuki', label: 'Chicken Sutuki - NRs 370', price: 370 },
      { value: 'Buff Sukuti', label: 'Buff Sukuti - NRs 350', price: 350 },
      { value: 'Buff Choila', label: 'Buff Choila - NRs 400', price: 400 },

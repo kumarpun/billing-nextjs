@@ -220,94 +220,128 @@ export default function EditBillForm({ id, bill, billStatus, finalPrice, billPay
     };
 
     return (
-        <>
-            <form onSubmit={handleSubmit} className="flex flex-col gap-3 text-black">
-
-            {/* <label className="font-bold">Bill</label>
-                <input
-                    onChange={(e) => setNewBill(e.target.value)}
-                    value={newBill}
-                    className="border border-slate-500 px-8 py-2"
-                    type="number"
-                    placeholder="Bill amount"
-                    required
-                /> */}
-
-                <label className="font-bold">Final Price</label>
-                <input
-                    onChange={(e) => setNewFinalPrice(e.target.value)}
-                    value={newFinalPrice}
-                    className="border border-slate-500 px-8 py-2"
-                    type="number"
-                    placeholder="Final price"
-                    required
-                />
-
-                <label className="font-bold">Bill Status</label>
-                <Select
-                    options={options}
-                    onChange={Dropdown}
-                    value={options.find(option => option.value === newBillStatus) || null}
-                    styles={{
-                        control: (provided) => ({ ...provided, width: 400 }),
-                        menu: (provided) => ({ ...provided, width: 400 }),
-                    }}
-                    placeholder="Select bill status"
-                    required
-                />
-
-                <label className="font-bold">Payment Mode</label>
-                <Select
-                    options={paymentModeOptions}
-                    onChange={handlePaymentModeChange}
-                    value={paymentModeOptions.find(option => option.value === newBillPaymentMode) || null}
-                    styles={{
-                        control: (provided) => ({ ...provided, width: 400 }),
-                        menu: (provided) => ({ ...provided, width: 400 }),
-                    }}
-                    placeholder="Select payment mode"
-                />
-
+        <div className="w-full max-w-md mx-auto p-4 bg-white border border-gray-200 rounded-xl shadow-md">
+            <form onSubmit={handleSubmit} className="space-y-6">
+                <div>
+                    <label htmlFor="finalPrice" className="block text-xs font-medium text-gray-700 mb-1">Final Amount</label>
+                    <input
+                        id="finalPrice"
+                        onChange={(e) => setNewFinalPrice(e.target.value)}
+                        value={newFinalPrice}
+                        className="w-full p-2 text-base font-medium text-gray-800 bg-gray-50 rounded-lg border border-gray-300 bg-yellow-50" 
+                        type="number" 
+                        placeholder="0.00" 
+                        required
+                    />
+                </div>
+    
+                <div className="grid grid-cols-2 gap-4">
+                    <div>
+                        <label htmlFor="billStatus" className="block text-xs font-medium text-gray-700 mb-1">Bill Status</label>
+                        <Select
+                            id="billStatus"
+                            options={options}
+                            onChange={Dropdown}
+                            value={options.find(option => option.value === newBillStatus) || null}
+                            className="w-full p-2 text-sm text-gray-700 bg-blue-50 rounded-lg" 
+                            styles={{
+                                control: (provided) => ({ 
+                                    ...provided, 
+                                    backgroundColor: '#eff6ff',
+                                    borderColor: '#d1d5db',
+                                    borderRadius: '0.5rem',
+                                    padding: '0.75rem',
+                                    fontSize: '0.8rem',
+                                    minHeight: '52px'
+                                }),
+                            }}
+                            placeholder="Select bill status"
+                            required
+                        />
+                    </div>
+    
+                    <div>
+                        <label htmlFor="paymentMode" className="block text-xs font-medium text-gray-700 mb-1">Payment Mode</label>
+                        <Select
+                            id="paymentMode"
+                            options={paymentModeOptions}
+                            onChange={handlePaymentModeChange}
+                            value={paymentModeOptions.find(option => option.value === newBillPaymentMode) || null}
+                            className="w-full p-2 text-sm text-gray-700 bg-blue-50 rounded-lg" 
+                            styles={{
+                                control: (provided) => ({ 
+                                    ...provided, 
+                                    backgroundColor: '#eff6ff',
+                                    borderColor: '#d1d5db',
+                                    borderRadius: '0.5rem',
+                                    padding: '0.75rem',
+                                    fontSize: '0.8rem',
+                                    minHeight: '52px'
+                                }),
+                            }}
+                            placeholder="Select payment"
+                        />
+                    </div>
+                </div>
+    
                 {/* Conditionally render QR and Cash amount input fields if 'Both QR and Cash' is selected */}
                 {newBillPaymentMode === 'Both QR and Cash' && (
-                    <>
-                        <label className="font-bold">QR Amount</label>
-                        <input
-                            onChange={(e) => setQrAmount(e.target.value)}
-                            value={qrAmount}
-                            className="border border-slate-500 px-8 py-2"
-                            type="number"
-                            placeholder="QR Amount"
-                            required
-                        />
+                    <div className="grid grid-cols-2 gap-4">
+                        <div>
+                            <label htmlFor="qrAmount" className="block text-xs font-medium text-gray-700 mb-1">QR Amount</label>
+                            <input
+                                id="qrAmount"
+                                onChange={(e) => setQrAmount(e.target.value)}
+                                value={qrAmount}
+                                className="w-full p-2 text-sm text-gray-700 bg-blue-50 rounded-lg border border-gray-300" 
+                                type="number" 
+                                placeholder="0.00" 
+                                required
+                            />
+                        </div>
                         
-                        <label className="font-bold">Cash Amount</label>
-                        <input
-                            onChange={(e) => setCashAmount(e.target.value)}
-                            value={cashAmount}
-                            className="border border-slate-500 px-8 py-2"
-                            type="number"
-                            placeholder="Cash Amount"
-                            required
-                        />
-                    </>
+                        <div>
+                        <label htmlFor="cashAmount" className="block text-xs font-medium text-gray-700 mb-1">Cash Amount</label>
+                            <input
+                                id="cashAmount"
+                                onChange={(e) => setCashAmount(e.target.value)}
+                                value={cashAmount}
+                                className="w-full p-2 text-sm text-gray-700 bg-blue-50 rounded-lg border border-gray-300" 
+                                type="number" 
+                                placeholder="0.00" 
+                                required
+                            />
+                        </div>
+                    </div>
                 )}
-
-                <label className="font-bold">Remarks</label>
-                <input
-                    onChange={(e) => setRemarks(e.target.value)}
-                    value={newRemarks}
-                    className="border border-slate-500 px-8 py-2"
-                    type="text"
-                    placeholder="Remarks"
-                    required
-                />
-
-                <button className={`bg-green-600 font-bold text-white py-3 px-6 w-fit ${!isBillStatusValid ? 'opacity-50 cursor-not-allowed' : ''}`} disabled={!isBillStatusValid}>
-                    Update Bill
-                </button>
+    
+                <div>
+                    <label htmlFor="remarks" className="block text-xs font-medium text-gray-700 mb-1">Remarks</label>
+                    <input
+                        id="remarks"
+                        onChange={(e) => setRemarks(e.target.value)}
+                        value={newRemarks}
+                        className="w-full p-2 text-base font-medium text-gray-800 bg-gray-50 rounded-lg border border-gray-300 bg-yellow-5" 
+                        type="text" 
+                        placeholder="Additional notes..." 
+                        required
+                    />
+                </div>
+    
+                <div className="pt-4">
+                    <button 
+                        type="submit" 
+                        className={`w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:bg-gray-700 text-white font-medium py-2.5 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center ${!isBillStatusValid ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        disabled={!isBillStatusValid}
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clipRule="evenodd" />
+                        </svg>
+                        Update Bill
+                    </button>
+                </div>
             </form>
-        </>
+        </div>
     );
 }
 

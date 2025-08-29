@@ -1,194 +1,90 @@
 "use client";
-import { FiPlus, FiSearch, FiFilter, FiRefreshCw, FiX, FiAlertTriangle } from "react-icons/fi";
-import { FaWineBottle, FaGlassWhiskey, FaBeer } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import SideNav from "../components/sidenav";
 import TopNav from "../components/topnav";
 
 export default function Inventory() {
-  const [inventoryItems, setInventoryItems] = useState([]);
-  const [orderData, setOrderData] = useState({});
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [inventoryData, setInventoryData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [currentItem, setCurrentItem] = useState(null);
-  const [quantity, setQuantity] = useState(0);
-  const [ml, setMl] = useState(0);
-  const [received, setReceived] = useState(0);
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
-  const [isAddLoading, setIsAddLoading] = useState(false);
-  
-  // Form state for adding new item
-  const [formData, setFormData] = useState({
-    title: '',
-    quantity: '',
-    ml: '',
-    received: ''
-  });
+  const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
+  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
 
-  // Toggle sidebar collapse state
   const toggleSidebar = () => {
     setIsSidebarCollapsed(!isSidebarCollapsed);
   };
 
-  // Calculate low stock items count
-  const lowStockItems = inventoryItems.filter(item => item.stock <= item.threshold);
-  const lowStockCount = lowStockItems.length;
-
-  // Fetch inventory data
   useEffect(() => {
-    fetchData();
+    const fetchInventoryData = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/api/inventory?lastMonth=true');
+        if (!response.ok) {
+          throw new Error('Failed to fetch inventory data');
+        }
+        const data = await response.json();
+        setInventoryData(data.inventory);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchInventoryData();
   }, []);
 
-  const fetchData = async () => {
-    try {
-      setLoading(true);
-      
-      // Fetch inventory items
-      const inventoryResponse = await fetch('/api/inventory');
-      if (!inventoryResponse.ok) throw new Error('Failed to fetch inventory');
-      const inventoryData = await inventoryResponse.json();
-      
-      // Fetch order data for today
-      const orderResponse = await fetch('/api/inventoryOrder?today=true');
-      if (!orderResponse.ok) throw new Error('Failed to fetch order data');
-      const orderData = await orderResponse.json();
-      
-      // Transform API data to match our UI structure
-      const transformedData = inventoryData.inventory.map(item => ({
-        id: item._id,
-        name: item.title,
-        category: item.title.includes("8848") || item.title.includes("Nude") ? "Vodka" : "Beer",
-        stock: item.quantity,
-        ml: item.ml || null,
-        received: item.received || 0,
-        threshold: (item.title.includes("8848") || item.title.includes("Nude")) ? 1 : 5,
-        lastUpdated: new Date(item.updatedAt).toISOString().split('T')[0],
-        price: 650,
-        // Handle special cases for 8848 and Nude items
-        orderSent: item.title.includes("8848") 
-          ? orderData.total_8848_ml 
-          : item.title.includes("Nude")
-            ? orderData.total_Nude_ml
-            : orderData[item.title] || 0,
-        stockRemaining: item.quantity - (orderData[item.title] || 0)
-      }));
-      
-      setInventoryItems(transformedData);
-      setOrderData(orderData);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Handle input change for add form
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
-
-  // Handle add item submission
-  const handleAddSubmit = async (e) => {
-    e.preventDefault();
-    setIsAddLoading(true);
+  // Process data to get accurate monthly summary
+  const processMonthlySummary = () => {
+    const summary = {};
     
-    try {
-      const response = await fetch('/api/inventory', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
+    // First, sort data by date to ensure proper sequence
+    const sortedData = [...inventoryData].sort((a, b) => 
+      new Date(a.date) - new Date(b.date)
+    );
+    
+    // Process each item
+    sortedData.forEach(item => {
+      if (!summary[item.title]) {
+        summary[item.title] = {
+          title: item.title,
+          category: item.category,
+          totalSales: 0,
+          totalReceived: 0,
+          openingStock: 0,
+          closingStock: 0,
+          isMl: item.isMl,
+          threshold: item.threshold,
+          daysWithData: 0,
+          lastRecordedDate: null
+        };
+      }
       
-      if (!response.ok) throw new Error('Failed to add inventory item');
-
-      // Reset form and close modal
-      setFormData({ title: '', quantity: '', ml: '', received: '' });
-      setIsAddModalOpen(false);
+      // Update summary
+      summary[item.title].totalSales += item.sales || 0;
+      summary[item.title].totalReceived += item.received || 0;
       
-      // Refresh data
-      fetchData();
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setIsAddLoading(false);
-    }
+      // For the first record of each product, capture the opening stock
+      if (summary[item.title].daysWithData === 0) {
+        summary[item.title].openingStock = item.opening || 0;
+      }
+      
+      // Always update closing stock to the latest value
+      summary[item.title].closingStock = item.closing || 0;
+      summary[item.title].daysWithData += 1;
+      summary[item.title].lastRecordedDate = item.date;
+    });
+    
+    return Object.values(summary);
   };
 
-  // Handle edit button click
-  const handleEditClick = (item) => {
-    setCurrentItem(item);
-    setQuantity(item.stock);
-    setMl(item.ml);
-    setReceived(item.received);
-    setIsEditModalOpen(true);
-  };
+  const monthlySummary = processMonthlySummary();
 
-  // Handle quantity change
-  const handleQuantityChange = (e) => {
-    setQuantity(parseFloat(e.target.value));
-  };
-
-  const handleReceivedChange = (e) => {
-    setReceived(parseFloat(e.target.value));
-  };
-
-  const handleMlChange = (e) => {
-    setMl(parseInt(e.target.value));
-  }
-
-  // Handle form submission
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await fetch(`/api/inventory/${currentItem.id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          newTitle: currentItem.name,
-          newQuantity: quantity,
-          newMl: ml,
-          newReceived: received
-        }),
-      });
-
-      if (!response.ok) throw new Error('Failed to update inventory');
-
-      setIsEditModalOpen(false);
-      fetchData();
-    } catch (err) {
-      setError(err.message);
-    }
-  };
-
-  // Format date
-  const formatDate = (dateString) => {
-    const options = { year: 'numeric', month: 'short', day: 'numeric' };
-    return new Date(dateString).toLocaleDateString(undefined, options);
-  };
-
-  // Get category icon
-  const getCategoryIcon = (category) => {
-    switch(category.toLowerCase()) {
-      case 'whisky':
-        return <FaGlassWhiskey className="text-amber-600" />;
-      case 'beer':
-        return <FaBeer className="text-yellow-500" />;
-      case 'vodka':
-        return <FaWineBottle className="text-blue-500" />;
-      default:
-        return <FaWineBottle className="text-purple-500" />;
-    }
-  };
+  // Calculate totals for summary cards
+  const totalOpening = monthlySummary.reduce((sum, item) => sum + item.openingStock, 0);
+  const totalReceived = monthlySummary.reduce((sum, item) => sum + item.totalReceived, 0);
+  const totalSales = monthlySummary.reduce((sum, item) => sum + item.totalSales, 0);
+  const totalClosing = monthlySummary.reduce((sum, item) => sum + item.closingStock, 0);
 
   if (loading) {
     return (
@@ -199,8 +95,10 @@ export default function Inventory() {
             isSidebarCollapsed={isSidebarCollapsed} 
             toggleSidebar={toggleSidebar} 
           />
-          <div className={`flex-1 transition-all duration-300 ${isSidebarCollapsed ? "ml-20" : "ml-64"} flex items-center justify-center`}>
-            <FiRefreshCw className="animate-spin h-12 w-12 text-blue-500" />
+          <div className={`flex-1 p-6 transition-all duration-300 ${isSidebarCollapsed ? "ml-20" : "ml-64"}`}>
+            <div className="flex justify-center items-center h-64">
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+            </div>
           </div>
         </div>
       </div>
@@ -217,7 +115,9 @@ export default function Inventory() {
             toggleSidebar={toggleSidebar} 
           />
           <div className={`flex-1 p-6 transition-all duration-300 ${isSidebarCollapsed ? "ml-20" : "ml-64"}`}>
-            <div className="text-red-500 text-lg">{error}</div>
+            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+              <strong>Error:</strong> {error}
+            </div>
           </div>
         </div>
       </div>
@@ -233,333 +133,169 @@ export default function Inventory() {
           toggleSidebar={toggleSidebar} 
         />
         <div className={`flex-1 p-6 transition-all duration-300 ${isSidebarCollapsed ? "ml-20" : "ml-64"}`}>
-          {/* Edit Modal */}
-          {isEditModalOpen && (
-            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-              <div className="bg-white rounded-lg p-6 w-full max-w-md">
-                <div className="flex justify-between items-center mb-4">
-                  <h2 className="text-xl font-bold">Edit {currentItem?.name}</h2>
-                  <button 
-                    onClick={() => setIsEditModalOpen(false)}
-                    className="text-gray-500 hover:text-gray-700"
-                  >
-                    <FiX size={24} />
-                  </button>
-                </div>
-                <form onSubmit={handleSubmit}>
-                  <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-medium mb-2">
-                      Quantity
-                    </label>
-                    <input
-                      type="number"
-                      value={quantity}
-                      onChange={handleQuantityChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
-                      step="any"
-                    />
-                  </div>
-                  <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-medium mb-2">
-                      Received
-                    </label>
-                    <input
-                      type="number"
-                      value={received}
-                      onChange={handleReceivedChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
-                      step="any"
-                    />
-                  </div>
-                  <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-medium mb-2">
-                      Ml
-                    </label>
-                    <input
-                      type="number"
-                      value={ml}
-                      onChange={handleMlChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
-                      min="0"
-                    />
-                  </div>
-                  <div className="flex justify-end space-x-3">
-                    <button
-                      type="button"
-                      onClick={() => setIsEditModalOpen(false)}
-                      className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      type="submit"
-                      className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-                    >
-                      Update
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          )}
+          <div className="mb-6">
+            <h1 className="text-2xl font-bold text-gray-800">Monthly Inventory Summary</h1>
+            <p className="text-gray-600">Overview of inventory performance for the selected period</p>
+          </div>
           
-          {/* Add Item Modal */}
-          {isAddModalOpen && (
-            <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 z-50">
-              <div className="bg-white rounded-none p-8 w-full max-w-lg border-4 border-black shadow-xl">
-                <div className="flex justify-between items-center mb-6">
-                  <h2 className="text-2xl font-bold font-serif text-black">
-                    Add New Inventory Item
-                  </h2>
-                  <button
-                    onClick={() => {
-                      setIsAddModalOpen(false);
-                      setFormData({ title: '', quantity: '', ml: '', received: '' });
-                    }}
-                    className="text-black hover:text-gray-600 text-xl"
-                  >
-                    ×
-                  </button>
-                </div>
-                
-                <form onSubmit={handleAddSubmit}>
-                  <div className="mb-5">
-                    <label className="block text-gray-800 mb-2 font-medium uppercase text-sm tracking-wider" htmlFor="title">
-                      Title
-                    </label>
-                    <input
-                      type="text"
-                      id="title"
-                      name="title"
-                      value={formData.title}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-3 border-2 border-black rounded-none focus:outline-none focus:ring-2 focus:ring-black text-black"
-                      required
-                      disabled={isAddLoading}
-                    />
-                  </div>
-                  
-                  <div className="mb-5">
-                    <label className="block text-gray-800 mb-2 font-medium uppercase text-sm tracking-wider" htmlFor="quantity">
-                      Quantity
-                    </label>
-                    <input
-                      type="number"
-                      id="quantity"
-                      name="quantity"
-                      value={formData.quantity}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-3 border-2 border-black rounded-none focus:outline-none focus:ring-2 focus:ring-black text-black"
-                      required
-                      disabled={isAddLoading}
-                    />
-                  </div>
-                  
-                  <div className="mb-5">
-                    <label className="block text-gray-800 mb-2 font-medium uppercase text-sm tracking-wider" htmlFor="ml">
-                      ML
-                    </label>
-                    <input
-                      type="number"
-                      id="ml"
-                      name="ml"
-                      value={formData.ml}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-3 border-2 border-black rounded-none focus:outline-none focus:ring-2 focus:ring-black text-black"
-                      disabled={isAddLoading}
-                    />
-                  </div>
-
-                  <div className="mb-5">
-                    <label className="block text-gray-800 mb-2 font-medium uppercase text-sm tracking-wider" htmlFor="received">
-                      Received
-                    </label>
-                    <input
-                      type="number"
-                      id="received"
-                      name="received"
-                      value={formData.received}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-3 border-2 border-black rounded-none focus:outline-none focus:ring-2 focus:ring-black text-black"
-                      disabled={isAddLoading}
-                    />
-                  </div>
-                  
-                  <div className="flex justify-end gap-3">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setIsAddModalOpen(false);
-                        setFormData({ title: '', quantity: '', ml: '', received: '' });
-                      }}
-                      className="px-6 py-3 border-2 border-black bg-white text-black hover:bg-gray-100 font-medium transition-colors duration-200"
-                      disabled={isAddLoading}
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      type="submit"
-                      className="px-6 py-3 bg-black text-white hover:bg-gray-800 font-medium flex items-center gap-2 transition-colors duration-200"
-                      disabled={isAddLoading}
-                    >
-                      {isAddLoading ? (
-                        <span className="animate-spin">↻</span>
-                      ) : null}
-                      Add Item
-                    </button>
-                  </div>
-                </form>
-              </div>
+          {/* Summary Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+            <div className="bg-white p-4 rounded-lg shadow border border-gray-200">
+              <h3 className="text-sm font-medium text-gray-500">Opening Stock</h3>
+              <p className="text-2xl font-bold text-blue-600">{totalOpening.toLocaleString()}</p>
             </div>
-          )}
+            <div className="bg-white p-4 rounded-lg shadow border border-gray-200">
+              <h3 className="text-sm font-medium text-gray-500">Total Received</h3>
+              <p className="text-2xl font-bold text-green-600">{totalReceived.toLocaleString()}</p>
+            </div>
+            <div className="bg-white p-4 rounded-lg shadow border border-gray-200">
+              <h3 className="text-sm font-medium text-gray-500">Total Sales</h3>
+              <p className="text-2xl font-bold text-red-600">{totalSales.toLocaleString()}</p>
+            </div>
+            <div className="bg-white p-4 rounded-lg shadow border border-gray-200">
+              <h3 className="text-sm font-medium text-gray-500">Closing Stock</h3>
+              <p className={`text-2xl font-bold ${totalClosing < 0 ? 'text-red-600' : 'text-purple-600'}`}>
+                {totalClosing.toLocaleString()}
+              </p>
+            </div>
+          </div>
           
-          <br />
-          <div className="max-w-7xl mx-auto">
-            {/* Header */}
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+          {/* Inventory Table */}
+          <div className="bg-white shadow-md rounded-lg overflow-hidden">
+            <div className="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
               <div>
-                <h3 className="text-3xl font-bold text-gray-800">Bar Inventory</h3>
+                <h2 className="text-xl font-semibold text-gray-800">Product Details</h2>
+                <p className="text-sm text-gray-600 mt-1">Detailed inventory breakdown by product</p>
               </div>
-              <div className="flex space-x-3 mt-4 md:mt-0">
-                <button 
-                  onClick={() => setIsAddModalOpen(true)}
-                  className="flex items-center px-4 py-2 bg-black text-white rounded-sm hover:bg-gray-800 transition-colors duration-200"
+              <div className="flex space-x-2">
+                <select 
+                  className="border border-gray-300 rounded-md px-3 py-1 text-sm"
+                  value={selectedMonth}
+                  onChange={(e) => setSelectedMonth(parseInt(e.target.value))}
                 >
-                  <FiPlus className="mr-2" />
-                  Add Item
-                </button>
-                <button 
-                  className="flex items-center px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition"
-                  onClick={() => fetchData()}
+                  <option value={0}>January</option>
+                  <option value={1}>February</option>
+                  <option value={2}>March</option>
+                  <option value={3}>April</option>
+                  <option value={4}>May</option>
+                  <option value={5}>June</option>
+                  <option value={6}>July</option>
+                  <option value={7}>August</option>
+                  <option value={8}>September</option>
+                  <option value={9}>October</option>
+                  <option value={10}>November</option>
+                  <option value={11}>December</option>
+                </select>
+                <select 
+                  className="border border-gray-300 rounded-md px-3 py-1 text-sm"
+                  value={selectedYear}
+                  onChange={(e) => setSelectedYear(parseInt(e.target.value))}
                 >
-                  <FiRefreshCw className="mr-2" />
-                  Refresh
-                </button>
+                  <option value={2023}>2023</option>
+                  <option value={2024}>2024</option>
+                  <option value={2025}>2025</option>
+                </select>
               </div>
             </div>
-
-            {lowStockCount > 0 && (
-              <div className="mb-6 bg-gradient-to-r from-pink-50 to-pink-100 p-6 rounded-xl border-l-4 border-pink-500">
-                <div className="flex items-center">
-                  <FiAlertTriangle className="h-5 w-5 text-red-500 mr-3" />
-                  <h3 className="text-sm font-semibold text-red-800">
-                    Low stock - {lowStockCount}{" "}
-                    ({lowStockItems.map(item => item.name).join(", ")})
-                  </h3>
-                </div>
-              </div>
-            )}
-
-            {/* Inventory Table */}
-            <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-              <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50">
-                    <tr>
-                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Item
-                      </th>
-                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Category
-                      </th>
-                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Opening stock
-                      </th>
-                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Received
-                      </th>
-                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Order Sent
-                      </th>
-                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Closing stock
-                      </th>
-                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Last Updated
-                      </th>
-                      <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Actions
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
-                    {inventoryItems.map((item) => (
-                      <tr key={item.id} className="hover:bg-gray-50">
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="flex items-center">
-                            <div className="flex-shrink-0 h-10 w-10 flex items-center justify-center bg-gray-100 rounded-lg">
-                              {getCategoryIcon(item.category)}
-                            </div>
-                            <div className="ml-4">
-                              <div className="text-sm font-medium text-gray-900">{item.name}</div>
-                            </div>
-                          </div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm text-gray-500">{item.category}</div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="flex items-center">
-                            <div className={`h-2.5 rounded-full ${item.stock <= item.threshold ? 'bg-red-500' : 'bg-green-500'}`} 
-                                style={{ width: `${Math.min(100, (item.stock / (item.threshold * 2)) * 100)}%` }}></div>
-                            <span className="ml-2 text-sm font-medium text-gray-700">
-                              {item.stock} 
-                              {item.ml && ` (${item.ml}ml)`}
-                              {item.stock <= item.threshold && <span className="text-red-500"> (Low)</span>}
-                            </span>
-                          </div>
-                        </td>
-
-                        <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-gray-500">{item.received}</div>
+            
+            <div className="overflow-x-auto">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Product
+                    </th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Category
+                    </th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Opening Stock
+                    </th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Received
+                    </th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Sales
+                    </th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Closing Stock
+                    </th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Threshold
+                    </th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Status
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {monthlySummary.map((item, index) => (
+                    <tr key={index} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm font-medium text-gray-900">{item.title}</div>
+                        <div className="text-xs text-gray-500">{item.isMl ? 'Liquid (ml)' : 'Units'}</div>
                       </td>
-
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm font-medium text-gray-700">
-                            {item.name.includes("8848") 
-                              ? `${item.orderSent}ml`
-                              : item.name.includes("Nude")
-                                ? `${item.orderSent}ml`
-                                : item.orderSent}
-                          </div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className={`text-sm font-medium ${
-                            item.stockRemaining <= item.threshold ? 'text-red-500' : 'text-gray-700'
-                          }`}>
-                            {item.name.includes("8848") 
-                              ? `${(item.ml || 750) - (orderData.total_8848_ml || 0)}ml`
-                              : item.name.includes("Nude")
-                                ? `${(item.ml || 180) - (orderData.total_Nude_ml || 0)}ml`
-                                : item.stockRemaining}
-                            {item.stockRemaining <= item.threshold && (
-                              <span className="ml-1 text-red-500 text-xs">(Reorder needed)</span>
-                            )}
-                          </div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          {formatDate(item.lastUpdated)}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                          <button 
-                            onClick={() => handleEditClick(item)}
-                            className="text-blue-600 hover:text-blue-900 mr-3"
-                          >
-                            Edit
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {item.category}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {item.openingStock.toLocaleString()}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-green-600">
+                        +{item.totalReceived.toLocaleString()}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-red-600">
+                        -{item.totalSales.toLocaleString()}
+                      </td>
+                      <td className={`px-6 py-4 whitespace-nowrap text-sm font-medium ${
+                        item.closingStock < 0 ? 'text-red-600' : 'text-gray-900'
+                      }`}>
+                        {item.closingStock.toLocaleString()}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {item.threshold}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                          item.closingStock <= item.threshold 
+                            ? 'bg-red-100 text-red-800' 
+                            : 'bg-green-100 text-green-800'
+                        }`}>
+                          {item.closingStock <= item.threshold ? 'Low Stock' : 'In Stock'}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+                <tfoot className="bg-gray-50">
+                  <tr>
+                    <td colSpan="2" className="px-6 py-3 text-sm font-medium text-gray-900 text-right">
+                      Totals:
+                    </td>
+                    <td className="px-6 py-3 text-sm font-medium text-gray-900">
+                      {totalOpening.toLocaleString()}
+                    </td>
+                    <td className="px-6 py-3 text-sm font-medium text-green-600">
+                      +{totalReceived.toLocaleString()}
+                    </td>
+                    <td className="px-6 py-3 text-sm font-medium text-red-600">
+                      -{totalSales.toLocaleString()}
+                    </td>
+                    <td className={`px-6 py-3 text-sm font-medium ${
+                      totalClosing < 0 ? 'text-red-600' : 'text-gray-900'
+                    }`}>
+                      {totalClosing.toLocaleString()}
+                    </td>
+                    <td colSpan="2"></td>
+                  </tr>
+                </tfoot>
+              </table>
             </div>
-
-            {/* Pagination */}
-            <div className="flex items-center justify-between mt-6 bg-white px-6 py-3 rounded-xl shadow-sm">
-              <div className="text-sm text-gray-500">
-                Showing <span className="font-medium">1</span> to <span className="font-medium">{inventoryItems.length}</span> of <span className="font-medium">{inventoryItems.length}</span> items
-              </div>
+            
+            <div className="px-6 py-4 bg-gray-50 border-t border-gray-200">
+              <p className="text-xs text-gray-500">
+                Showing {monthlySummary.length} products • Data from the selected period
+              </p>
             </div>
           </div>
         </div>

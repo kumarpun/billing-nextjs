@@ -48,7 +48,7 @@ export default function AddBillForm({ initialOriginalPrice, initialBillId, initi
             });
 
             if (res.ok) {
-                toast.success("Bill added!");
+                toast.success("Bill added successfully!");
                 router.refresh();
                 // Clear all fields except kitchenPrice
                 setFinalPrice("");
@@ -60,12 +60,14 @@ export default function AddBillForm({ initialOriginalPrice, initialBillId, initi
             }
         } catch (error) {
             console.log(error);
+            toast.error("Error adding bill");
         }
     };
 
     return (
-        <div>
-            <form onSubmit={handleSubmit} className="flex flex-col gap-3 text-black">
+        <div className="w-full max-w-md mx-auto p-4 bg-white border border-gray-200 rounded-xl shadow-md">
+            
+            <form onSubmit={handleSubmit} className="space-y-5">
                 <input
                     id="tablebill_id"
                     onChange={(e) => setTableBillId(e.target.value)} 
@@ -76,68 +78,95 @@ export default function AddBillForm({ initialOriginalPrice, initialBillId, initi
                     hidden
                 />
 
-                <label htmlFor="originalPrice">Original Bill</label>
-                <input
-                    id="originalPrice"
-                    onChange={(e) => setOriginalPrice(e.target.value)} 
-                    value={originalPrice}
-                    className="border border-slate-500 px-8 py-2" 
-                    type="number" 
-                    placeholder="Original bill" 
-                    readOnly 
-                />
+                <div>
+                    <div>
+                        <label htmlFor="originalPrice" className="block text-xs font-medium text-gray-700 mb-1">Original Bill</label>
+                        <input
+                            id="originalPrice"
+                            onChange={(e) => setOriginalPrice(e.target.value)} 
+                            value={originalPrice}
+                            className="w-full p-2 text-base font-medium text-gray-800 bg-gray-50 rounded-lg border border-gray-300 bg-yellow-50" 
+                            type="number" 
+                            placeholder="0.00" 
+                            readOnly 
+                        />
+                    </div>
+                </div>
 
-                <label htmlFor="kitchenPrice">Kitchen Price</label>
-                <input
-                    id="kitchenPrice"
-                    onChange={(e) => setKitchenPrice(e.target.value)} 
-                    value={kitchenPrice}
-                    className="border border-slate-500 px-8 py-2" 
-                    type="number" 
-                    placeholder="Kitchen Price" 
-                    readOnly 
-                />
+                <div className="grid grid-cols-2 gap-3">
+                    <div>
+                        <label htmlFor="kitchenPrice" className="block text-xs font-medium text-gray-700 mb-1">Kitchen</label>
+                        <input
+                            id="kitchenPrice"
+                            onChange={(e) => setKitchenPrice(e.target.value)} 
+                            value={kitchenPrice}
+                            className="w-full p-2 text-base text-gray-700 bg-blue-50 rounded-lg border border-gray-300" 
+                            type="number" 
+                            placeholder="0.00" 
+                            readOnly 
+                        />
+                    </div>
 
-                <label htmlFor="barPrice">Bar Price</label>
-                <input
-                    id="barPrice"
-                    onChange={(e) => setBarPrice(e.target.value)} 
-                    value={barPrice}
-                    className="border border-slate-500 px-8 py-2" 
-                    type="number" 
-                    placeholder="Bar Price" 
-                    readOnly 
-                />
+                    <div>
+                        <label htmlFor="barPrice" className="block text-xs font-medium text-gray-700 mb-1">Bar</label>
+                        <input
+                            id="barPrice"
+                            onChange={(e) => setBarPrice(e.target.value)} 
+                            value={barPrice}
+                            className="w-full p-2 text-base text-gray-700 bg-blue-50 rounded-lg border border-gray-300" 
+                            type="number" 
+                            placeholder="0.00" 
+                            readOnly 
+                        />
+                    </div>
+                </div>
 
-                <label htmlFor="discountPercent">Discount % (Applies to Kitchen Price only)</label>
-                <input
-                    id="discountPercent"
-                    onChange={(e) => setDiscountPercent(e.target.value)} 
-                    value={discountPercent}
-                    className="border border-slate-500 px-8 py-2" 
-                    type="number" 
-                    placeholder="Discount %" 
-                />
+                <div>
+                    <div className="flex justify-between items-center mb-1">
+                        <label htmlFor="discountPercent" className="block text-xs font-medium text-gray-700">
+                            Discount %
+                        </label>
+                        {discountPercent && (
+                            <span className="text-xs font-medium bg-blue-100 text-blue-800 px-1.5 py-0.5 rounded">
+                                Save: ₹{Math.round((discountPercent / 100) * kitchenPrice)}
+                            </span>
+                        )}
+                    </div>
+                    <input
+                        id="discountPercent"
+                        onChange={(e) => setDiscountPercent(e.target.value)} 
+                        value={discountPercent}
+                        className="w-full p-2 text-base text-blue-700 bg-blue-50 rounded-lg border border-gray-300" 
+                        type="number" 
+                        placeholder="0" 
+                        min="0"
+                        max="100"
+                    />
+                </div>
 
-                <label htmlFor="finalPrice">Final Discount (KOT Discounted Price + BOT Price)</label>
-                <input
-                    id="finalPrice"
-                    onChange={(e) => setFinalPrice(e.target.value)} // Allow user input
-                    value={finalPrice}
-                    className="border border-slate-500 px-8 py-2" 
-                    type="number" 
-                    placeholder="Final price" 
-                />
+                <div>
+                        <label htmlFor="finalPrice" className="block text-xs font-medium text-gray-700 mb-1">Final Amount</label>
+                        <input
+                            id="finalPrice"
+                            onChange={(e) => setFinalPrice(e.target.value)}
+                            value={finalPrice}
+                            className="w-full p-2 text-base font-medium text-green-700 bg-green-50 rounded-lg border border-gray-300" 
+                            type="number" 
+                            placeholder="0.00" 
+                        />
+                    </div>
 
-                <label htmlFor="remarks">Remarks</label>
-                <input
-                    id="remarks"
-                    onChange={(e) => setRemarks(e.target.value)} 
-                    value={remarks}
-                    className="border border-slate-500 px-8 py-2" 
-                    type="text" 
-                    placeholder="Remarks" 
-                />
+                <div>
+                    <label htmlFor="remarks" className="block text-xs font-medium text-gray-700 mb-1">Remarks</label>
+                    <input
+                        id="remarks"
+                        onChange={(e) => setRemarks(e.target.value)} 
+                        value={remarks}
+                        className="w-full p-2 text-base text-gray-700 bg-blue-50 rounded-lg border border-gray-300" 
+                        type="text" 
+                        placeholder="Additional notes..." 
+                    />
+                </div>
 
                 <input
                     id="billStatus"
@@ -149,9 +178,17 @@ export default function AddBillForm({ initialOriginalPrice, initialBillId, initi
                     hidden
                 />
 
-                <button type="submit" className="bg-green-600 font-bold text-white py-3 px-6 w-fit">
-                    Add Bill
-                </button>
+                <div className="pt-2">
+                    <button 
+                        type="submit" 
+                        className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:bg-gray-700 text-white font-medium py-2.5 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1.5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clipRule="evenodd" />
+                        </svg>
+                        Add Bill
+                    </button>
+                </div>
             </form>
         </div>
     );

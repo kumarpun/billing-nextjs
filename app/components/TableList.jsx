@@ -159,21 +159,22 @@ function LuxuryTableCard({ table, gradient, isTerrace = false }) {
     
       {/* Main card */}
       <div
-        className={`relative z-10 h-full p-2 rounded-3xl border-2 transition-all duration-500 overflow-hidden
-          ${isTerrace ? 'border-amber-300/30' : 'border-gray-200/30'}
-          ${isRunning ? 'bg-white/90' : 'bg-white/80'}
-          backdrop-blur-sm shadow-md group-hover:shadow-lg`}
+        className="relative z-10 h-full p-2 rounded-3xl border-2 transition-all duration-500 overflow-hidden backdrop-blur-sm shadow-md group-hover:shadow-lg"
+        style={{
+          backgroundColor: '#222937',
+          borderColor: isTerrace ? 'rgba(252, 211, 77, 0.3)' : 'rgba(229, 231, 235, 0.3)'
+        }}
       >
         {/* Decorative elements */}
-        <div className="absolute top-0 right-0 w-32 h-32 -mr-10 -mt-10 rounded-full bg-gradient-to-br from-amber-200/20 to-amber-400/10"></div>
+        <div className="absolute top-0 right-0 w-32 h-32 -mr-10 -mt-10 rounded-full" style={{background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.1) 100%)'}}></div>
       
         {/* Header */}
         <div className="relative z-20 flex justify-between items-start mb-4">
           <div>
-            <h3 className={`text-xl p-1 font-bold mb-1 ${isTerrace ? 'text-amber-800' : 'text-gray-800'}`}>
+            <h3 className={`text-xl p-1 font-bold mb-1 ${isTerrace ? 'text-amber-200' : 'text-white'}`}>
               {table.title}
             </h3>
-            <p className={`text-sm ${isTerrace ? 'text-amber-600/80' : 'text-gray-500/80'}`}>
+            <p className={`text-sm ${isTerrace ? 'text-amber-100/80' : 'text-gray-100/80'}`}>
               {table.description}
             </p>
           </div>
@@ -186,8 +187,8 @@ function LuxuryTableCard({ table, gradient, isTerrace = false }) {
               <HiPencilAlt
                 className={`text-2xl p-1 rounded-full transition-all
                   ${isTerrace ?
-                    'text-amber-600 hover:bg-amber-100' :
-                    'text-gray-500 hover:bg-gray-100'}
+                    'text-amber-200 hover:bg-amber-500/30' :
+                    'text-gray-200 hover:bg-gray-500/30'}
                   hover:shadow-sm hover:scale-110`}
               />
             </Link>
@@ -197,38 +198,38 @@ function LuxuryTableCard({ table, gradient, isTerrace = false }) {
         {/* Status indicator */}
         <div className="relative z-20 mb-5 -mt-3">
           {isRunning ? (
-            <div className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-green-100 to-emerald-100 border border-green-200 shadow-inner">
+            <div className="inline-flex items-center px-4 py-2 rounded-full border shadow-inner" style={{background: 'linear-gradient(to right, rgba(187, 247, 208, 0.3) 0%, rgba(167, 243, 208, 0.3) 100%)', borderColor: 'rgba(187, 247, 208, 0.4)'}}>
               <span className="relative flex h-3 w-3 mr-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
               </span>
-              <span className="text-sm font-medium text-green-800">Active</span>
-              <span className="ml-1 text-[0.65rem] text-green-600">Running</span>
+              <span className="text-sm font-medium text-green-100">Active</span>
+              <span className="ml-1 text-[0.65rem] text-green-200">Running</span>
             </div>
           ) : (
-            <div className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-gray-100 to-gray-200 border border-gray-300 shadow-inner">
-              <span className="w-2 h-2 mr-2 bg-gray-400 rounded-full"></span>
-              <span className="text-sm font-medium text-gray-700">Available</span>
+            <div className="inline-flex items-center px-4 py-2 rounded-full border shadow-inner" style={{background: 'linear-gradient(to right, rgba(255, 255, 255, 0.2) 0%, rgba(243, 244, 246, 0.2) 100%)', borderColor: 'rgba(255, 255, 255, 0.3)'}}>
+              <span className="w-2 h-2 mr-2 bg-gray-300 rounded-full"></span>
+              <span className="text-sm font-medium text-gray-100">Available</span>
             </div>
           )}
         </div>
 
         {/* Total Bill - appears only when table is running */}
         {isRunning && (
-          <div className="relative z-20 p-2 rounded-xl bg-gradient-to-br from-white to-gray-50 border border-gray-100 shadow-inner overflow-hidden -mt-3">
+          <div className="relative z-20 p-2 rounded-xl border shadow-inner overflow-hidden -mt-3" style={{background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(243, 244, 246, 0.15) 100%)', borderColor: 'rgba(255, 255, 255, 0.2)'}}>
             {/* Decorative accent */}
-            <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-amber-500 to-amber-300"></div>
+            <div className="absolute top-0 left-0 w-1 h-full" style={{background: 'linear-gradient(to bottom, rgb(245, 158, 11) 0%, rgb(252, 211, 77) 100%)'}}></div>
           
             <div className="flex justify-between items-center">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-1">
+                <p className="text-xs font-semibold uppercase tracking-wider text-gray-200 mb-1">
                   Current Bill
                 </p>
-                <p className="text-sm font-bold text-gray-800">
+                <p className="text-sm font-bold text-white">
                   रू {table.totalPrice.toLocaleString()}
                 </p>
               </div>
-              <div className="text-xs px-2 py-1 rounded bg-amber-100/50 text-amber-800 border border-amber-200">
+              <div className="text-xs px-2 py-1 rounded border" style={{backgroundColor: 'rgba(253, 230, 138, 0.2)', borderColor: 'rgba(253, 230, 138, 0.3)', color: '#fef3c7'}}>
                 {table.orders.orderbyTableId.length} items
               </div>
             </div>
@@ -236,7 +237,7 @@ function LuxuryTableCard({ table, gradient, isTerrace = false }) {
         )}
 
         {/* Subtle pattern overlay */}
-        <div className="absolute inset-0 opacity-5 pattern-dots pattern-gray-400 pattern-size-2"></div>
+        <div className="absolute inset-0 opacity-5 pattern-dots pattern-white pattern-size-2"></div>
       </div>
     </div>
   );

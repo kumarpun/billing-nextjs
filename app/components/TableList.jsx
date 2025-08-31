@@ -198,13 +198,13 @@ function LuxuryTableCard({ table, gradient, isTerrace = false }) {
         {/* Status indicator */}
         <div className="relative z-20 mb-5 -mt-3">
           {isRunning ? (
-            <div className="inline-flex items-center px-4 py-2 rounded-full border shadow-inner" style={{background: 'linear-gradient(to right, rgba(187, 247, 208, 0.3) 0%, rgba(167, 243, 208, 0.3) 100%)', borderColor: 'rgba(187, 247, 208, 0.4)'}}>
+            <div className="inline-flex items-center px-4 py-2 rounded-full border shadow-inner" style={{background: 'linear-gradient(to right, rgba(6, 90, 8, 0.94) 0%, rgba(167, 243, 208, 0.3) 100%)', borderColor: 'rgba(6, 90, 8, 0.94)'}}>
               <span className="relative flex h-3 w-3 mr-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-100"></span>
                 <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
               </span>
-              <span className="text-sm font-medium text-green-100">Active</span>
-              <span className="ml-1 text-[0.65rem] text-green-200">Running</span>
+              <span className="text-sm font-medium text-green-400 ">Active</span>
+              <span className="ml-1 text-[0.65rem] text-green-400">Running</span>
             </div>
           ) : (
             <div className="inline-flex items-center px-4 py-2 rounded-full border shadow-inner" style={{background: 'linear-gradient(to right, rgba(255, 255, 255, 0.2) 0%, rgba(243, 244, 246, 0.2) 100%)', borderColor: 'rgba(255, 255, 255, 0.3)'}}>

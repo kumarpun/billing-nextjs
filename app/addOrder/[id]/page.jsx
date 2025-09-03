@@ -463,6 +463,7 @@ export default function AddOrder({ params }) {
   { value: 'Latte Double', label: 'Latte (Double) - NRs 245', price: 245 },
   { value: 'Cappuccino Single', label: 'Cappuccino (Single) - NRs 170', price: 170 },
   { value: 'Cappuccino Double', label: 'Cappuccino (Double) - NRs 250', price: 250 },
+  { value: 'Iced Cappuccino', label: 'Iced Cappuccino - NRs 190', price: 190 },
   { value: 'Hot Chocolate', label: 'Hot Chocolate - NRs 230', price: 230 },
   { value: 'Hot Lemon Honey', label: 'Hot Lemon with Honey - NRs 130', price: 130 },
   { value: 'Hot Lemon Honey Ginger', label: 'Hot Lemon with Honey and Ginger - NRs 150', price: 150 },

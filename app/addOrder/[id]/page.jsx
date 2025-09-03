@@ -439,6 +439,7 @@ export default function AddOrder({ params }) {
         { value: 'Ristretto', label: 'Ristretto - NRs 90', price: 90 },
         { value: 'Espresso', label: 'Espresso - NRs 100', price: 100 },
         { value: 'Espresso Macchiato', label: 'Espresso Macchiato - NRs 120', price: 120 },
+        { value: 'Espresso shake', label: 'Espresso shake - NRs 125', price: 125 },
         { value: 'Americano Single', label: 'Americano (Single) - NRs 125', price: 125 },
         { value: 'Americano Double', label: 'Americano (Double) - NRs 135', price: 135 },
         { value: 'Lungo Single', label: 'Lungo (Single) - NRs 135', price: 135 },

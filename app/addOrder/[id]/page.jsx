@@ -230,6 +230,9 @@ export default function AddOrder({ params }) {
        { value: 'Chicken mocha', label: 'Chicken mocha - NRs 230', price: 230 },
        { value: 'Buff mocha', label: 'Buff mocha - NRs 250', price: 250 },
 
+       { value: 'Buff mocha', label: 'Buff mocha - NRs 250', price: 250 },
+       { value: 'Takeway cup', label: 'Takeway cup - NRs 25', price: 25 },
+
 
        { value: 'Peanut', label: 'Peanut - NRs 80', price: 80 },
        { value: 'Honey', label: 'Honey - NRs 50', price: 50 },

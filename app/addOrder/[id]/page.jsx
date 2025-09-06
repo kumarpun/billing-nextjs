@@ -216,6 +216,7 @@ export default function AddOrder({ params }) {
        { value: 'Hakka Noodles half (Buff)', label: 'Hakka Noodles half (Buff) - NRs 140', price: 140 },
 
        // ROLL
+       { value: 'Chicken wrap', label: 'Chicken wrap - NRs 395', price: 395 },
        { value: 'Kathi Roll (Veg)', label: 'Kathi Roll (Veg) - NRs 240', price: 240 },
        { value: 'Kathi Roll (Egg)', label: 'Kathi Roll (Egg) - NRs 300', price: 300 },
        { value: 'Kathi Roll (Chicken)', label: 'Kathi Roll (Chicken) - NRs 370', price: 370 },

@@ -4,6 +4,7 @@ import { FaChartBar, FaUsers, FaHome, FaSignOutAlt, FaReceipt, FaBars, FaTimes, 
 
 const navLinks = [
   { key: "dashboard", label: "Dashboard", icon: FaHome, path: "/dashReport" },
+  { key: "attendance", label: "Attendance", icon: FaUsers, path: "/attendance" },
   { key: "stock", label: "Stock", icon: FaClipboardList, path: "/stock" },
   { key: "inventory", label: "Inventory", icon: FaWineBottle, path: "/inventory" },
   { key: "sales", label: "Sales Report", icon: FaChartBar, path: "/listReport" },

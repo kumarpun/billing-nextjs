@@ -330,6 +330,7 @@ export default function AddOrder({ params }) {
 
   { value: 'JW Double Black - 60ml', label: 'JW Double Black - 60ml - NRs 1200', price: 1200 },
   { value: 'JW Double Black - 180ml', label: 'JW Double Black - 180ml - NRs 3000', price: 3000 },
+  { value: 'JW Double Black - half', label: 'JW Double Black - half - NRs 8000', price: 8000 },
   { value: 'JW Double Black - Bottle', label: 'JW Double Black - Bottle - NRs 15600', price: 15600 },
 
   { value: 'JW Black Label - 60ml', label: 'JW Black Label - 60ml - NRs 1060', price: 1060 },

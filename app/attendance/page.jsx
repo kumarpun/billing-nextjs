@@ -25,7 +25,7 @@ export default function Dashboard() {
   const [showSummary, setShowSummary] = useState(false);
   const [summaryData, setSummaryData] = useState([]);
   const [showSummarySection, setShowSummarySection] = useState(false); // New state for toggling summary section
-
+  const [currentUserRole, setCurrentUserRole] = useState(null);
 
   const toggleSidebar = () => setIsSidebarCollapsed(!isSidebarCollapsed);
 
@@ -182,8 +182,21 @@ export default function Dashboard() {
     });
   };
 
+  const fetchCurrentUser = async () => {
+    try {
+      const response = await fetch('/api/currentUser');
+      if (response.ok) {
+        const userData = await response.json();
+        setCurrentUserRole(userData.role);
+      }
+    } catch (error) {
+      console.error('Error fetching current user:', error);
+    }
+  };
+
   useEffect(() => {
     fetchAttendances();
+    fetchCurrentUser();
   }, [selectedDate]);
 
   // Convert time string to proper Date object for API
@@ -853,8 +866,8 @@ export default function Dashboard() {
                         defaultValue={new Date().toTimeString().substring(0, 5)}
                         className="w-full border rounded-md px-3 py-2"
                         required
-                        readOnly
-                      />
+                        readOnly={currentUserRole !== 'admin'}
+                        />
                       <p className="text-xs text-gray-500 mt-1">
                         Shift will be automatically determined: Morning if before 12 PM, Afternoon if at or after 12 PM
                       </p>
@@ -953,8 +966,8 @@ export default function Dashboard() {
                           document.getElementById('timeLostDisplay').value = formatTimeLost(timeLostMinutes);
                           document.getElementById('deductionDisplay').value = `${deductionPercentage.toFixed(2)}%`;
                         }}
-                        readOnly
-                      />
+                        readOnly={currentUserRole !== 'admin'}
+                        />
                       <p className="text-xs text-gray-500 mt-1">
                         Shift will be automatically determined: Morning if before 12 PM, Afternoon if at or after 12 PM
                       </p>
@@ -966,8 +979,8 @@ export default function Dashboard() {
                         name="checkOutTime"
                         defaultValue={extractTimeFromISO(editingAttendance.checkOutTime)}
                         className="w-full border rounded-md px-3 py-2"
-                        hidden
-                      />
+                        hidden={currentUserRole !== 'admin'} // Show only for admin users
+                        />
                     </div>
                     {/* <div className="mb-4">
                       <label className="block text-sm font-medium text-gray-700 mb-1">Status *</label>

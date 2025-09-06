@@ -14,6 +14,11 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
+    role: {
+      type: String,
+      enum: ["user", "admin"], // Define possible roles
+      default: "user", // Default role for new users
+    },
   },
   { timestamps: true }
 );

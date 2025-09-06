@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import Attendance from "../../../models/attendance";
 import { dbConnect } from "../dbConnect";
+import { toNepalTime } from "../../utils/nepalTime";
 
 export async function GET() {
     await dbConnect();
@@ -35,8 +36,11 @@ export async function POST(request) {
       let deductionPercentage = 0;
   
       if (checkInTime && status === "present") {
-        const checkInDate = new Date(checkInTime);
-        const shiftDate = new Date(date);
+        // const checkInDate = new Date(checkInTime);
+        // const shiftDate = new Date(date);
+        const checkInDate = toNepalTime(checkInTime);
+        const shiftDate = toNepalTime(date);
+
   
         let expectedCheckInTime;
         let shiftDurationMinutes = 0;

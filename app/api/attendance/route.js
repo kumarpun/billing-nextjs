@@ -126,108 +126,25 @@ export async function POST(request) {
       );
     }
   }
-
   export async function PUT(request) {
     try {
       const { id, ...updateData } = await request.json();
-      
+  
       if (!id) {
         return NextResponse.json({ error: "ID is required" }, { status: 400 });
       }
   
       await dbConnect();
-      
+  
       const existingAttendance = await Attendance.findById(id);
       if (!existingAttendance) {
         return NextResponse.json({ error: "Attendance not found" }, { status: 404 });
       }
   
-      const updatedData = { ...existingAttendance.toObject(), ...updateData };
-      
-      let timeLostMinutes = 0;
-      let salaryDeduction = 0;
-      let deductionPercentage = 0;
-  
-      // Determine shift automatically based on checkInTime if status is present
-      if ((updateData.checkInTime || updateData.status) && updatedData.status === "present") {
-        const checkInDate = new Date(updatedData.checkInTime);
-        const shiftDate = new Date(updatedData.date);
-  
-        let expectedCheckInTime;
-        let shiftDurationMinutes = 0;
-  
-        // Auto determine shift based on checkInTime
-        const morningStart = new Date(shiftDate);
-        morningStart.setHours(10, 0, 0, 0); // Morning shift starts 10:00 AM
-  
-        const afternoonStart = new Date(shiftDate);
-        afternoonStart.setHours(12, 0, 0, 0); // Afternoon shift starts 12:00 PM
-  
-        if (checkInDate < afternoonStart) {
-          // Morning shift
-          updatedData.shiftTime = "Morning";
-          
-          // Parse the standard shift time (handle both "10:40" and "10L40" formats)
-          let standardTime = updatedData.standardShiftMorning;
-          if (standardTime.includes('L')) {
-            standardTime = standardTime.replace('L', ':');
-          }
-          
-          const [hours, minutes] = standardTime.split(':').map(Number);
-          expectedCheckInTime = new Date(shiftDate);
-          expectedCheckInTime.setHours(hours, minutes, 0, 0);
-  
-          // Grace period until 10:15 AM (or 15 minutes after standard time)
-          const graceEnd = new Date(expectedCheckInTime);
-          graceEnd.setMinutes(graceEnd.getMinutes() + 15);
-  
-          shiftDurationMinutes = 10 * 60; // 10 AM - 8 PM (10 hours)
-  
-          if (checkInDate > graceEnd) {
-            const lateMs = checkInDate - graceEnd;
-            timeLostMinutes = Math.floor(lateMs / (1000 * 60));
-            if (timeLostMinutes > 0) {
-              deductionPercentage = (timeLostMinutes / shiftDurationMinutes) * 100;
-              salaryDeduction = (updatedData.salary * deductionPercentage) / 100;
-            }
-          }
-        } else {
-          // Afternoon shift
-          updatedData.shiftTime = "Afternoon";
-          
-          // Parse the standard shift time (handle both "12:00" and "12L00" formats)
-          let standardTime = updatedData.standardShiftAfternoon;
-          if (standardTime.includes('L')) {
-            standardTime = standardTime.replace('L', ':');
-          }
-          
-          const [hours, minutes] = standardTime.split(':').map(Number);
-          expectedCheckInTime = new Date(shiftDate);
-          expectedCheckInTime.setHours(hours, minutes, 0, 0);
-  
-          const graceEnd = new Date(expectedCheckInTime);
-          graceEnd.setMinutes(graceEnd.getMinutes() + 15);
-  
-          shiftDurationMinutes = 11 * 60; // 12 PM - 11 PM (11 hours)
-  
-          if (checkInDate > graceEnd) {
-            const lateMs = checkInDate - graceEnd;
-            timeLostMinutes = Math.floor(lateMs / (1000 * 60));
-            if (timeLostMinutes > 0) {
-              deductionPercentage = (timeLostMinutes / shiftDurationMinutes) * 100;
-              salaryDeduction = (updatedData.salary * deductionPercentage) / 100;
-            }
-          }
-        }
-      }
-  
-      updatedData.timeLost = timeLostMinutes;
-      updatedData.salaryDeduction = salaryDeduction;
-      updatedData.deductionPercentage = deductionPercentage;
-  
+      // Simply update with whatever is sent
       const updatedAttendance = await Attendance.findByIdAndUpdate(
         id,
-        updatedData,
+        updateData,
         { new: true, runValidators: true }
       );
   
@@ -244,3 +161,121 @@ export async function POST(request) {
       }, { status: 500 });
     }
   }
+
+//   export async function PUT(request) {
+//     try {
+//       const { id, ...updateData } = await request.json();
+      
+//       if (!id) {
+//         return NextResponse.json({ error: "ID is required" }, { status: 400 });
+//       }
+  
+//       await dbConnect();
+      
+//       const existingAttendance = await Attendance.findById(id);
+//       if (!existingAttendance) {
+//         return NextResponse.json({ error: "Attendance not found" }, { status: 404 });
+//       }
+  
+//       const updatedData = { ...existingAttendance.toObject(), ...updateData };
+      
+//       let timeLostMinutes = 0;
+//       let salaryDeduction = 0;
+//       let deductionPercentage = 0;
+  
+//       // Determine shift automatically based on checkInTime if status is present
+//       if ((updateData.checkInTime || updateData.status) && updatedData.status === "present") {
+//         const checkInDate = new Date(updatedData.checkInTime);
+//         const shiftDate = new Date(updatedData.date);
+  
+//         let expectedCheckInTime;
+//         let shiftDurationMinutes = 0;
+  
+//         // Auto determine shift based on checkInTime
+//         const morningStart = new Date(shiftDate);
+//         morningStart.setHours(10, 0, 0, 0); // Morning shift starts 10:00 AM
+  
+//         const afternoonStart = new Date(shiftDate);
+//         afternoonStart.setHours(12, 0, 0, 0); // Afternoon shift starts 12:00 PM
+  
+//         if (checkInDate < afternoonStart) {
+//           // Morning shift
+//           updatedData.shiftTime = "Morning";
+          
+//           // Parse the standard shift time (handle both "10:40" and "10L40" formats)
+//           let standardTime = updatedData.standardShiftMorning;
+//           if (standardTime.includes('L')) {
+//             standardTime = standardTime.replace('L', ':');
+//           }
+          
+//           const [hours, minutes] = standardTime.split(':').map(Number);
+//           expectedCheckInTime = new Date(shiftDate);
+//           expectedCheckInTime.setHours(hours, minutes, 0, 0);
+  
+//           // Grace period until 10:15 AM (or 15 minutes after standard time)
+//           const graceEnd = new Date(expectedCheckInTime);
+//           graceEnd.setMinutes(graceEnd.getMinutes() + 15);
+  
+//           shiftDurationMinutes = 10 * 60; // 10 AM - 8 PM (10 hours)
+  
+//           if (checkInDate > graceEnd) {
+//             const lateMs = checkInDate - graceEnd;
+//             timeLostMinutes = Math.floor(lateMs / (1000 * 60));
+//             if (timeLostMinutes > 0) {
+//               deductionPercentage = (timeLostMinutes / shiftDurationMinutes) * 100;
+//               salaryDeduction = (updatedData.salary * deductionPercentage) / 100;
+//             }
+//           }
+//         } else {
+//           // Afternoon shift
+//           updatedData.shiftTime = "Afternoon";
+          
+//           // Parse the standard shift time (handle both "12:00" and "12L00" formats)
+//           let standardTime = updatedData.standardShiftAfternoon;
+//           if (standardTime.includes('L')) {
+//             standardTime = standardTime.replace('L', ':');
+//           }
+          
+//           const [hours, minutes] = standardTime.split(':').map(Number);
+//           expectedCheckInTime = new Date(shiftDate);
+//           expectedCheckInTime.setHours(hours, minutes, 0, 0);
+  
+//           const graceEnd = new Date(expectedCheckInTime);
+//           graceEnd.setMinutes(graceEnd.getMinutes() + 15);
+  
+//           shiftDurationMinutes = 11 * 60; // 12 PM - 11 PM (11 hours)
+  
+//           if (checkInDate > graceEnd) {
+//             const lateMs = checkInDate - graceEnd;
+//             timeLostMinutes = Math.floor(lateMs / (1000 * 60));
+//             if (timeLostMinutes > 0) {
+//               deductionPercentage = (timeLostMinutes / shiftDurationMinutes) * 100;
+//               salaryDeduction = (updatedData.salary * deductionPercentage) / 100;
+//             }
+//           }
+//         }
+//       }
+  
+//       updatedData.timeLost = timeLostMinutes;
+//       updatedData.salaryDeduction = salaryDeduction;
+//       updatedData.deductionPercentage = deductionPercentage;
+  
+//       const updatedAttendance = await Attendance.findByIdAndUpdate(
+//         id,
+//         updatedData,
+//         { new: true, runValidators: true }
+//       );
+  
+//       return NextResponse.json({ 
+//         message: "Attendance updated successfully.", 
+//         attendance: updatedAttendance 
+//       }, { status: 200 });
+  
+//     } catch (error) {
+//       console.error("Error updating attendance:", error);
+//       return NextResponse.json({ 
+//         error: "Error updating attendance", 
+//         details: error.message 
+//       }, { status: 500 });
+//     }
+//   }

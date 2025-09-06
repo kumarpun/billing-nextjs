@@ -31,8 +31,8 @@ export default function Dashboard() {
 
   // Hardcoded staff list
   const staffList = [
-    { id: 1, name: "Sajan Dhenga" },
-    { id: 2, name: "Mamata Darlami" },
+    { id: 1, name: "Sajan" },
+    { id: 2, name: "Mamata" },
     { id: 3, name: "Roshan" },
     { id: 4, name: "Madan" },
     { id: 5, name: "Sachin" },
@@ -718,6 +718,7 @@ export default function Dashboard() {
                       <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Time Lost</th>
                       <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Deduction %</th>
                       <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                      <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Remarks</th>
                       <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                     </tr>
                   </thead>
@@ -757,7 +758,7 @@ export default function Dashboard() {
                               </span>
                             ) : (
                               <span className="px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                                Not Checked In
+                                Not Checked
                               </span>
                             )}
                           </td>
@@ -782,6 +783,10 @@ export default function Dashboard() {
                           <td className="py-3 px-4">
                             {new Date(selectedDate).toLocaleDateString()}
                           </td>
+                          <td className="py-3 px-4">
+                            {item.attendance ? item.attendance.remarks : "-"}
+                            </td>
+
                           <td className="py-3 px-4">
                             <div className="flex space-x-2">
                               {!item.attendance ? (
@@ -848,6 +853,7 @@ export default function Dashboard() {
                         defaultValue={new Date().toTimeString().substring(0, 5)}
                         className="w-full border rounded-md px-3 py-2"
                         required
+                        readOnly
                       />
                       <p className="text-xs text-gray-500 mt-1">
                         Shift will be automatically determined: Morning if before 12 PM, Afternoon if at or after 12 PM
@@ -947,21 +953,23 @@ export default function Dashboard() {
                           document.getElementById('timeLostDisplay').value = formatTimeLost(timeLostMinutes);
                           document.getElementById('deductionDisplay').value = `${deductionPercentage.toFixed(2)}%`;
                         }}
+                        readOnly
                       />
                       <p className="text-xs text-gray-500 mt-1">
                         Shift will be automatically determined: Morning if before 12 PM, Afternoon if at or after 12 PM
                       </p>
                     </div>
                     <div className="mb-4">
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Check Out Time</label>
+                      {/* <label className="block text-sm font-medium text-gray-700 mb-1">Check Out Time</label> */}
                       <input 
                         type="time" 
                         name="checkOutTime"
                         defaultValue={extractTimeFromISO(editingAttendance.checkOutTime)}
                         className="w-full border rounded-md px-3 py-2"
+                        hidden
                       />
                     </div>
-                    <div className="mb-4">
+                    {/* <div className="mb-4">
                       <label className="block text-sm font-medium text-gray-700 mb-1">Status *</label>
                       <select 
                         name="status"
@@ -973,7 +981,7 @@ export default function Dashboard() {
                         <option value="late">Late</option>
                         <option value="absent">Absent</option>
                       </select>
-                    </div>
+                    </div> */}
                     <div className="mb-4">
                       <label className="block text-sm font-medium text-gray-700 mb-1">Time Lost</label>
                       <input 

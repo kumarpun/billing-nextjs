@@ -18,7 +18,7 @@ export default function Inventory() {
   useEffect(() => {
     const fetchInventoryData = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/inventory?lastMonth=true');
+        const response = await fetch('/api/inventory?lastMonth=true');
         if (!response.ok) {
           throw new Error('Failed to fetch inventory data');
         }

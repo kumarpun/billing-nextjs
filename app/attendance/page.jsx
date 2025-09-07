@@ -531,7 +531,7 @@ export default function Dashboard() {
 
   return (
     <div className="flex bg-gradient-to-br from-gray-50 to-blue-50 min-h-screen w-full text-gray-800">
-      <SideNav activeTab="credit" isCollapsed={isSidebarCollapsed} />
+      <SideNav activeTab="attendance" isCollapsed={isSidebarCollapsed} />
       <div className="flex-1 flex flex-col">
         <TopNav isSidebarCollapsed={isSidebarCollapsed} toggleSidebar={toggleSidebar} />
         <div className={`flex-1 p-6 transition-all duration-300 ${isSidebarCollapsed ? "ml-20" : "ml-64"}`}>

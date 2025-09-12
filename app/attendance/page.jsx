@@ -24,7 +24,7 @@ export default function Dashboard() {
   const [endDate, setEndDate] = useState(new Date().toISOString().split('T')[0]);
   const [showSummary, setShowSummary] = useState(false);
   const [summaryData, setSummaryData] = useState([]);
-  const [showSummarySection, setShowSummarySection] = useState(false); // New state for toggling summary section
+  const [showSummarySection, setShowSummarySection] = useState(false);
   const [currentUserRole, setCurrentUserRole] = useState(null);
 
   const toggleSidebar = () => setIsSidebarCollapsed(!isSidebarCollapsed);
@@ -46,19 +46,17 @@ export default function Dashboard() {
 
   // Standard shift times
   const standardShiftTimes = {
-    Morning: "10:00", // 10 AM
-    Afternoon: "12:00" // 12 PM
+    Morning: "10:00",
+    Afternoon: "12:00"
   };
 
   // Determine shift based on check-in time
   const determineShift = (checkInTime) => {
-    if (!checkInTime) return "Morning"; // Default to morning if no time provided
+    if (!checkInTime) return "Morning";
     
     const [hours, minutes] = checkInTime.split(':');
     const totalMinutes = parseInt(hours) * 60 + parseInt(minutes);
     
-    // If check-in is before 12 PM, it's a morning shift
-    // If check-in is at or after 12 PM, it's an afternoon shift
     return totalMinutes < 12 * 60 ? "Morning" : "Afternoon";
   };
 
@@ -113,7 +111,7 @@ export default function Dashboard() {
       const attendanceDate = new Date(attendance.date);
       const start = new Date(startDate);
       const end = new Date(endDate);
-      end.setHours(23, 59, 59, 999); // Include the entire end date
+      end.setHours(23, 59, 59, 999);
       
       return attendanceDate >= start && attendanceDate <= end;
     });
@@ -212,7 +210,7 @@ export default function Dashboard() {
   const extractTimeFromISO = (isoString) => {
     if (!isoString) return "";
     const date = new Date(isoString);
-    return date.toTimeString().substring(0, 5); // Returns HH:MM format
+    return date.toTimeString().substring(0, 5);
   };
 
   // Calculate time lost for late check-ins with grace period (returns minutes)
@@ -264,10 +262,8 @@ export default function Dashboard() {
     let shiftDurationMinutes = 0;
     
     if (shiftTime === "Morning") {
-      // Morning shift duration: 10 AM - 8 PM (10 hours = 600 minutes)
       shiftDurationMinutes = 10 * 60;
     } else if (shiftTime === "Afternoon") {
-      // Afternoon shift duration: 12 PM - 11 PM (11 hours = 660 minutes)
       shiftDurationMinutes = 11 * 60;
     }
     
@@ -302,7 +298,6 @@ export default function Dashboard() {
       setLoading(true);
       
       const checkInTime = createDateTime(formData.checkInTime, selectedDate);
-      // Determine shift based on check-in time instead of user selection
       const shiftTime = determineShift(formData.checkInTime);
       const timeLostMinutes = calculateTimeLost(checkInTime, shiftTime);
       const deductionPercentage = calculateDeductionPercentage(timeLostMinutes, shiftTime);
@@ -317,11 +312,11 @@ export default function Dashboard() {
         status: formData.status,
         standardShiftMorning: "10:00",
         standardShiftAfternoon: "12:00",
-        timeLost: timeLostMinutes, // Store as minutes
+        timeLost: timeLostMinutes,
         salary: 0,
-        salaryDeduction: (0 * deductionPercentage) / 100, // Calculate based on salary (0 in this case)
+        salaryDeduction: (0 * deductionPercentage) / 100,
         deductionPercentage: deductionPercentage,
-        date: selectedDate // Use the selected date
+        date: selectedDate
       };
 
       const response = await fetch('/api/attendance', {
@@ -341,9 +336,8 @@ export default function Dashboard() {
       setSuccessMessage(`${selectedStaff.name} checked in successfully for ${new Date(selectedDate).toLocaleDateString()}`);
       setShowCheckInForm(false);
       setSelectedStaff(null);
-      fetchAttendances(); // Refresh the data
+      fetchAttendances();
       
-      // Clear success message after 3 seconds
       setTimeout(() => setSuccessMessage(""), 3000);
     } catch (err) {
       setError(err.message);
@@ -359,12 +353,12 @@ export default function Dashboard() {
       
       // Get current time for checkout
       const now = new Date();
-      const checkOutTime = now.toTimeString().substring(0, 5); // HH:MM format
+      const checkOutTime = now.toTimeString().substring(0, 5);
       
       const attendanceData = {
         id: attendance._id,
         checkOutTime: createDateTime(checkOutTime, selectedDate),
-        status: "present" // Assume present if checking out
+        status: "present"
       };
 
       const response = await fetch('/api/attendance', {
@@ -382,9 +376,8 @@ export default function Dashboard() {
 
       const result = await response.json();
       setSuccessMessage(`${attendance.name} checked out successfully`);
-      fetchAttendances(); // Refresh the data
+      fetchAttendances();
       
-      // Clear success message after 3 seconds
       setTimeout(() => setSuccessMessage(""), 3000);
     } catch (err) {
       setError(err.message);
@@ -399,7 +392,6 @@ export default function Dashboard() {
       setLoading(true);
       
       const checkInTime = createDateTime(formData.checkInTime, selectedDate);
-      // Determine shift based on check-in time instead of user selection
       const shiftTime = determineShift(formData.checkInTime);
       const timeLostMinutes = calculateTimeLost(checkInTime, shiftTime);
       const deductionPercentage = calculateDeductionPercentage(timeLostMinutes, shiftTime);
@@ -414,11 +406,11 @@ export default function Dashboard() {
         status: formData.status,
         standardShiftMorning: "10:00",
         standardShiftAfternoon: "12:00",
-        timeLost: timeLostMinutes, // Store as minutes
+        timeLost: timeLostMinutes,
         salary: 0,
-        salaryDeduction: (0 * deductionPercentage) / 100, // Calculate based on salary (0 in this case)
+        salaryDeduction: (0 * deductionPercentage) / 100,
         deductionPercentage: deductionPercentage,
-        date: selectedDate // Update with selected date
+        date: selectedDate
       };
 
       const response = await fetch('/api/attendance', {
@@ -444,9 +436,8 @@ export default function Dashboard() {
 
       setSuccessMessage(`Attendance record updated successfully`);
       setEditingAttendance(null);
-      fetchAttendances(); // Refresh the data
+      fetchAttendances();
       
-      // Clear success message after 3 seconds
       setTimeout(() => setSuccessMessage(""), 3000);
     } catch (err) {
       setError(err.message);
@@ -673,25 +664,22 @@ export default function Dashboard() {
           )}
 
           {/* Clear Summary Button */}
-            {showSummary && summaryData.length > 0 && (
+          {showSummary && summaryData.length > 0 && (
             <div className="mb-4 flex justify-end">
-                <button
+              <button
                 onClick={() => {
-                    setSummaryData([]);
-                    setShowSummary(false);
-                    // Optionally, reset dates too
-                    setStartDate('');
-                    setEndDate('');
+                  setSummaryData([]);
+                  setShowSummary(false);
+                  setStartDate('');
+                  setEndDate('');
                 }}
                 className="px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 transition-all"
-                >
+              >
                 Clear Summary
-                </button>
+              </button>
             </div>
-            )}
+          )}
 
-
-        
           {/* Filter Section */}
           {!loading && (
             <div className="bg-white p-4 rounded-lg shadow-sm mb-6">
@@ -744,10 +732,10 @@ export default function Dashboard() {
                             {item.attendance ? item.attendance.shiftTime : "-"}
                           </td>
                           <td className="py-3 px-4">
-                            {item.attendance ? formatTime(item.attendance.checkInTime) : "-"}
+                            {item.attendance && item.attendance.status !== "absent" ? formatTime(item.attendance.checkInTime) : "-"}
                           </td>
                           <td className="py-3 px-4">
-                            {item.attendance ? (
+                            {item.attendance && item.attendance.status !== "absent" ? (
                               item.attendance.checkOutTime ? (
                                 formatTime(item.attendance.checkOutTime)
                               ) : (
@@ -776,7 +764,7 @@ export default function Dashboard() {
                             )}
                           </td>
                           <td className="py-3 px-4">
-                            {item.attendance ? (
+                            {item.attendance && item.attendance.status !== "absent" ? (
                               <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                                 item.attendance.timeLost > 0 ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'
                               }`}>
@@ -785,7 +773,7 @@ export default function Dashboard() {
                             ) : "-"}
                           </td>
                           <td className="py-3 px-4">
-                            {item.attendance && item.attendance.deductionPercentage ? (
+                            {item.attendance && item.attendance.deductionPercentage && item.attendance.status !== "absent" ? (
                               <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                                 item.attendance.deductionPercentage > 0 ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'
                               }`}>
@@ -798,8 +786,7 @@ export default function Dashboard() {
                           </td>
                           <td className="py-3 px-4">
                             {item.attendance ? item.attendance.remarks : "-"}
-                            </td>
-
+                          </td>
                           <td className="py-3 px-4">
                             <div className="flex space-x-2">
                               {!item.attendance ? (
@@ -814,15 +801,13 @@ export default function Dashboard() {
                                   <i className="fas fa-sign-in-alt mr-1"></i> Check In
                                 </button>
                               ) : (
-                                <>
-                                  <button 
-                                    onClick={() => setEditingAttendance(item.attendance)}
-                                    className="text-blue-600 hover:text-blue-800 px-2 py-1 bg-blue-100 rounded text-sm"
-                                    title="Edit"
-                                  >
-                                    <i className="fas fa-edit mr-1"></i> Edit
-                                  </button>
-                                </>
+                                <button 
+                                  onClick={() => setEditingAttendance(item.attendance)}
+                                  className="text-blue-600 hover:text-blue-800 px-2 py-1 bg-blue-100 rounded text-sm"
+                                  title="Edit"
+                                >
+                                  <i className="fas fa-edit mr-1"></i> Edit
+                                </button>
                               )}
                             </div>
                           </td>
@@ -830,7 +815,7 @@ export default function Dashboard() {
                       ))
                     ) : (
                       <tr>
-                        <td colSpan="9" className="py-8 text-center text-gray-500">
+                        <td colSpan="10" className="py-8 text-center text-gray-500">
                           No staff records found for selected date
                         </td>
                       </tr>
@@ -867,7 +852,7 @@ export default function Dashboard() {
                         className="w-full border rounded-md px-3 py-2"
                         required
                         readOnly={currentUserRole !== 'admin'}
-                        />
+                      />
                       <p className="text-xs text-gray-500 mt-1">
                         Shift will be automatically determined: Morning if before 12 PM, Afternoon if at or after 12 PM
                       </p>
@@ -967,34 +952,20 @@ export default function Dashboard() {
                           document.getElementById('deductionDisplay').value = `${deductionPercentage.toFixed(2)}%`;
                         }}
                         readOnly={currentUserRole !== 'admin'}
-                        />
+                      />
                       <p className="text-xs text-gray-500 mt-1">
                         Shift will be automatically determined: Morning if before 12 PM, Afternoon if at or after 12 PM
                       </p>
                     </div>
                     <div className="mb-4">
-                      {/* <label className="block text-sm font-medium text-gray-700 mb-1">Check Out Time</label> */}
                       <input 
                         type="time" 
                         name="checkOutTime"
                         defaultValue={extractTimeFromISO(editingAttendance.checkOutTime)}
                         className="w-full border rounded-md px-3 py-2"
-                        hidden={currentUserRole !== 'admin'} // Show only for admin users
-                        />
+                        hidden={currentUserRole !== 'admin'}
+                      />
                     </div>
-                    {/* <div className="mb-4">
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Status *</label>
-                      <select 
-                        name="status"
-                        defaultValue={editingAttendance.status}
-                        className="w-full border rounded-md px-3 py-2"
-                        required
-                      >
-                        <option value="present">Present</option>
-                        <option value="late">Late</option>
-                        <option value="absent">Absent</option>
-                      </select>
-                    </div> */}
                     <div className="mb-4">
                       <label className="block text-sm font-medium text-gray-700 mb-1">Time Lost</label>
                       <input 

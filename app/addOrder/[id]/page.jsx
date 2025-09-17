@@ -529,6 +529,10 @@ export default function AddOrder({ params }) {
     { value: 'Cream of mushroom soup', label: 'Cream of mushroom soup - NRs 250', price: 250 },
     { value: 'Saute vegetable', label: 'Saute vegetable - NRs 180', price: 180 },
 
+    { value: 'Saute boil mix', label: 'Saute boil mix - NRs 440', price: 440 },
+    { value: 'Pahadi chicken', label: 'Pahadi chicken - NRs 390', price: 390 },
+    { value: 'Drums of heaven', label: 'Drums of heaven - NRs 420', price: 420 },
+
       ];
 
     

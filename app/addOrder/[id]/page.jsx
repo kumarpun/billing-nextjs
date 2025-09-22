@@ -77,6 +77,7 @@ export default function AddOrder({ params }) {
      { value: 'Boiled Sausage', label: 'Boiled Sausage - NRs 290', price: 290 },
      { value: 'Extra cheese', label: 'Extra cheese - NRs 70', price: 70 },
      { value: 'Chicken Crispy (chef style)', label: 'Chicken Crispy (chef style) - NRs 450', price: 450 },
+     { value: 'Chicken momo platter', label: 'Chicken momo platter - NRs 520', price: 520 },
 
 
        // SALAD

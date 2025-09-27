@@ -536,6 +536,9 @@ export default function AddOrder({ params }) {
     { value: 'Pahadi chicken', label: 'Pahadi chicken - NRs 390', price: 390 },
     { value: 'Drums of heaven', label: 'Drums of heaven - NRs 420', price: 420 },
 
+    { value: 'Rock glass', label: 'Rock glass - NRs 200', price: 200 },
+
+
       ];
 
     

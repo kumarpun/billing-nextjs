@@ -456,6 +456,8 @@ export default function AddOrder({ params }) {
         { value: 'Lungo Double', label: 'Lungo (Double) - NRs 145', price: 145 },
         { value: 'Doppio', label: 'Doppio - NRs 130', price: 130 },
         { value: 'Espresso Affagato', label: 'Espresso Affagato - NRs 210', price: 210 },
+        { value: 'Doppio shake', label: 'Doppio shake - NRs 150', price: 150 },
+
 
   // Milkshake
   { value: 'Chocolate Shake', label: 'Chocolate Shake - NRs 270', price: 270 },

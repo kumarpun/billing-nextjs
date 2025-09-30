@@ -47,8 +47,8 @@ export default function AddOrder({ params }) {
      { value: 'Chicken Tass', label: 'Chicken Tass - NRs 400', price: 400 },
      { value: 'Chicken Sadheko Fry/Boill', label: 'Chicken Sadheko Fry/Boill - NRs 290', price: 290 },
      { value: 'Chicken Roast', label: 'Chicken Roast - NRs 400', price: 400 },
-     { value: 'Peanul Sadheko', label: 'Peanul Sadheko - NRs 200', price: 200 },
-     { value: 'Wai Wai Sadheko', label: 'Wai Wai Sadheko - NRs 160', price: 160 },
+     { value: 'Peanul Sadheko', label: 'Peanul Sadheko - NRs 210', price: 210 },
+     { value: 'Wai Wai Sadheko', label: 'Wai Wai Sadheko - NRs 170', price: 170 },
      { value: 'Chicken Sutuki', label: 'Chicken Sutuki - NRs 370', price: 370 },
      { value: 'Buff Sukuti', label: 'Buff Sukuti - NRs 350', price: 350 },
      { value: 'Buff Choila', label: 'Buff Choila - NRs 400', price: 400 },
@@ -58,8 +58,8 @@ export default function AddOrder({ params }) {
    
      // NON-VEG STARTER
      { value: 'Dynamite Fries non veg', label: 'Dynamite Fries non veg - NRs 260', price: 260 },
-     { value: 'Chilly Chicken', label: 'Chilly Chicken - NRs 410', price: 410 },
-     { value: 'Hot Wings', label: 'Hot Wings - NRs 440', price: 440 },
+     { value: 'Chilly Chicken', label: 'Chilly Chicken - NRs 420', price: 420 },
+     { value: 'Hot Wings', label: 'Hot Wings - NRs 450', price: 450 },
      { value: 'Kungpao Chicken', label: 'Kungpao Chicken - NRs 440', price: 440 },
      { value: 'Pepper Chicken', label: 'Pepper Chicken - NRs 330', price: 330 },
      { value: 'Chicken 65', label: 'Chicken 65 - NRs 450', price: 450 },
@@ -71,25 +71,29 @@ export default function AddOrder({ params }) {
      { value: 'Dragon Chicken', label: 'Dragon Chicken - NRs 350', price: 350 },
      { value: 'Drumstick Chicken', label: 'Drumstick Chicken - NRs 390', price: 390 },
      { value: 'Buffalo Wild Wings', label: 'Buffalo Wild Wings - NRs 450', price: 450 },
-     { value: 'Szechuan Chicken', label: 'Szechuan Chicken - NRs 320', price: 320 },
+     { value: 'Szechuan Chicken', label: 'Szechuan Chicken - NRs 350', price: 350 },
      { value: 'Chilly Sausage', label: 'Chilly Sausage - NRs 290', price: 290 },
      { value: 'Crown Chicken', label: 'Crown Chicken - NRs 490', price: 490 },
      { value: 'Boiled Sausage', label: 'Boiled Sausage - NRs 290', price: 290 },
      { value: 'Extra cheese', label: 'Extra cheese - NRs 70', price: 70 },
      { value: 'Chicken Crispy (chef style)', label: 'Chicken Crispy (chef style) - NRs 450', price: 450 },
      { value: 'Chicken momo platter', label: 'Chicken momo platter - NRs 520', price: 520 },
+     { value: 'Sausage fry', label: 'Sausage fry - NRs 240', price: 240 },
 
 
        // SALAD
-       { value: 'Green Salad', label: 'Green Salad - NRs 200', price: 200 },
-       { value: 'Fruit Salad', label: 'Fruit Salad - NRs 420', price: 420 },
+       { value: 'Green Salad', label: 'Green Salad - NRs 220', price: 220 },
+       { value: 'Fruit Salad', label: 'Fruit Salad - NRs 450', price: 450 },
        { value: 'Russian Salad', label: 'Russian Salad - NRs 290', price: 290 },,
        { value: 'Eggmayo Salad', label: 'Eggmayo Salad - NRs 350', price: 350 },
-       { value: 'Nepali Salad', label: 'Nepali Salad - NRs 170', price: 170 },
+       { value: 'Nepali Salad', label: 'Nepali Salad - NRs 180', price: 180 },
        { value: 'Classic Salad', label: 'Classic Salad - NRs 350', price: 350 },
        { value: 'Classic Salad - boiled chicken', label: 'Classic Salad boiled chicken - NRs 450', price: 450 },
 
        { value: 'Boiled vegetable with chicken', label: 'Boiled vegetable with chicken - NRs 350', price: 350 },
+
+       { value: 'Chessy crunchu chips', label: 'Chessy crunchu chips - NRs 150', price: 150 },
+
 
        // SOUP
        { value: 'Manchow Soup (Veg)', label: 'Manchow Soup (Veg) - NRs 190', price: 190 },
@@ -131,9 +135,12 @@ export default function AddOrder({ params }) {
        { value: 'Club Sandwich', label: 'Club Sandwich - NRs 400', price: 400 },
      
        // MO:MO
-       { value: 'Steam Veg MO:MO', label: 'Steam Veg MO:MO - NRs 135', price: 135 },
-       { value: 'Steam Chicken MO:MO', label: 'Steam Chicken MO:MO - NRs 200', price: 200 },
-       { value: 'Steam Buff MO:MO', label: 'Steam Buff MO:MO - NRs 220', price: 220 },
+       { value: 'Steam Veg momo', label: 'Steam Veg momo - NRs 140', price: 140 },
+       { value: 'Steam Chicken momo', label: 'Steam Chicken momo - NRs 220', price: 220 },
+       { value: 'Steam Buff momo', label: 'Steam Buff momo - NRs 240', price: 240 },
+    //    { value: 'Steam Veg MO:MO', label: 'Steam Veg MO:MO - NRs 135', price: 135 },
+    //    { value: 'Steam Chicken MO:MO', label: 'Steam Chicken MO:MO - NRs 200', price: 200 },
+    //    { value: 'Steam Buff MO:MO', label: 'Steam Buff MO:MO - NRs 220', price: 220 },
        { value: 'Chilly Veg MO:MO', label: 'Chilly Veg MO:MO - NRs 210', price: 210 },
        { value: 'Chilly Chicken MO:MO', label: 'Chilly Chicken MO:MO - NRs 260', price: 260 },
        { value: 'Chilly Buff MO:MO', label: 'Chilly Buff MO:MO - NRs 280', price: 280 },

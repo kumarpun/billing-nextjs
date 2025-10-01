@@ -31,7 +31,7 @@ export default function AddOrder({ params }) {
      { value: 'Chilly Paneer', label: 'Chilly Paneer - NRs 440', price: 440 },
      { value: 'Corn salt & Pepper', label: 'Corn salt & Pepper - NRs 280', price: 280 },
      { value: 'Aloo Papdi Chat', label: 'Aloo Papdi Chat - NRs 240', price: 240 },
-     { value: 'French Fries', label: 'French Fries - NRs 110', price: 110 },
+     { value: 'French Fries', label: 'French Fries - NRs 130', price: 130 },
      { value: 'Veg Bullet', label: 'Veg Bullet - NRs 180', price: 180 },
      { value: 'Cheese Ball', label: 'Cheese Ball - NRs 350', price: 350 },
      { value: 'Chilly Mushroom', label: 'Chilly Mushroom - NRs 350', price: 350 },

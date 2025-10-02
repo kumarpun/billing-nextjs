@@ -320,6 +320,8 @@ export default function AddOrder({ params }) {
   { value: 'Old Durbar Regular - 60ml', label: 'Old Durbar Regular - 60ml - NRs 450', price: 450 },
   { value: 'Old Durbar Regular - 180ml', label: 'Old Durbar Regular - 180ml - NRs 1050', price: 1050 },
   { value: 'Old Durbar Regular - Bottle', label: 'Old Durbar Regular - Bottle - NRs 4500', price: 4500 },
+  { value: 'Old Durbar regular half', label: 'Old Durbar Regular half - NRs 2230', price: 2230 },
+
 
   { value: 'Old Durbar Chimney - 60ml', label: 'Old Durbar Chimney - 60ml - NRs 630', price: 630 },
   { value: 'Old Durbar Chimney - 180ml', label: 'Old Durbar Chimney - 180ml - NRs 1500', price: 1500 },

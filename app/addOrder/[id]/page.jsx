@@ -590,7 +590,7 @@ export default function AddOrder({ params }) {
                   order_type: item.order_type // Individual order type
               }));
   
-              const res = await fetch("http://localhost:3000/api/orders", {
+              const res = await fetch("/api/orders", {
                   method: "POST",
                   headers: {
                       "Content-type": "application/json",

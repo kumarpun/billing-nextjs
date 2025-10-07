@@ -8,12 +8,32 @@ import { authOptions } from "../../api/auth/[...nextauth]/route";
 import dayjs from "dayjs";
 import { dbConnect } from "../dbConnect";
 
+// export async function POST(request) {
+//     const { table_id,order_title, order_description, order_test, order_status, customer_status, order_quantity, order_price, order_type } = await request.json();
+//     await dbConnect(); // Reused MongoDB connection
+//     await CustomerOrder.create({table_id, order_title, order_description, order_test, order_status, customer_status, order_quantity, order_price, order_type});
+//     return NextResponse.json({ message: "Order created successfully." }, { status: 201 });
+// }
+
 export async function POST(request) {
-    const { table_id,order_title, order_description, order_test, order_status, customer_status, order_quantity, order_price, order_type } = await request.json();
-    await dbConnect(); // Reused MongoDB connection
-    await CustomerOrder.create({table_id, order_title, order_description, order_test, order_status, customer_status, order_quantity, order_price, order_type});
-    return NextResponse.json({ message: "Order created successfully." }, { status: 201 });
-}
+    try {
+      const data = await request.json();
+      await dbConnect();
+  
+      // Handle both single and multiple order submissions
+      if (Array.isArray(data)) {
+        await CustomerOrder.insertMany(data);
+        return NextResponse.json({ message: "Multiple orders created successfully." }, { status: 201 });
+      } else {
+        await CustomerOrder.create(data);
+        return NextResponse.json({ message: "Single order created successfully." }, { status: 201 });
+      }
+  
+    } catch (error) {
+      console.error("Error creating order:", error);
+      return NextResponse.json({ error: "Failed to create order." }, { status: 500 });
+    }
+  }
 
 // export async function GET(request, response) {
 //     try {

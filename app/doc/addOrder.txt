@@ -15,7 +15,6 @@ export default function AddOrder({ params }) {
     const [newOrdertitle, setnewOrdertitle] = useState(order_title);
     const [order_price, setOrderPrice] = useState("");
     const [order_quantity, setOrderQuantity] = useState(1);
-    const [selectedItems, setSelectedItems] = useState([]); // Changed from single item to array
     // const [order_type, setOrderType] = useState("Kitchen");
     const [order_type, setOrderType] = useState(""); // Initially empty
     const [errors, setErrors] = useState({});
@@ -551,466 +550,292 @@ export default function AddOrder({ params }) {
 
       ];
 
+    
       const router = useRouter();
 
-      const validateForm = () => {
-          const newErrors = {};
-          
-          if (selectedItems.length === 0) {
-              newErrors.selectedItems = "Please select at least one item";
-          }
-          
-          // Check if all items have order type selected
-          const hasMissingOrderType = selectedItems.some(item => !item.order_type);
-          if (hasMissingOrderType) {
-              newErrors.order_type = "Please select order type for all items";
-          }
-          
-          setErrors(newErrors);
-          return Object.keys(newErrors).length === 0;
-      };
-  
-      const handleSubmit = async (e) => {
-          e.preventDefault();
-          
-          if (!validateForm()) {
-              return;
-          }
-  
-          try {
-              // Create an array of orders from selected items
-              const orders = selectedItems.map(item => ({
-                  table_id: id,
-                  order_title: item.value,
-                  order_description,
-                  order_status,
-                  customer_status,
-                  order_price: item.price,
-                  order_quantity: item.quantity || 1,
-                  order_type: item.order_type // Individual order type
-              }));
-  
-              const res = await fetch("http://localhost:3000/api/orders", {
-                  method: "POST",
-                  headers: {
-                      "Content-type": "application/json",
-                  },
-                  body: JSON.stringify(orders),
-              });
-  
-              if (res.ok) {
-                  router.push(`/listOrder/${id}`);
-                  router.refresh();
-              } else {
-                  throw new Error("Failed to create orders");
-              }
-          } catch (error) {
-              console.log(error);
-          }
-      };
-  
-      const handleItemSelect = (selectedOptions) => {
-          // Preserve existing items and their quantities/order types
-          const existingItemsMap = new Map();
-          selectedItems.forEach(item => {
-              existingItemsMap.set(item.value, item);
-          });
-  
-          // Merge existing items with new selections, preserving quantities and order types
-          const mergedItems = selectedOptions.map(option => {
-              const existingItem = existingItemsMap.get(option.value);
-              if (existingItem) {
-                  // Return existing item with preserved quantity and order type
-                  return existingItem;
-              } else {
-                  // New item with default values
-                  return {
-                      ...option,
-                      quantity: 1,
-                      order_type: "" // Initially empty for new items
-                  };
-              }
-          });
-  
-          setSelectedItems(mergedItems);
-          
-          // Clear error if items are selected
-          if (selectedOptions.length > 0 && errors.selectedItems) {
-              setErrors(prev => ({...prev, selectedItems: ""}));
-          }
-      };
-  
-      const updateItemQuantity = (index, newQuantity) => {
-          if (newQuantity < 1) return;
-          
-          setSelectedItems(prev => 
-              prev.map((item, i) => 
-                  i === index ? { ...item, quantity: newQuantity } : item
-              )
-          );
-      };
-  
-      const updateItemOrderType = (index, orderType) => {
-          setSelectedItems(prev => 
-              prev.map((item, i) => 
-                  i === index ? { ...item, order_type: orderType } : item
-              )
-          );
-  
-          // Clear order type error if it exists
-          if (errors.order_type) {
-              const hasMissingOrderType = selectedItems.some((item, i) => 
-                  i !== index ? !item.order_type : false
-              );
-              if (!hasMissingOrderType) {
-                  setErrors(prev => ({...prev, order_type: ""}));
-              }
-          }
-      };
-  
-      const removeItem = (index) => {
-          setSelectedItems(prev => prev.filter((_, i) => i !== index));
-      };
-  
-      // Calculate total price
-      const totalPrice = selectedItems.reduce((total, item) => {
-          return total + (item.price * (item.quantity || 1));
-      }, 0);
-  
-      // Check if all items have order type selected
-      const allItemsHaveOrderType = selectedItems.length > 0 && 
-          selectedItems.every(item => item.order_type);
-  
-      try {
-          return (
-              <>
-                  <div className="min-h-screen" style={{ backgroundColor: "#1a202c" }}>
-                  <nav className="flex justify-between items-center px-4 py-2 navbar" style={{ backgroundColor: "#232b38" }}>
-                      <div style={{ flex: 0.4 }}></div>
-                      <Link className="absolute left-1/2 transform -translate-x-1/2 font-bold text-lg page-title" href={"/tables"}>
-                      HYBE Food & Drinks
-                      </Link>
-                              <Link className="hover:text-gray-300 text-sm transition-colors duration-200 nav-button" href={`/listOrder/${id}`}>
-                                  Back
-                              </Link>
-                          </nav>
-                      
-                      <div className="max-w-6xl mx-auto p-4 mt-4">
-                          <div className="bg-gray-800 rounded-lg shadow-lg p-6 border border-gray-700">
-                              <h2 className="text-xl font-bold text-white mb-6 text-center">Add New Order</h2>
-                              
-                              <form onSubmit={handleSubmit} className="space-y-6">
-                                  {/* Main Content Grid */}
-                                  <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-                                      {/* Left Column - Selection and Info */}
-                                      <div className="xl:col-span-1 space-y-6">
-                                          {/* Item Selection */}
-                                          <div>
-                                              <label className="block text-gray-300 mb-2 text-sm font-medium">Select Items</label>
-                                              <Select 
-                                                  isMulti
-                                                  options={options}
-                                                  onChange={handleItemSelect}
-                                                  value={selectedItems}
-                                                  styles={{
-                                                      control: (provided, state) => ({ 
-                                                          ...provided, 
-                                                          backgroundColor: '#2d3748',
-                                                          borderColor: errors.selectedItems ? '#e53e3e' : state.isFocused ? '#4a5568' : '#4a5568',
-                                                          color: 'white',
-                                                          minHeight: '40px',
-                                                          fontSize: '14px',
-                                                          boxShadow: errors.selectedItems ? '0 0 0 1px #e53e3e' : provided.boxShadow,
-                                                      }),
-                                                      menu: (provided) => ({ 
-                                                          ...provided, 
-                                                          backgroundColor: '#2d3748',
-                                                          color: 'white',
-                                                          zIndex: 20
-                                                      }),
-                                                      multiValue: (provided) => ({
-                                                          ...provided,
-                                                          backgroundColor: '#4a5568',
-                                                      }),
-                                                      multiValueLabel: (provided) => ({
-                                                          ...provided,
-                                                          color: 'white',
-                                                          fontSize: '12px'
-                                                      }),
-                                                      multiValueRemove: (provided) => ({
-                                                          ...provided,
-                                                          color: 'white',
-                                                          ':hover': {
-                                                              backgroundColor: '#e53e3e',
-                                                              color: 'white'
-                                                          }
-                                                      }),
-                                                      singleValue: (provided) => ({
-                                                          ...provided,
-                                                          color: 'white',
-                                                          fontSize: '14px'
-                                                      }),
-                                                      input: (provided) => ({
-                                                          ...provided,
-                                                          color: 'white',
-                                                          fontSize: '14px'
-                                                      }),
-                                                      option: (provided, state) => ({
-                                                          ...provided,
-                                                          backgroundColor: state.isFocused ? '#4a5568' : '#2d3748',
-                                                          color: 'white',
-                                                          fontSize: '14px',
-                                                          padding: '8px 12px'
-                                                      })
-                                                  }}
-                                                  placeholder="Search and select items..."
-                                              />
-                                              {errors.selectedItems && (
-                                                  <p className="text-red-400 text-xs mt-1 flex items-center">
-                                                      <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                                          <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                                                      </svg>
-                                                      {errors.selectedItems}
-                                                  </p>
-                                              )}
-                                          </div>
-  
-                                          {/* Order Summary Card */}
-                                          {selectedItems.length > 0 && (
-                                              <div className="bg-gray-700 rounded-lg p-4 border border-gray-600">
-                                                  <h3 className="text-white font-semibold mb-3 text-sm">Order Summary</h3>
-                                                  
-                                                  <div className="space-y-2 mb-3">
-                                                      <div className="flex justify-between text-xs">
-                                                          <span className="text-gray-300">Items:</span>
-                                                          <span className="text-white">{selectedItems.length}</span>
-                                                      </div>
-                                                      <div className="flex justify-between text-xs">
-                                                          <span className="text-gray-300">Total Quantity:</span>
-                                                          <span className="text-white">
-                                                              {selectedItems.reduce((sum, item) => sum + (item.quantity || 1), 0)}
-                                                          </span>
-                                                      </div>
-                                                  </div>
-                                                  
-                                                  <div className="border-t border-gray-600 pt-2">
-                                                      <div className="flex justify-between items-center">
-                                                          <span className="text-white font-semibold text-sm">Total:</span>
-                                                          <span className="text-white font-bold text-lg">NRs. {totalPrice}</span>
-                                                      </div>
-                                                  </div>
-                                              </div>
-                                          )}
-  
-                                          {/* Table Info */}
-                                          <div className="md:col-span-2">
+    const validateForm = () => {
+        const newErrors = {};
+        
+        if (!newOrdertitle) {
+            newErrors.order_title = "Please select an item";
+        }
+        
+        if (!order_type) {
+            newErrors.order_type = "Please select order type";
+        }
+        
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        
+        if (!validateForm()) {
+            return;
+        }
+
+        try {
+            const res = await fetch("https://billing-nextjs.vercel.app/api/orders", {
+                method: "POST",
+                headers: {
+                    "Content-type": "application/json",
+                },
+                body: JSON.stringify({ 
+                    table_id: id, 
+                    order_title: newOrdertitle, 
+                    order_description,
+                    order_status,
+                    customer_status,
+                    order_price,
+                    order_quantity,
+                    order_type
+                }),
+            });
+
+            if (res.ok) {
+                router.push(`/listOrder/${id}`);
+                router.refresh();
+            } else {
+                throw new Error("Failed to create a topic");
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const Dropdown = (selectedOption) => {
+        console.log('Selected:', selectedOption)
+        setnewOrdertitle(selectedOption.value)
+        setOrderPrice(selectedOption.price);
+        
+        // Clear error if item is selected
+        if (selectedOption.value && errors.order_title) {
+            setErrors(prev => ({...prev, order_title: ""}));
+        }
+    }
+
+    const incrementQuantity = () => {
+        setOrderQuantity(prev => prev + 1);
+    };
+
+    const decrementQuantity = () => {
+        if (order_quantity > 1) {
+            setOrderQuantity(prev => prev - 1);
+        }
+    };
+
+    const handleOrderTypeSelect = (type) => {
+        setOrderType(type);
+        
+        // Clear error if type is selected
+        if (type && errors.order_type) {
+            setErrors(prev => ({...prev, order_type: ""}));
+        }
+    };
+
+    try {
+        return (
+            <>
+                <div className="min-h-screen" style={{ backgroundColor: "#1a202c" }}>
+                <nav className="flex justify-between items-center px-4 py-2 navbar" style={{ backgroundColor: "#232b38" }}>
+                    <div style={{ flex: 0.4 }}></div>
+                    <Link className="absolute left-1/2 transform -translate-x-1/2 font-bold text-lg page-title" href={"/tables"}>
+                    HYBE Food & Drinks
+                    </Link>
+                            <Link className="hover:text-gray-300 text-sm transition-colors duration-200 nav-button" href={`/listOrder/${id}`}>
+                                Back
+                            </Link>
+                        </nav>
+                    
+                    <div className="max-w-3xl mx-auto p-4 mt-8">
+                        <div className="bg-gray-800 rounded-lg shadow-lg p-4 border border-gray-700">
+                            <h2 className="text-xl font-bold text-white mb-4 text-center">Add New Order</h2>
+                            
+                            <form onSubmit={handleSubmit} className="space-y-3">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                    {/* Order Selection */}
+                                    <div className="md:col-span-2">
+                                        <label className="block text-gray-300 mb-1 text-sm font-medium">Select Item</label>
+                                        <Select 
+                                            options={options}
+                                            onChange={Dropdown}
+                                            value={{ value: newOrdertitle, label: newOrdertitle }}
+                                            styles={{
+                                                control: (provided, state) => ({ 
+                                                    ...provided, 
+                                                    backgroundColor: '#2d3748',
+                                                    borderColor: errors.order_title ? '#e53e3e' : state.isFocused ? '#4a5568' : '#4a5568',
+                                                    color: 'white',
+                                                    minHeight: '40px',
+                                                    fontSize: '14px',
+                                                    boxShadow: errors.order_title ? '0 0 0 1px #e53e3e' : provided.boxShadow,
+                                                }),
+                                                menu: (provided) => ({ 
+                                                    ...provided, 
+                                                    backgroundColor: '#2d3748',
+                                                    color: 'white'
+                                                }),
+                                                singleValue: (provided) => ({
+                                                    ...provided,
+                                                    color: 'white',
+                                                    fontSize: '14px'
+                                                }),
+                                                input: (provided) => ({
+                                                    ...provided,
+                                                    color: 'white',
+                                                    fontSize: '14px'
+                                                }),
+                                                option: (provided, state) => ({
+                                                    ...provided,
+                                                    backgroundColor: state.isFocused ? '#4a5568' : '#2d3748',
+                                                    color: 'white',
+                                                    fontSize: '14px',
+                                                    padding: '8px 12px'
+                                                })
+                                            }}
+                                            placeholder="Search for menu items..."
+                                        />
+                                        {errors.order_title && (
+                                            <p className="text-red-400 text-xs mt-1 flex items-center">
+                                                <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                                                </svg>
+                                                {errors.order_title}
+                                            </p>
+                                        )}
+                                    </div>
+                                    
+                                    {/* Price Display */}
+                                    <div>
+                                        <label className="block text-gray-300 mb-1 text-sm font-medium">Price</label>
+                                        <div className="bg-gray-700 text-white p-2 rounded border border-gray-600 text-sm">
+                                            NRs. {order_price || "0"}
+                                        </div>
+                                    </div>
+                                    
+                                    {/* Quantity Selector */}
+                                    <div>
+                                        <label className="block text-gray-300 mb-1 text-sm font-medium">Quantity</label>
+                                        <div className="flex items-center h-9">
+                                            <button 
+                                                type="button"
+                                                onClick={decrementQuantity}
+                                                className="bg-gray-600 hover:bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white font-bold py-1 px-3 rounded-l"
+                                            >
+                                                -
+                                            </button>
+                                            <div className="bg-gray-700 text-white text-center py-1 px-4 w-12 border-y border-gray-600 text-sm">
+                                                {order_quantity}
+                                            </div>
+                                
+                                            <button 
+                                                type="button"
+                                                onClick={incrementQuantity}
+                                                className="bg-gray-600 hover:bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white font-bold py-1 px-3 rounded-r"
+                                            >
+                                                +
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    {/* Order Type Selection */}
+                                    <div className="md:col-span-2">
+                                        <label className="block text-gray-300 mb-1 text-sm font-medium">Order Type</label>
+                                        {errors.order_type && (
+                                            <p className="text-red-400 text-xs mb-1 flex items-center">
+                                                <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                                                </svg>
+                                                {errors.order_type}
+                                            </p>
+                                        )}
+                                        <div className="flex space-x-2">
+                                            <button
+                                                type="button"
+                                                onClick={() => handleOrderTypeSelect("Kitchen")}
+                                                className={`flex-1 py-2 px-3 rounded text-center text-sm font-medium transition-all duration-200 ${
+                                                    order_type === "Kitchen" 
+                                                    ? "bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white shadow" 
+                                                    : errors.order_type 
+                                                        ? "bg-red-900 text-white border border-red-600" 
+                                                        : "bg-gray-700 text-gray-300 hover:bg-gray-600"
+                                                }`}
+                                            >
+                                                Kitchen
+                                            </button>
+                                            <button
+                                                type="button"
+                                                onClick={() => handleOrderTypeSelect("Bar")}
+                                                className={`flex-1 py-2 px-3 rounded text-center text-sm font-medium transition-all duration-200 ${
+                                                    order_type === "Bar" 
+                                                    ? "bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white shadow" 
+                                                    : errors.order_type 
+                                                        ? "bg-red-900 text-white border border-red-600" 
+                                                        : "bg-gray-700 text-gray-300 hover:bg-gray-600"
+                                                }`}
+                                            >
+                                                Bar
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    {/* Description */}
+                                    <div className="md:col-span-2">
+                                        <label className="block text-gray-300 mb-1 text-sm font-medium">Special Instructions</label>
+                                        <input
+                                            onChange={(e) => setDescription(e.target.value)}
+                                            value={order_description}
+                                            className="w-full bg-gray-700 text-white border border-gray-600 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
+                                            type="text"
+                                            placeholder="Any special requests or notes"
+                                        />
+                                    </div>
+                                    
+                                    {/* Table ID Display */}
+                                    <div className="md:col-span-2">
                                         <label className="block text-gray-300 mb-1 text-sm font-medium">Table Number</label>
                                         <div className="bg-gray-700 text-white p-2 rounded border border-gray-600 text-sm">
                                             {id}
                                         </div>
                                     </div>
-  
-                                          {/* Special Instructions */}
-                                          <div>
-                                              <label className="block text-gray-300 mb-2 text-sm font-medium">Special Instructions</label>
-                                              <textarea
-                                                  onChange={(e) => setDescription(e.target.value)}
-                                                  value={order_description}
-                                                  className="w-full bg-gray-700 text-white border border-gray-600 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 resize-none"
-                                                  rows="3"
-                                                  placeholder="Any special requests or notes for all items..."
-                                              />
-                                          </div>
-                                      </div>
-  
-                                      {/* Right Column - Selected Items */}
-                                      <div className="xl:col-span-3">
-                                          {selectedItems.length > 0 ? (
-                                              <div>
-                                                  <div className="flex justify-between items-center mb-4">
-                                                      <label className="block text-gray-300 text-sm font-medium">
-                                                          Selected Items ({selectedItems.length})
-                                                      </label>
-                                                      {!allItemsHaveOrderType && (
-                                                          <span className="text-red-400 text-xs bg-red-900/30 px-2 py-1 rounded">
-                                                              Please select order type for all items
-                                                          </span>
-                                                      )}
-                                                  </div>
-                                                  
-                                                  {errors.order_type && (
-                                                      <p className="text-red-400 text-xs mb-3 flex items-center">
-                                                          <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                                              <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                                                          </svg>
-                                                          {errors.order_type}
-                                                      </p>
-                                                  )}
-  
-                                                  {/* Items Grid */}
-                                                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3 max-h-[500px] overflow-y-auto pr-2">
-                                                      {selectedItems.map((item, index) => (
-                                                          <div key={index} className="bg-gray-700 rounded-lg p-3 border border-gray-600 hover:border-gray-500 transition-colors">
-                                                              {/* Item Header */}
-                                                              <div className="flex justify-between items-start mb-3">
-                                                                  <div className="flex-1 min-w-0">
-                                                                      <h4 className="text-white font-medium text-sm truncate">{item.label.split(' - ')[0]}</h4>
-                                                                      <p className="text-gray-300 text-xs">NRs. {item.price} each</p>
-                                                                  </div>
-                                                                  <button
-                                                                      type="button"
-                                                                      onClick={() => removeItem(index)}
-                                                                      className="text-red-400 hover:text-red-300 ml-2 flex-shrink-0"
-                                                                      title="Remove item"
-                                                                  >
-                                                                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                                                          <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
-                                                                      </svg>
-                                                                  </button>
-                                                              </div>
-  
-                                                              {/* Order Type Selection */}
-                                                              <div className="mb-3">
-                                                                  <label className="block text-gray-300 mb-1 text-xs font-medium">Order Type</label>
-                                                                  <div className="grid grid-cols-2 gap-2">
-                                                                      <button
-                                                                          type="button"
-                                                                          onClick={() => updateItemOrderType(index, "Kitchen")}
-                                                                          className={`py-2 px-2 rounded text-center text-xs font-medium transition-all duration-200 ${
-                                                                              item.order_type === "Kitchen" 
-                                                                              ? "bg-gradient-to-r from-green-500 to-green-600 text-white shadow" 
-                                                                              : "bg-gray-600 text-gray-300 hover:bg-gray-500"
-                                                                          }`}
-                                                                      >
-                                                                          Kitchen
-                                                                      </button>
-                                                                      <button
-                                                                          type="button"
-                                                                          onClick={() => updateItemOrderType(index, "Bar")}
-                                                                          className={`py-2 px-2 rounded text-center text-xs font-medium transition-all duration-200 ${
-                                                                              item.order_type === "Bar" 
-                                                                              ? "bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow" 
-                                                                              : "bg-gray-600 text-gray-300 hover:bg-gray-500"
-                                                                          }`}
-                                                                      >
-                                                                          Bar
-                                                                      </button>
-                                                                  </div>
-                                                              </div>
-  
-                                                              {/* Quantity Controls */}
-                                                              <div className="flex justify-between items-center">
-                                                                  <div className="flex items-center space-x-3">
-                                                                      <span className="text-gray-300 text-xs font-medium">Qty:</span>
-                                                                      <div className="flex items-center bg-gray-800 rounded-lg border border-gray-600">
-                                                                          <button 
-                                                                              type="button"
-                                                                              onClick={() => updateItemQuantity(index, (item.quantity || 1) - 1)}
-                                                                              className="bg-gray-700 hover:bg-gray-600 text-white font-bold py-1 px-3 rounded-l text-sm transition-colors"
-                                                                          >
-                                                                              -
-                                                                          </button>
-                                                                          <div className="bg-gray-800 text-white text-center py-1 px-3 min-w-8 border-x border-gray-600 text-sm font-medium">
-                                                                              {item.quantity || 1}
-                                                                          </div>
-                                                                          <button 
-                                                                              type="button"
-                                                                              onClick={() => updateItemQuantity(index, (item.quantity || 1) + 1)}
-                                                                              className="bg-gray-700 hover:bg-gray-600 text-white font-bold py-1 px-3 rounded-r text-sm transition-colors"
-                                                                          >
-                                                                              +
-                                                                          </button>
-                                                                      </div>
-                                                                  </div>
-                                                                  
-                                                                  <div className="text-right">
-                                                                      <div className="text-white text-sm font-semibold">
-                                                                          NRs. {item.price * (item.quantity || 1)}
-                                                                      </div>
-                                                                      <div className={`text-xs ${item.order_type ? "text-green-400" : "text-red-400"}`}>
-                                                                          {item.order_type || "No type"}
-                                                                      </div>
-                                                                  </div>
-                                                              </div>
-                                                          </div>
-                                                      ))}
-                                                  </div>
-                                              </div>
-                                          ) : (
-                                              /* Empty State */
-                                              <div className="flex flex-col items-center justify-center h-full py-12 text-gray-400">
-                                                  <svg className="w-16 h-16 mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                                                  </svg>
-                                                  <p className="text-lg mb-2">No items selected</p>
-                                                  <p className="text-sm text-center">Select items from the dropdown to start creating your order</p>
-                                              </div>
-                                          )}
-                                      </div>
-                                  </div>
-                                  
-                                  {/* Submit Button */}
-                                  {selectedItems.length > 0 && (
-                                      <div className="pt-4 border-t border-gray-700">
-                                          <div className="flex justify-between items-center">
-                                              <div className="text-white">
-                                                  <div className="text-sm text-gray-300">Total for {selectedItems.length} items</div>
-                                                  <div className="text-2xl font-bold">NRs. {totalPrice}</div>
-                                              </div>
-                                              <button
-                                                  type="submit"
-                                                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-3 px-8 rounded-lg shadow-lg transition-all duration-200 transform hover:scale-105 min-w-40"
-                                              >
-                                                  Place Order
-                                              </button>
-                                          </div>
-                                      </div>
-                                  )}
-                              </form>
-                          </div>
-                      </div>
-                  </div>
-                  
-                  <style jsx>{`
-                      .navbar {
-                          box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.06);
-                      }
-                      
-                      /* Custom scrollbar for selected items */
-                      .overflow-y-auto::-webkit-scrollbar {
-                          width: 6px;
-                      }
-                      
-                      .overflow-y-auto::-webkit-scrollbar-track {
-                          background: #2d3748;
-                          border-radius: 3px;
-                      }
-                      
-                      .overflow-y-auto::-webkit-scrollbar-thumb {
-                          background: #4a5568;
-                          border-radius: 3px;
-                      }
-                      
-                      .overflow-y-auto::-webkit-scrollbar-thumb:hover {
-                          background: #718096;
-                      }
-                  `}</style>
-              </>
-          );
-      } catch (error) {
-          return (
-              <div className="min-h-screen flex items-center justify-center bg-gray-900">
-                  <div className="bg-red-900 text-white p-4 rounded-lg shadow-lg max-w-md text-center">
-                      <h2 className="text-xl font-bold mb-2">Error Adding Order</h2>
-                      <p>Please try again later or contact support if the problem persists.</p>
-                      <Link 
-                          href={`/listOrder/${id}`}
-                          className="inline-block mt-4 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
-                      >
-                          Back to Orders
-                      </Link>
-                  </div>
-              </div>
-          );
-      }
-  }
+                                </div>
+                                
+                                {/* Submit Button */}
+                                <div className="pt-2">
+                                    <button
+                                        type="submit"
+                                        className="w-4xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium py-2 px-4 rounded shadow transition-all duration-200"
+                                    >
+                                        Add Order
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                
+                <style jsx>{`
+                    .navbar {
+                        box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.06);
+                    }
+                `}</style>
+            </>
+        );
+    } catch (error) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-gray-900">
+                <div className="bg-red-900 text-white p-4 rounded-lg shadow-lg max-w-md text-center">
+                    <h2 className="text-xl font-bold mb-2">Error Adding Order</h2>
+                    <p>Please try again later or contact support if the problem persists.</p>
+                    <Link 
+                        href={`/listOrder/${id}`}
+                        className="inline-block mt-4 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                    >
+                        Back to Orders
+                    </Link>
+                </div>
+            </div>
+        );
+    }
+}

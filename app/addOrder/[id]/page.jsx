@@ -19,6 +19,7 @@ export default function AddOrder({ params }) {
     // const [order_type, setOrderType] = useState("Kitchen");
     const [order_type, setOrderType] = useState(""); // Initially empty
     const [errors, setErrors] = useState({});
+    const [isLoading, setIsLoading] = useState(false); // Loading state
 
     const options = [
       // kitchen menu
@@ -573,9 +574,14 @@ export default function AddOrder({ params }) {
       const handleSubmit = async (e) => {
           e.preventDefault();
           
+          // Prevent multiple submissions
+          if (isLoading) return;
+          
           if (!validateForm()) {
               return;
           }
+
+          setIsLoading(true); // Start loading
   
           try {
               // Create an array of orders from selected items
@@ -606,6 +612,7 @@ export default function AddOrder({ params }) {
               }
           } catch (error) {
               console.log(error);
+              setIsLoading(false); // Stop loading on error
           }
       };
   
@@ -680,7 +687,7 @@ export default function AddOrder({ params }) {
       // Check if all items have order type selected
       const allItemsHaveOrderType = selectedItems.length > 0 && 
           selectedItems.every(item => item.order_type);
-  
+
       try {
           return (
               <>
@@ -862,6 +869,7 @@ export default function AddOrder({ params }) {
                                                                       onClick={() => removeItem(index)}
                                                                       className="text-red-400 hover:text-red-300 ml-2 flex-shrink-0"
                                                                       title="Remove item"
+                                                                      disabled={isLoading} // Disable during loading
                                                                   >
                                                                       <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                                                                           <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
@@ -880,7 +888,8 @@ export default function AddOrder({ params }) {
                                                                               item.order_type === "Kitchen" 
                                                                               ? "bg-gradient-to-r from-green-500 to-green-600 text-white shadow" 
                                                                               : "bg-gray-600 text-gray-300 hover:bg-gray-500"
-                                                                          }`}
+                                                                          } ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                                                          disabled={isLoading} // Disable during loading
                                                                       >
                                                                           Kitchen
                                                                       </button>
@@ -891,7 +900,8 @@ export default function AddOrder({ params }) {
                                                                               item.order_type === "Bar" 
                                                                               ? "bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow" 
                                                                               : "bg-gray-600 text-gray-300 hover:bg-gray-500"
-                                                                          }`}
+                                                                          } ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                                                          disabled={isLoading} // Disable during loading
                                                                       >
                                                                           Bar
                                                                       </button>
@@ -906,7 +916,10 @@ export default function AddOrder({ params }) {
                                                                           <button 
                                                                               type="button"
                                                                               onClick={() => updateItemQuantity(index, (item.quantity || 1) - 1)}
-                                                                              className="bg-gray-700 hover:bg-gray-600 text-white font-bold py-1 px-3 rounded-l text-sm transition-colors"
+                                                                              className={`bg-gray-700 hover:bg-gray-600 text-white font-bold py-1 px-3 rounded-l text-sm transition-colors ${
+                                                                                  isLoading ? 'opacity-50 cursor-not-allowed' : ''
+                                                                              }`}
+                                                                              disabled={isLoading} // Disable during loading
                                                                           >
                                                                               -
                                                                           </button>
@@ -916,7 +929,10 @@ export default function AddOrder({ params }) {
                                                                           <button 
                                                                               type="button"
                                                                               onClick={() => updateItemQuantity(index, (item.quantity || 1) + 1)}
-                                                                              className="bg-gray-700 hover:bg-gray-600 text-white font-bold py-1 px-3 rounded-r text-sm transition-colors"
+                                                                              className={`bg-gray-700 hover:bg-gray-600 text-white font-bold py-1 px-3 rounded-r text-sm transition-colors ${
+                                                                                  isLoading ? 'opacity-50 cursor-not-allowed' : ''
+                                                                              }`}
+                                                                              disabled={isLoading} // Disable during loading
                                                                           >
                                                                               +
                                                                           </button>
@@ -959,9 +975,24 @@ export default function AddOrder({ params }) {
                                               </div>
                                               <button
                                                   type="submit"
-                                                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-3 px-8 rounded-lg shadow-lg transition-all duration-200 transform hover:scale-105 min-w-40"
+                                                  disabled={isLoading} // Disable button during loading
+                                                  className={`bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold py-3 px-8 rounded-lg shadow-lg transition-all duration-200 transform min-w-40 flex items-center justify-center ${
+                                                      isLoading 
+                                                      ? 'opacity-70 cursor-not-allowed' 
+                                                      : 'hover:from-blue-700 hover:to-purple-700 hover:scale-105'
+                                                  }`}
                                               >
-                                                  Place Order
+                                                  {isLoading ? (
+                                                      <>
+                                                          <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                                              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                                          </svg>
+                                                          Processing...
+                                                      </>
+                                                  ) : (
+                                                      'Place Order'
+                                                  )}
                                               </button>
                                           </div>
                                       </div>

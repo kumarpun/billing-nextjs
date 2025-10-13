@@ -270,6 +270,8 @@ export default function AddOrder({ params }) {
 { value: 'Mix Fruit Juice - Bottle', label: 'Mix Fruit Juice - Bottle - NRs 500', price: 500, order_type: "Bar" },
 { value: 'Coke - Glass', label: 'Coke - Glass - NRs 110', price: 110, order_type: "Bar" },
 { value: 'Coke - Bottle', label: 'Coke - Bottle - NRs 500', price: 500, order_type: "Bar" },
+{ value: 'Coke - Bottle 1.5L', label: 'Coke - Bottle 1.5L - NRs 350', price: 350, order_type: "Bar" },
+
 { value: 'Fanta - Glass', label: 'Fanta - Glass - NRs 110', price: 110, order_type: "Bar" },
 { value: 'Fanta - Bottle', label: 'Fanta - Bottle - NRs 500', price: 500, order_type: "Bar" },
 { value: 'Sprite - Glass', label: 'Sprite - Glass - NRs 110', price: 110, order_type: "Bar" },

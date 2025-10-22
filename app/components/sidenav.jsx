@@ -37,6 +37,7 @@ const accordionSections = [
       { key: "employee", label: "Employee", path: "/employee" },
       { key: "orderQuantity", label: "Order Quantity", path: "/orderQuantity" },
       { key: "stock", label: "Stock", path: "/stock" },
+      { key: "menu", label: "Menu", path: "/menuList" },
     ]
   }
 ];

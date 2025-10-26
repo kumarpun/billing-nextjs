@@ -13,14 +13,46 @@ export default function SalesReportClient() {
     const [orderToDelete, setOrderToDelete] = useState(null);
     const [isDeleting, setIsDeleting] = useState(false);
     const [currentUserRole, setCurrentUserRole] = useState(null);
+    const [isExportModalOpen, setIsExportModalOpen] = useState(false);
+    const [isExporting, setIsExporting] = useState(false);
+    
+    // Custom date states
+    const [customStartDate, setCustomStartDate] = useState("");
+    const [customEndDate, setCustomEndDate] = useState("");
+    const [showCustomDatePicker, setShowCustomDatePicker] = useState(false);
 
     const toggleSidebar = () => {
         setIsSidebarCollapsed(!isSidebarCollapsed);
     };
 
     const handleFilterChange = (filter) => {
-        setSelectedFilter(filter);
-        setIsOpen(false);
+        if (filter === "custom") {
+            setShowCustomDatePicker(true);
+            setIsOpen(false);
+        } else {
+            setSelectedFilter(filter);
+            setShowCustomDatePicker(false);
+            setIsOpen(false);
+        }
+    };
+
+    const handleCustomDateApply = () => {
+        if (customStartDate && customEndDate) {
+            setSelectedFilter("custom");
+            setShowCustomDatePicker(false);
+        } else {
+            alert("Please select both start and end dates");
+        }
+    };
+
+    const handleCustomDateCancel = () => {
+        setShowCustomDatePicker(false);
+        setCustomStartDate("");
+        setCustomEndDate("");
+        // Reset to today if no other filter is selected
+        if (selectedFilter === "custom") {
+            setSelectedFilter("today");
+        }
     };
 
     const fetchCurrentUser = async () => {
@@ -38,11 +70,17 @@ export default function SalesReportClient() {
     useEffect(() => {
         fetchSalesReport();
         fetchCurrentUser();
-    }, [selectedFilter]);
+    }, [selectedFilter, customStartDate, customEndDate]);
 
     const fetchSalesReport = async () => {
         try {
-            const res = await fetch(`/api/orders?${selectedFilter}=true`, { cache: "no-store" });
+            let url = `/api/orders?${selectedFilter}=true`;
+            
+            if (selectedFilter === "custom" && customStartDate && customEndDate) {
+                url += `&startDate=${customStartDate}&endDate=${customEndDate}`;
+            }
+            
+            const res = await fetch(url, { cache: "no-store" });
             if (!res.ok) throw new Error("Failed to fetch report");
             const data = await res.json();
             setOrdersWithTables(data.ordersWithTables || []);
@@ -52,6 +90,13 @@ export default function SalesReportClient() {
             setOrdersWithTables([]);
             setTotalFinalPrice(0);
         }
+    };
+
+    const getFilterDisplayText = () => {
+        if (selectedFilter === "custom" && customStartDate && customEndDate) {
+            return `Custom (${new Date(customStartDate).toLocaleDateString()} - ${new Date(customEndDate).toLocaleDateString()})`;
+        }
+        return selectedFilter.charAt(0).toUpperCase() + selectedFilter.slice(1);
     };
 
     const handleDeleteClick = (order) => {
@@ -103,6 +148,94 @@ export default function SalesReportClient() {
         setOrderToDelete(null);
     };
 
+    const handleExportClick = () => {
+        if (ordersWithTables.length === 0) {
+            alert("No data available to export.");
+            return;
+        }
+        setIsExportModalOpen(true);
+    };
+
+    const handleExportConfirm = () => {
+        setIsExporting(true);
+        try {
+            exportToCSV();
+            setIsExportModalOpen(false);
+        } catch (error) {
+            console.error('Error exporting CSV:', error);
+            alert('Failed to export data. Please try again.');
+        } finally {
+            setIsExporting(false);
+        }
+    };
+
+    const handleExportCancel = () => {
+        setIsExportModalOpen(false);
+    };
+
+    const exportToCSV = () => {
+        // Flatten all orders from all groups
+        const allOrders = ordersWithTables.flatMap(group => group.orders);
+        
+        if (allOrders.length === 0) {
+            alert("No data available to export.");
+            return;
+        }
+
+        // Define CSV headers
+        const headers = [
+            'SN',
+            'Date',
+            'Order Title',
+            'Status',
+            'Quantity',
+            'Price',
+            'Table',
+            'Total Price',
+            'Remarks',
+            'Order Type',
+        ];
+
+        // Prepare data rows
+        const csvData = allOrders.map((order, index) => [
+            index + 1,
+            new Date(order.createdAt).toLocaleDateString(),
+            `"${order.order_title}"`, // Wrap in quotes to handle commas
+            order.order_status,
+            order.order_quantity,
+            order.order_price,
+            order.table[0]?.title || "N/A",
+            order.total_price,
+            `"${order.order_description}"`, // Wrap in quotes to handle commas
+            order.order_type,
+        ]);
+
+        // Add total row
+        csvData.push([]); // Empty row
+        csvData.push(['', '', '', '', '', '', '', 'Total Sales:', totalFinalPrice, '', '']);
+
+        // Convert to CSV string
+        const csvContent = [
+            headers.join(','),
+            ...csvData.map(row => row.join(','))
+        ].join('\n');
+
+        // Create and download file
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+        
+        const fileName = `sales-report-${selectedFilter}-${new Date().toISOString().split('T')[0]}.csv`;
+        
+        link.setAttribute('href', url);
+        link.setAttribute('download', fileName);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    };
+
     // Check if user is admin
     const isAdmin = currentUserRole === 'admin';
 
@@ -120,33 +253,130 @@ export default function SalesReportClient() {
                 />
                 
                 {/* Content with dynamic margin */}
-                <div className={`flex-1 p-6 transition-all duration-300 ${isSidebarCollapsed ? "ml-20" : "ml-64"}`}>
-                    {/* Filter Dropdown */}
-                    <div className="filter-options mb-6 relative">
-                        <label className="mr-2 mt-2">Select Filter:</label>
-                        <div className="inline-block">
-                            <button 
-                                onClick={() => setIsOpen(!isOpen)}
-                                className="px-4 py-2 border border-gray-300 rounded-md bg-white hover:bg-gray-50"
-                            >
-                                {selectedFilter.charAt(0).toUpperCase() + selectedFilter.slice(1)}
-                                <span className="ml-2">▼</span>
-                            </button>
-                            {isOpen && (
-                                <ul className="absolute z-10 mt-1 w-40 bg-white border border-gray-300 rounded-md shadow-lg">
-                                    {["today", "lastWeek", "lastMonth"].map((filter) => (
-                                        <li 
-                                            key={filter}
-                                            onClick={() => handleFilterChange(filter)}
-                                            className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                <div className={`flex-1 p-6 transition-all duration-300 relative z-50 ${isSidebarCollapsed ? "ml-20" : "ml-64"}`}>
+                    {/* Filter and Export Section */}
+                    <div className="flex justify-between items-center mb-6">
+                        <div className="filter-options relative">
+                            <label className="mr-2 mt-2">Select Filter:</label>
+                            <div className="inline-block">
+                                <button 
+                                    onClick={() => setIsOpen(!isOpen)}
+                                    className="px-4 py-2 border border-gray-300 rounded-md bg-white hover:bg-gray-50 min-w-40 text-left flex justify-between items-center"
+                                >
+                                    <span>{getFilterDisplayText()}</span>
+                                    <span className="ml-2">▼</span>
+                                </button>
+                                {isOpen && (
+                                    <ul className="absolute z-10 mt-1 w-40 bg-white border border-gray-300 rounded-md shadow-lg">
+                                        {["today", "lastWeek", "lastMonth", "custom"].map((filter) => (
+                                            <li 
+                                                key={filter}
+                                                onClick={() => handleFilterChange(filter)}
+                                                className="px-4 py-2 hover:bg-gray-100 cursor-pointer capitalize"
+                                            >
+                                                {filter}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                )}
+                            </div>
+
+                            {/* Custom Date Picker */}
+                            {showCustomDatePicker && (
+                                <div className="absolute z-20 mt-2 p-4 bg-white border border-gray-300 rounded-md shadow-lg">
+                                    <div className="mb-3">
+                                        <label className="block text-sm font-medium mb-1">Start Date</label>
+                                        <input
+                                            type="date"
+                                            value={customStartDate}
+                                            onChange={(e) => setCustomStartDate(e.target.value)}
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                                        />
+                                    </div>
+                                    <div className="mb-3">
+                                        <label className="block text-sm font-medium mb-1">End Date</label>
+                                        <input
+                                            type="date"
+                                            value={customEndDate}
+                                            onChange={(e) => setCustomEndDate(e.target.value)}
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                                        />
+                                    </div>
+                                    <div className="flex justify-end space-x-2">
+                                        <button
+                                            onClick={handleCustomDateCancel}
+                                            className="px-3 py-1 text-sm border border-gray-300 rounded-md hover:bg-gray-50"
                                         >
-                                            {filter.charAt(0).toUpperCase() + filter.slice(1)}
-                                        </li>
-                                    ))}
-                                </ul>
+                                            Cancel
+                                        </button>
+                                        <button
+                                            onClick={handleCustomDateApply}
+                                            disabled={!customStartDate || !customEndDate}
+                                            className="px-3 py-1 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                                        >
+                                            Apply
+                                        </button>
+                                    </div>
+                                </div>
                             )}
                         </div>
+
+                        {/* Export Button */}
+                        <button
+                            onClick={handleExportClick}
+                            disabled={ordersWithTables.length === 0}
+                            className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
+                        >
+                            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                            Export CSV
+                        </button>
                     </div>
+
+                    {/* Export Confirmation Modal */}
+                    {isExportModalOpen && (
+                        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                            <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+                                <h3 className="text-lg font-semibold mb-4 text-green-600">Confirm Export</h3>
+                                <p className="mb-4">
+                                    Are you sure you want to export the sales data to CSV? 
+                                    This will download a file containing {ordersWithTables.flatMap(group => group.orders).length} records.
+                                </p>
+                                <div className="mb-4 p-3 bg-gray-50 rounded">
+                                    <p><strong>Filter:</strong> {getFilterDisplayText()}</p>
+                                    <p><strong>Total Records:</strong> {ordersWithTables.flatMap(group => group.orders).length}</p>
+                                    <p><strong>Total Sales:</strong> NRs. {totalFinalPrice.toLocaleString()}</p>
+                                </div>
+                                <div className="flex justify-end space-x-3">
+                                    <button 
+                                        onClick={handleExportCancel}
+                                        disabled={isExporting}
+                                        className="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50"
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button 
+                                        onClick={handleExportConfirm}
+                                        disabled={isExporting}
+                                        className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 disabled:opacity-50 flex items-center"
+                                    >
+                                        {isExporting ? (
+                                            <>
+                                                <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                                </svg>
+                                                Exporting...
+                                            </>
+                                        ) : (
+                                            "Export"
+                                        )}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
 
                     {/* Delete Confirmation Modal - Only show for admin */}
                     {isDeleteModalOpen && isAdmin && (
@@ -200,6 +430,11 @@ export default function SalesReportClient() {
                         <h3 className="text-xl font-bold text-center text-black">
                             Total Sales: NRs. {totalFinalPrice.toLocaleString()}
                         </h3>
+                        {selectedFilter === "custom" && customStartDate && customEndDate && (
+                            <p className="text-center text-sm text-gray-600 mt-1">
+                                Period: {new Date(customStartDate).toLocaleDateString()} - {new Date(customEndDate).toLocaleDateString()}
+                            </p>
+                        )}
                     </div>
 
                     {/* Sales Table */}

@@ -17,6 +17,8 @@ export default function SalesReportFilter() {
     const [billToDelete, setBillToDelete] = useState(null);
     const [isDeleting, setIsDeleting] = useState(false);
     const [currentUserRole, setCurrentUserRole] = useState(null);
+    const [isExporting, setIsExporting] = useState(false);
+    const [isExportModalOpen, setIsExportModalOpen] = useState(false);
 
     const toggleSidebar = () => {
         setIsSidebarCollapsed(!isSidebarCollapsed);
@@ -136,6 +138,108 @@ export default function SalesReportFilter() {
         setBillToDelete(null);
     };
 
+    // Handle export button click
+    const handleExportClick = () => {
+        if (bills.length === 0) {
+            alert("No data available to export.");
+            return;
+        }
+        setIsExportModalOpen(true);
+    };
+
+    // Handle export confirmation
+    const handleExportConfirm = () => {
+        setIsExportModalOpen(false);
+        exportToExcel();
+    };
+
+    // Handle export cancellation
+    const handleExportCancel = () => {
+        setIsExportModalOpen(false);
+    };
+
+    // Export to Excel function
+    const exportToExcel = async () => {
+        setIsExporting(true);
+        try {
+            // Prepare the data for export
+            const exportData = bills.map((bill, index) => ({
+                'S.N.': index + 1,
+                'Date': new Date(bill.createdAt).toLocaleDateString(),
+                'Original Price': bill.originalPrice,
+                'Discount %': bill.discountPercent || '0',
+                'Final Price': bill.finalPrice,
+                'Payment Mode': bill.billPaymentMode,
+                'QR Amount': bill.qrAmount || '0',
+                'Cash Amount': bill.cashAmount || '0',
+                'Remarks': bill.remarks || '',
+                'Kitchen Price': bill.kitchenPrice,
+                'Bar Price': bill.barPrice,
+            }));
+
+            // Add summary rows
+            const summaryRows = [
+                {},
+                {
+                    'S.N.': 'SUMMARY',
+                    'Date': '',
+                    'Original Price': '',
+                    'Discount %': '',
+                    'Final Price': `Total: NRs. ${totalFinalPrice.toLocaleString()}`,
+                    'Payment Mode': '',
+                    'QR Amount': '',
+                    'Cash Amount': '',
+                    'Remarks': '',
+                    'Kitchen Price': `Total: NRs. ${totalKitchenPrice.toLocaleString()}`,
+                    'Bar Price': `Total: NRs. ${totalBarPrice.toLocaleString()}`,
+                }
+            ];
+
+            const dataToExport = [...exportData, ...summaryRows];
+
+            // Create CSV content
+            const headers = Object.keys(dataToExport[0]);
+            const csvContent = [
+                headers.join(','),
+                ...dataToExport.map(row => 
+                    headers.map(header => {
+                        const value = row[header] || '';
+                        // Handle commas in values by wrapping in quotes
+                        return typeof value === 'string' && value.includes(',') 
+                            ? `"${value}"` 
+                            : value;
+                    }).join(',')
+                )
+            ].join('\n');
+
+            // Create and download the file
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            
+            // Generate filename based on filter
+            let filename = 'sales_report';
+            if (selectedFilter === 'custom' && startDate && endDate) {
+                filename = `sales_report_${startDate}_to_${endDate}`;
+            } else {
+                filename = `sales_report_${selectedFilter}_${new Date().toISOString().split('T')[0]}`;
+            }
+            
+            link.setAttribute('href', url);
+            link.setAttribute('download', `${filename}.csv`);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+        } catch (error) {
+            console.error('Error exporting to Excel:', error);
+            alert('Failed to export report. Please try again.');
+        } finally {
+            setIsExporting(false);
+        }
+    };
+
     // Check if user is admin
     const isAdmin = currentUserRole === 'admin';
 
@@ -154,20 +258,96 @@ export default function SalesReportFilter() {
                 
                 {/* Content with dynamic margin */}
                 <div className={`flex-1 p-6 transition-all duration-300 ${isSidebarCollapsed ? "ml-20" : "ml-64"}`}>
-                    <div className="filter-options mb-6">
-                        <label htmlFor="filter" className="mr-2 mt-2">Select Filter:</label>
-                        <select 
-                            id="filter" 
-                            value={selectedFilter} 
-                            className="px-4 py-2 border border-gray-300 rounded-md bg-white"
-                            onChange={handleFilterChange}
+                    {/* Filter and Export Section */}
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+                        <div className="filter-options">
+                            <label htmlFor="filter" className="mr-2 mt-2">Select Filter:</label>
+                            <select 
+                                id="filter" 
+                                value={selectedFilter} 
+                                className="px-4 py-2 border border-gray-300 rounded-md bg-white"
+                                onChange={handleFilterChange}
+                            >
+                                <option value="today">Today</option>
+                                <option value="custom">Select Custom Date</option>
+                                <option value="lastWeek">Last Week</option>
+                                <option value="lastMonth">Last Month</option>
+                            </select>
+                        </div>
+                        
+                        {/* Export Button */}
+                        <button
+                            onClick={handleExportClick}
+                            disabled={isExporting || bills.length === 0}
+                            className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                         >
-                            <option value="today">Today</option>
-                            <option value="custom">Select Custom Date</option>
-                            <option value="lastWeek">Last Week</option>
-                            <option value="lastMonth">Last Month</option>
-                        </select>
+                            {isExporting ? (
+                                <>
+                                    <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    </svg>
+                                    Exporting...
+                                </>
+                            ) : (
+                                <>
+                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                    </svg>
+                                    Export to Excel
+                                </>
+                            )}
+                        </button>
                     </div>
+
+                    {/* Export Confirmation Modal */}
+                    {isExportModalOpen && (
+                        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                            <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+                                <h3 className="text-lg font-semibold mb-4 text-green-600">Confirm Export</h3>
+                                <p className="mb-4">
+                                    Are you sure you want to export the sales data to CSV? 
+                                    This will download a file containing {bills.length} records.
+                                </p>
+                                <div className="mb-4 p-3 bg-gray-50 rounded">
+                                    <p><strong>Filter:</strong> {selectedFilter}</p>
+                                    {selectedFilter === 'custom' && startDate && endDate && (
+                                        <p><strong>Date Range:</strong> {startDate} to {endDate}</p>
+                                    )}
+                                    <p><strong>Total Records:</strong> {bills.length}</p>
+                                    <p><strong>Total Sales:</strong> NRs. {totalFinalPrice.toLocaleString()}</p>
+                                    <p><strong>Kitchen Sales:</strong> NRs. {totalKitchenPrice.toLocaleString()}</p>
+                                    <p><strong>Bar Sales:</strong> NRs. {totalBarPrice.toLocaleString()}</p>
+                                </div>
+                                <div className="flex justify-end space-x-3">
+                                    <button 
+                                        onClick={handleExportCancel}
+                                        disabled={isExporting}
+                                        className="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50"
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button 
+                                        onClick={handleExportConfirm}
+                                        disabled={isExporting}
+                                        className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 disabled:opacity-50 flex items-center"
+                                    >
+                                        {isExporting ? (
+                                            <>
+                                                <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                                </svg>
+                                                Exporting...
+                                            </>
+                                        ) : (
+                                            "Export"
+                                        )}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
 
                     {/* Modal for custom date selection */}
                     {isModalOpen && (
@@ -304,12 +484,12 @@ export default function SalesReportFilter() {
                                                     {new Date(sales.createdAt).toLocaleDateString()}
                                                 </td>
                                                 <td className="px-4 py-3 whitespace-nowrap text-sm">{sales.originalPrice}</td>
-                                                <td className="px-4 py-3 whitespace-nowrap text-sm">{sales.discountPercent}</td>
+                                                <td className="px-4 py-3 whitespace-nowrap text-sm">{sales.discountPercent || '0'}</td>
                                                 <td className="px-4 py-3 whitespace-nowrap text-sm">{sales.finalPrice}</td>
                                                 <td className="px-4 py-3 whitespace-nowrap text-sm">{sales.billPaymentMode}</td>
-                                                <td className="px-4 py-3 whitespace-nowrap text-sm">{sales.qrAmount}</td>
-                                                <td className="px-4 py-3 whitespace-nowrap text-sm">{sales.cashAmount}</td>
-                                                <td className="px-4 py-3 whitespace-nowrap text-sm">{sales.remarks}</td>
+                                                <td className="px-4 py-3 whitespace-nowrap text-sm">{sales.qrAmount || '0'}</td>
+                                                <td className="px-4 py-3 whitespace-nowrap text-sm">{sales.cashAmount || '0'}</td>
+                                                <td className="px-4 py-3 whitespace-nowrap text-sm">{sales.remarks || ''}</td>
                                                 <td className="px-4 py-3 whitespace-nowrap text-sm">{sales.kitchenPrice}</td>
                                                 <td className="px-4 py-3 whitespace-nowrap text-sm">{sales.barPrice}</td>
                                                 {isAdmin && (

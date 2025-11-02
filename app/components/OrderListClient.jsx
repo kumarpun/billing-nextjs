@@ -385,15 +385,6 @@ export default function OrderListClient({ orderbyTableId, total_price, totalKitc
 
                         <p>Total bill: NRs. {total_price}</p>
 
-                        {(hasNewOrders || hasDeletedOrders) && (
-                            <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-md my-2">
-                                <p className="text-amber-600 font-semibold text-sm">
-                                    {hasNewOrders && `⚡ Note: New orders added after bill generation (+NRs. ${pendingAmount})`}
-                                    {hasDeletedOrders && `↻ Note: Orders removed after bill generation (-NRs. ${adjustedAmount})`}
-                                </p>
-                            </div>
-                        )}
-
                         <p id="discount-section">
                             Discount: 
                             <input

@@ -1,10 +1,6 @@
-
-
-
-
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from "next/link";
 import { HiPencilAlt } from "react-icons/hi";
 import { FiPlus, FiMinus, FiPrinter, FiDollarSign, FiEdit, FiFileText } from "react-icons/fi";
@@ -20,7 +16,28 @@ export default function OrderListClient({ orderbyTableId, total_price, totalKitc
     const [modalContent, setModalContent] = useState(null);
     const [discount, setDiscount] = useState('');
     const [updating, setUpdating] = useState(null);
+    const [displayFinalAmount, setDisplayFinalAmount] = useState(totalFinalbill);
     const router = useRouter();
+
+    // Smart final amount calculation
+    useEffect(() => {
+        if (totalFinalbill > 0) {
+            // If bill exists, check if orders were added or removed
+            if (total_price > totalFinalbill) {
+                // New orders were added after bill generation
+                setDisplayFinalAmount(total_price);
+            } else if (total_price < totalFinalbill) {
+                // Orders were deleted after bill generation - adjust final amount down
+                setDisplayFinalAmount(total_price);
+            } else {
+                // No changes - keep the original bill amount
+                setDisplayFinalAmount(totalFinalbill);
+            }
+        } else {
+            // No bill generated yet
+            setDisplayFinalAmount(0);
+        }
+    }, [total_price, totalFinalbill, orderbyTableId]);
 
     const handleOpenModal = (content) => {
         setModalContent(content);
@@ -34,6 +51,8 @@ export default function OrderListClient({ orderbyTableId, total_price, totalKitc
 
     const handleBillAdded = () => {
         setModalOpen(false);
+        // Update display final amount after bill generation
+        setDisplayFinalAmount(total_price);
     }
 
     const handlePrint = () => {
@@ -82,16 +101,38 @@ export default function OrderListClient({ orderbyTableId, total_price, totalKitc
         }
     };
 
+    // Check order status
+    const hasNewOrders = totalFinalbill > 0 && total_price > totalFinalbill;
+    const hasDeletedOrders = totalFinalbill > 0 && total_price < totalFinalbill;
+    const isBillAccurate = totalFinalbill > 0 && total_price === totalFinalbill;
+
+    const pendingAmount = hasNewOrders ? total_price - totalFinalbill : 0;
+    const adjustedAmount = hasDeletedOrders ? totalFinalbill - total_price : 0;
+
     return (
         <>
             <div className="bg-gradient-to-br from-gray-900 to-gray-800 min-h-screen text-gray-100 p-4">
-                {/* Header Section - Made more compact */}
+                {/* Header Section */}
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 p-4 bg-gray-800 rounded-lg shadow">
                     <div>
                         <h1 className="text-xl font-bold table-title mb-1">{tableTitle} - Orders</h1>
+                        {hasNewOrders && (
+                            <div className="flex items-center gap-2 mt-2 px-3 py-1 bg-amber-500/20 border border-amber-500/30 rounded-md">
+                                <span className="text-amber-300 text-sm font-medium">
+                                    ⚡ New orders pending bill update (+NRs. {pendingAmount})
+                                </span>
+                            </div>
+                        )}
+                        {hasDeletedOrders && (
+                            <div className="flex items-center gap-2 mt-2 px-3 py-1 bg-green-500/20 border border-green-500/30 rounded-md">
+                                <span className="text-green-300 text-sm font-medium">
+                                    ↻ Orders deleted, bill adjusted (-NRs. {adjustedAmount})
+                                </span>
+                            </div>
+                        )}
                     </div>
                     <div className="flex flex-wrap gap-2 mt-3 md:mt-0">
-                        {totalFinalbill <= 0 && (
+                        {displayFinalAmount <= 0 && (
                             <button 
                                 className="flex items-center gap-1 px-3 py-2 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 rounded-md font-medium text-sm transition-all duration-200 shadow hover:shadow-md"
                                 onClick={() => handleOpenModal('add')}
@@ -101,13 +142,15 @@ export default function OrderListClient({ orderbyTableId, total_price, totalKitc
                             </button>
                         )}
                         
-                        <button 
-                            className="flex items-center gap-1 px-3 py-2 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 rounded-md font-medium text-sm transition-all duration-200 shadow hover:shadow-md"
-                            onClick={() => handleOpenModal('edit')}
-                        >
-                            <FiEdit className="text-sm" />
-                            Update Bill
-                        </button>
+                        {(displayFinalAmount > 0 || hasNewOrders || hasDeletedOrders) && (
+                            <button 
+                                className="flex items-center gap-1 px-3 py-2 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 rounded-md font-medium text-sm transition-all duration-200 shadow hover:shadow-md"
+                                onClick={() => handleOpenModal('edit')}
+                            >
+                                <FiEdit className="text-sm" />
+                                {hasNewOrders || hasDeletedOrders ? 'Update Bill' : 'Modify Bill'}
+                            </button>
+                        )}
                         
                         <button 
                             className="flex items-center gap-1 px-3 py-2 bg-gradient-to-r from-green-500 to-teal-500 hover:from-green-600 hover:to-teal-600 rounded-md font-medium text-sm transition-all duration-200 shadow hover:shadow-md"
@@ -119,7 +162,7 @@ export default function OrderListClient({ orderbyTableId, total_price, totalKitc
                     </div>
                 </div>
 
-                {/* Orders List - Made more compact */}
+                {/* Orders List */}
                 <div className="mb-6">
                     <div className="flex justify-between items-center mb-4">
                         <h2 className="text-lg font-semibold">Order Items</h2>
@@ -200,7 +243,7 @@ export default function OrderListClient({ orderbyTableId, total_price, totalKitc
                     )}
                 </div>
 
-                {/* Summary Section - Made more compact */}
+                {/* Summary Section */}
                 <div className="bg-gray-800 rounded-lg p-4 shadow">
                     <h2 className="text-lg font-semibold mb-4 pb-2 border-b border-gray-700">Bill Summary</h2>
                     
@@ -210,12 +253,66 @@ export default function OrderListClient({ orderbyTableId, total_price, totalKitc
                             <div className="text-xl font-bold text-white">NRs. {total_price}</div>
                         </div>
                         
-                        <div className="bg-gradient-to-r from-indigo-600 to-purple-600 p-3 rounded-md">
-                            <div className="text-xs text-indigo-200 mb-1">Final Bill Amount</div>
-                            <div className="text-2xl font-bold text-white">NRs. {totalFinalbill}</div>
-                            <div className="text-indigo-200 text-xs mt-1">Status: {billFinalStatus}</div>
+                        <div className={`p-3 rounded-md ${
+                            hasNewOrders ? 'bg-gradient-to-r from-amber-600 to-orange-600' : 
+                            hasDeletedOrders ? 'bg-gradient-to-r from-green-600 to-emerald-600' : 
+                            'bg-gradient-to-r from-indigo-600 to-purple-600'
+                        }`}>
+                            <div className="text-xs text-white/80 mb-1">
+                                {hasNewOrders ? 'Updated Final Amount' : 
+                                 hasDeletedOrders ? 'Adjusted Final Amount' : 
+                                 'Final Bill Amount'}
+                            </div>
+                            <div className="text-2xl font-bold text-white">NRs. {displayFinalAmount}</div>
+                            <div className="text-white/80 text-xs mt-1">
+                                Status: {billFinalStatus}
+                                {hasNewOrders && ' • Pending Update'}
+                                {hasDeletedOrders && ' • Auto-adjusted'}
+                            </div>
                         </div>
+
+                        {hasNewOrders && (
+                            <div className="bg-gradient-to-r from-amber-500 to-yellow-500 p-3 rounded-md">
+                                <div className="text-xs text-amber-100 mb-1">Pending Amount</div>
+                                <div className="text-xl font-bold text-white">+NRs. {pendingAmount}</div>
+                                <div className="text-amber-100 text-xs mt-1">New orders added</div>
+                            </div>
+                        )}
+
+                        {hasDeletedOrders && (
+                            <div className="bg-gradient-to-r from-green-500 to-emerald-500 p-3 rounded-md">
+                                <div className="text-xs text-green-100 mb-1">Adjustment</div>
+                                <div className="text-xl font-bold text-white">-NRs. {adjustedAmount}</div>
+                                <div className="text-green-100 text-xs mt-1">Orders removed</div>
+                            </div>
+                        )}
                     </div>
+
+                    {/* Bill Status Summary */}
+                    {totalFinalbill > 0 && (
+                        <div className="bg-gray-900/50 p-3 rounded-md border border-gray-700">
+                            <div className="text-xs text-gray-400 mb-2">Bill Status Summary</div>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
+                                <div>
+                                    <span className="text-gray-400">Original Bill: </span>
+                                    <span className="font-medium">NRs. {totalFinalbill}</span>
+                                </div>
+                                <div>
+                                    <span className="text-gray-400">Current Total: </span>
+                                    <span className="font-medium">NRs. {total_price}</span>
+                                </div>
+                                <div className={`font-semibold ${
+                                    hasNewOrders ? 'text-amber-400' : 
+                                    hasDeletedOrders ? 'text-green-400' : 
+                                    'text-white'
+                                }`}>
+                                    {hasNewOrders ? `+NRs. ${pendingAmount} to add` : 
+                                     hasDeletedOrders ? `-NRs. ${adjustedAmount} removed` : 
+                                     'Bill is accurate'}
+                                </div>
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
 
@@ -234,82 +331,89 @@ export default function OrderListClient({ orderbyTableId, total_price, totalKitc
                 {modalContent === 'edit' && (
                     <EditBillForm 
                         id={tablebill_id} 
-                        bill={totalFinalbill} 
+                        bill={total_price} // Pass current total price for update
                         onBillAdded={handleBillAdded} 
                     />
                 )}
            
-           {modalContent === 'print' && (
-    <div className="bill-print text-black" style={{ display: 'flex', flexDirection: 'column', height: '100%', justifyContent: 'flex-start' }}>
-        <div style={{ display: 'flex', gap: '12px' }}>
-            <button className="px-6 py-2 mt-3 add-table ml-auto" onClick={handlePrint}>
-                Print
-            </button>
-        </div>
+                {modalContent === 'print' && (
+                    <div className="bill-print text-black" style={{ display: 'flex', flexDirection: 'column', height: '100%', justifyContent: 'flex-start' }}>
+                        <div style={{ display: 'flex', gap: '12px' }}>
+                            <button className="px-6 py-2 mt-3 add-table ml-auto" onClick={handlePrint}>
+                                Print
+                            </button>
+                        </div>
 
-        <div className="receipt-container">
-            <pre className="receipt-text">
-                *************************************************
-                {'\n'}   THE HYBE ({tableTitle})
-                {'\n'}*************************************************
-            </pre>
-        </div>
+                        <div className="receipt-container">
+                            <pre className="receipt-text">
+                                *************************************************
+                                {'\n'}   THE HYBE ({tableTitle})
+                                {'\n'}*************************************************
+                            </pre>
+                        </div>
 
-        <pre className="receipt-text">
-            TERMINAL#132f2wd33
-            {/* {'\n'}_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _  */}
-        </pre>
+                        <pre className="receipt-text">
+                            TERMINAL#132f2wd33
+                        </pre>
 
-        <br />
+                        <br />
 
-        <div className="table-wrapper">
-            <table className="order-table w-full border-collapse border border-gray-300">
-                <thead>
-                    <tr>
-                        <th className="border border-gray-300 p-2 text-left">Order</th>
-                        <th className="border border-gray-300 p-2 text-left">Qty</th>
-                        <th className="border border-gray-300 p-2 text-left">Price</th>
-                        <th className="border border-gray-300 p-2 text-left">Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {orderbyTableId.map(order => (
-                        <tr key={order._id}>
-                            <td className="border border-gray-300 p-2">{order.order_title}</td>
-                            <td className="border border-gray-300 p-2">{order.order_quantity}</td>
-                            <td className="border border-gray-300 p-2">{order.order_price}</td>
-                            <td className="border border-gray-300 p-2">{order.final_price}</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-        </div>
+                        <div className="table-wrapper">
+                            <table className="order-table w-full border-collapse border border-gray-300">
+                                <thead>
+                                    <tr>
+                                        <th className="border border-gray-300 p-2 text-left">Order</th>
+                                        <th className="border border-gray-300 p-2 text-left">Qty</th>
+                                        <th className="border border-gray-300 p-2 text-left">Price</th>
+                                        <th className="border border-gray-300 p-2 text-left">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {orderbyTableId.map(order => (
+                                        <tr key={order._id}>
+                                            <td className="border border-gray-300 p-2">{order.order_title}</td>
+                                            <td className="border border-gray-300 p-2">{order.order_quantity}</td>
+                                            <td className="border border-gray-300 p-2">{order.order_price}</td>
+                                            <td className="border border-gray-300 p-2">{order.final_price}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
 
-        <br />
+                        <br />
 
-        <p>Total bill: NRs. {total_price}</p>
+                        <p>Total bill: NRs. {total_price}</p>
 
-        <p id="discount-section">
-            Discount: 
-            <input
-                className="px-8 py-2 border-none border-b border-gray-500 focus:outline-none focus:ring-0"
-                type="text"
-                placeholder="discount"
-                value={discount}
-                onChange={(e) => setDiscount(e.target.value)}
-            />
-        </p>
+                        {(hasNewOrders || hasDeletedOrders) && (
+                            <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-md my-2">
+                                <p className="text-amber-600 font-semibold text-sm">
+                                    {hasNewOrders && `⚡ Note: New orders added after bill generation (+NRs. ${pendingAmount})`}
+                                    {hasDeletedOrders && `↻ Note: Orders removed after bill generation (-NRs. ${adjustedAmount})`}
+                                </p>
+                            </div>
+                        )}
 
-        <p>Final bill: NRs. {totalFinalbill}</p>
+                        <p id="discount-section">
+                            Discount: 
+                            <input
+                                className="px-8 py-2 border-none border-b border-gray-500 focus:outline-none focus:ring-0"
+                                type="text"
+                                placeholder="discount"
+                                value={discount}
+                                onChange={(e) => setDiscount(e.target.value)}
+                            />
+                        </p>
 
-        <pre className="receipt-text">
-            _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
-            {'\n'}*************************** THANK YOU! ***************************
-            {'\n'}_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
-        </pre>
-    </div>
-)}
+                        <p>Final bill: NRs. {displayFinalAmount}</p>
 
+                        <pre className="receipt-text">
+                            _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+                            {'\n'}*************************** THANK YOU! ***************************
+                            {'\n'}_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+                        </pre>
+                    </div>
+                )}
             </Modal>
         </>
     );

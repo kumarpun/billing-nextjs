@@ -31,17 +31,10 @@ export default function Dashboard() {
 
   // Hardcoded staff list
   const staffList = [
-    { id: 1, name: "Sajan" },
-    { id: 2, name: "Mamata" },
-    { id: 3, name: "Roshan" },
-    { id: 4, name: "Madan" },
-    { id: 5, name: "Sachin" },
-    { id: 6, name: "Niranjan" },
-    { id: 7, name: "Pirthivi" },
-    { id: 8, name: "Rishab" },
-    { id: 9, name: "Bikram" },
-    { id: 10, name: "Susmita" },
-    { id: 11, name: "Tanisha" },
+    { id: 1, name: "Saroj" },
+    { id: 2, name: "Niranjan" },
+    { id: 3, name: "Pirthivi" },
+    { id: 4, name: "Bikram" }
   ];
 
   // Standard shift times

@@ -34,7 +34,12 @@ export default function Dashboard() {
     { id: 1, name: "Saroj" },
     { id: 2, name: "Niranjan" },
     { id: 3, name: "Pirthivi" },
-    { id: 4, name: "Bikram" }
+    { id: 4, name: "Bikram" },
+    { id: 5, name: "Sharmila" },
+    { id: 6, name: "Sujan" },
+    { id: 7, name: "Nikit" },
+    { id: 8, name: "Bishal" },
+    { id: 9, name: "Manish" }
   ];
 
   // Standard shift times

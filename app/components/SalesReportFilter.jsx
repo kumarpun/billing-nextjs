@@ -20,20 +20,6 @@ export default function SalesReportFilter() {
    const [currentUserRole, setCurrentUserRole] = useState(null);
    const [isExporting, setIsExporting] = useState(false);
    const [isExportModalOpen, setIsExportModalOpen] = useState(false);
-   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-   const [billToEdit, setBillToEdit] = useState(null);
-   const [isEditing, setIsEditing] = useState(false);
-   const [editFormData, setEditFormData] = useState({
-       finalPrice: "",
-       originalPrice: "",
-       discountPercent: "",
-       billPaymentMode: "",
-       qrAmount: "",
-       cashAmount: "",
-       remarks: "",
-       kitchenPrice: "",
-       barPrice: ""
-   });
 
 
    const toggleSidebar = () => {
@@ -166,116 +152,6 @@ export default function SalesReportFilter() {
    const handleDeleteCancel = () => {
        setIsDeleteModalOpen(false);
        setBillToDelete(null);
-   };
-
-
-   // Handle edit button click
-   const handleEditClick = (bill) => {
-       setBillToEdit(bill);
-       setEditFormData({
-           finalPrice: bill.finalPrice || "",
-           originalPrice: bill.originalPrice || "",
-           discountPercent: bill.discountPercent || "",
-           billPaymentMode: bill.billPaymentMode || "",
-           qrAmount: bill.qrAmount || "",
-           cashAmount: bill.cashAmount || "",
-           remarks: bill.remarks || "",
-           kitchenPrice: bill.kitchenPrice || "",
-           barPrice: bill.barPrice || ""
-       });
-       setIsEditModalOpen(true);
-   };
-
-
-   // Handle edit form input changes
-   const handleEditFormChange = (e) => {
-       const { name, value } = e.target;
-       setEditFormData({
-           ...editFormData,
-           [name]: value
-       });
-   };
-
-
-   // Handle edit form submission
-   // Handle edit form submission
-const handleEditSubmit = async () => {
-   if (!billToEdit) return;
-
-
-   setIsEditing(true);
-   try {
-       const response = await fetch(`/api/bill/${billToEdit._id}`, {
-           method: 'PUT',
-           headers: {
-               'Content-Type': 'application/json',
-           },
-           body: JSON.stringify({
-               originalPrice: Number(editFormData.originalPrice),
-               discountPercent: Number(editFormData.discountPercent) || 0,
-               finalPrice: Number(editFormData.finalPrice),
-               billPaymentMode: editFormData.billPaymentMode,
-               qrAmount: Number(editFormData.qrAmount) || 0,
-               cashAmount: Number(editFormData.cashAmount) || 0,
-               remarks: editFormData.remarks,
-               kitchenPrice: Number(editFormData.kitchenPrice),
-               barPrice: Number(editFormData.barPrice)
-           }),
-       });
-
-
-       if (!response.ok) {
-           const errorData = await response.json();
-           throw new Error(errorData.error || 'Failed to update bill');
-       }
-
-
-       const updatedBill = await response.json();
-      
-       // Update the bill in the state
-       const updatedBills = bills.map(bill =>
-           bill._id === billToEdit._id ? updatedBill : bill
-       );
-      
-       setBills(updatedBills);
-      
-       // Recalculate totals
-       const newTotalFinalPrice = updatedBills.reduce((sum, bill) => sum + (bill.finalPrice || 0), 0);
-       const newTotalKitchenPrice = updatedBills.reduce((sum, bill) => sum + (bill.kitchenPrice || 0), 0);
-       const newTotalBarPrice = updatedBills.reduce((sum, bill) => sum + (bill.barPrice || 0), 0);
-      
-       setTotalFinalPrice(newTotalFinalPrice);
-       setTotalKitchenPrice(newTotalKitchenPrice);
-       setTotalBarPrice(newTotalBarPrice);
-
-
-       setIsEditModalOpen(false);
-       setBillToEdit(null);
-       alert('Bill updated successfully!');
-      
-   } catch (error) {
-       console.error('Error updating bill:', error);
-       alert(`Failed to update bill: ${error.message}`);
-   } finally {
-       setIsEditing(false);
-   }
-};
-
-
-   const handleEditCancel = () => {
-       setIsEditModalOpen(false);
-       setBillToEdit(null);
-       setEditFormData({
-           finalPrice: "",
-           originalPrice: "",
-           discountPercent: "",
-           billPaymentMode: "",
-           qrAmount: "",
-           cashAmount: "",
-           remarks: "",
-           kitchenPrice: "",
-           barPrice: ""
-       });
    };
 
 
@@ -451,144 +327,6 @@ const handleEditSubmit = async () => {
                    </div>
 
 
-                   {/* Edit Modal */}
-                   {isEditModalOpen && (
-                       <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                           <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-                               <h3 className="text-lg font-semibold mb-4 text-blue-600">Edit Bill</h3>
-                               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                                   <div>
-                                       <label className="block text-sm font-medium mb-1">Original Price:</label>
-                                       <input
-                                           type="number"
-                                           name="originalPrice"
-                                           value={editFormData.originalPrice}
-                                           onChange={handleEditFormChange}
-                                           className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                                       />
-                                   </div>
-                                   <div>
-                                       <label className="block text-sm font-medium mb-1">Discount %:</label>
-                                       <input
-                                           type="number"
-                                           name="discountPercent"
-                                           value={editFormData.discountPercent}
-                                           onChange={handleEditFormChange}
-                                           className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                                       />
-                                   </div>
-                                   <div>
-                                       <label className="block text-sm font-medium mb-1">Final Price:</label>
-                                       <input
-                                           type="number"
-                                           name="finalPrice"
-                                           value={editFormData.finalPrice}
-                                           onChange={handleEditFormChange}
-                                           className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                                       />
-                                   </div>
-                                   <div>
-                                       <label className="block text-sm font-medium mb-1">Payment Mode:</label>
-                                       <select
-                                           name="billPaymentMode"
-                                           value={editFormData.billPaymentMode}
-                                           onChange={handleEditFormChange}
-                                           className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                                       >
-                                           <option value="">Select Payment Mode</option>
-                                           <option value="cash">Cash</option>
-                                           <option value="qr">QR</option>
-                                           <option value="both">Both</option>
-                                       </select>
-                                   </div>
-                                   <div>
-                                       <label className="block text-sm font-medium mb-1">QR Amount:</label>
-                                       <input
-                                           type="number"
-                                           name="qrAmount"
-                                           value={editFormData.qrAmount}
-                                           onChange={handleEditFormChange}
-                                           className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                                       />
-                                   </div>
-                                   <div>
-                                       <label className="block text-sm font-medium mb-1">Cash Amount:</label>
-                                       <input
-                                           type="number"
-                                           name="cashAmount"
-                                           value={editFormData.cashAmount}
-                                           onChange={handleEditFormChange}
-                                           className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                                       />
-                                   </div>
-                                   <div>
-                                       <label className="block text-sm font-medium mb-1">Kitchen Price:</label>
-                                       <input
-                                           type="number"
-                                           name="kitchenPrice"
-                                           value={editFormData.kitchenPrice}
-                                           onChange={handleEditFormChange}
-                                           className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                                       />
-                                   </div>
-                                   <div>
-                                       <label className="block text-sm font-medium mb-1">Bar Price:</label>
-                                       <input
-                                           type="number"
-                                           name="barPrice"
-                                           value={editFormData.barPrice}
-                                           onChange={handleEditFormChange}
-                                           className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                                       />
-                                   </div>
-                                   <div className="md:col-span-2">
-                                       <label className="block text-sm font-medium mb-1">Remarks:</label>
-                                       <textarea
-                                           name="remarks"
-                                           value={editFormData.remarks}
-                                           onChange={handleEditFormChange}
-                                           className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                                           rows="3"
-                                       />
-                                   </div>
-                               </div>
-                               {billToEdit && (
-                                   <div className="mb-4 p-3 bg-gray-50 rounded">
-                                       <p><strong>Bill Date:</strong> {new Date(billToEdit.createdAt).toLocaleDateString()}</p>
-                                       <p><strong>Bill ID:</strong> {billToEdit._id}</p>
-                                   </div>
-                               )}
-                               <div className="flex justify-end space-x-3">
-                                   <button
-                                       onClick={handleEditCancel}
-                                       disabled={isEditing}
-                                       className="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50"
-                                   >
-                                       Cancel
-                                   </button>
-                                   <button
-                                       onClick={handleEditSubmit}
-                                       disabled={isEditing}
-                                       className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 flex items-center"
-                                   >
-                                       {isEditing ? (
-                                           <>
-                                               <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                               </svg>
-                                               Updating...
-                                           </>
-                                       ) : (
-                                           "Update Bill"
-                                       )}
-                                   </button>
-                               </div>
-                           </div>
-                       </div>
-                   )}
-
-
                    {/* Export Confirmation Modal */}
                    {isExportModalOpen && (
                        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -746,7 +484,7 @@ const handleEditSubmit = async () => {
                    </div>
 
 
-                   {/* Sales Table with Edit and Delete Actions */}
+                   {/* Sales Table with Delete Actions */}
                    <div className="border rounded-lg overflow-hidden shadow-sm max-w-6xl mx-auto">
                        <div className="overflow-x-auto">
                            <table className="w-full divide-y divide-gray-200">
@@ -785,30 +523,19 @@ const handleEditSubmit = async () => {
                                                <td className="px-4 py-3 whitespace-nowrap text-sm">{sales.remarks || ''}</td>
                                                <td className="px-4 py-3 whitespace-nowrap text-sm">{sales.kitchenPrice}</td>
                                                <td className="px-4 py-3 whitespace-nowrap text-sm">{sales.barPrice}</td>
-                                               {/* {isAdmin && ( */}
+                                               {isAdmin && (
                                                    <td className="px-4 py-3 whitespace-nowrap text-sm">
-                                                       <div className="flex space-x-2">
-                                                           <button
-                                                               onClick={() => handleEditClick(sales)}
-                                                               className="text-blue-600 hover:text-blue-800 transition-colors duration-200"
-                                                               title="Edit Bill"
-                                                           >
-                                                               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                                               </svg>
-                                                           </button>
-                                                           {/* <button
-                                                               onClick={() => handleDeleteClick(sales)}
-                                                               className="text-red-600 hover:text-red-800 transition-colors duration-200"
-                                                               title="Delete Bill"
-                                                           >
-                                                               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                                               </svg>
-                                                           </button> */}
-                                                       </div>
+                                                       <button
+                                                           onClick={() => handleDeleteClick(sales)}
+                                                           className="text-red-600 hover:text-red-800 transition-colors duration-200"
+                                                           title="Delete Bill"
+                                                       >
+                                                           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                           </svg>
+                                                       </button>
                                                    </td>
-                                               {/* )} */}
+                                               )}
                                            </tr>
                                        ))
                                    ) : (

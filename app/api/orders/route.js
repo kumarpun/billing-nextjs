@@ -8,13 +8,6 @@ import { authOptions } from "../../api/auth/[...nextauth]/route";
 import dayjs from "dayjs";
 import { dbConnect } from "../dbConnect";
 
-// export async function POST(request) {
-//     const { table_id,order_title, order_description, order_test, order_status, customer_status, order_quantity, order_price, order_type } = await request.json();
-//     await dbConnect(); // Reused MongoDB connection
-//     await CustomerOrder.create({table_id, order_title, order_description, order_test, order_status, customer_status, order_quantity, order_price, order_type});
-//     return NextResponse.json({ message: "Order created successfully." }, { status: 201 });
-// }
-
 export async function POST(request) {
     try {
       const data = await request.json();

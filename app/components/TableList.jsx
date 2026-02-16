@@ -15,9 +15,11 @@ const ChecklistWrapper = dynamic(() => import("./ChecklistWrapper"), {
   loading: () => null,
 });
 
+const BASE_URL = process.env.NEXTAUTH_URL || 'http://localhost:3000';
+
 const getTables = async () => {
   try {
-    const res = await fetch("https://billing-nextjs.vercel.app/api/tables", {
+    const res = await fetch(`${BASE_URL}/api/tables`, {
       cache: "no-store",
     });
 
@@ -31,7 +33,7 @@ const getTables = async () => {
     const tablesWithOrders = await Promise.all(
       tables.map(async (table) => {
         const orderRes = await fetch(
-          `https://billing-nextjs.vercel.app/api/orders/${table._id}`,
+          `${BASE_URL}/api/orders/${table._id}`,
           { cache: "no-store" }
         );
         const orders = await orderRes.json();

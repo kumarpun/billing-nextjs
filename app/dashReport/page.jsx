@@ -11,30 +11,10 @@ import SalesTrendChart from "../components/SalesTrends";
 
 const getRunningTablesCount = async () => {
   try {
-    const res = await fetch('https://billing-nextjs.vercel.app/api/tables', {
-      cache: 'no-store',
-    });
-
-    if (!res.ok) {
-      throw new Error("Failed to fetch tables");
-    }
-
+    const res = await fetch('/api/runningTables', { cache: 'no-store' });
+    if (!res.ok) throw new Error("Failed to fetch running tables count");
     const data = await res.json();
-    const tables = data.tables;
-
-    if (!Array.isArray(tables)) {
-      return 0;
-    }
-
-    const runningTablesCount = await Promise.all(tables.map(async (table) => {
-      const orderRes = await fetch(`https://billing-nextjs.vercel.app/api/orders/${table._id}`, {
-        cache: 'no-store',
-      });
-      const orders = await orderRes.json();
-      return orders.orderbyTableId.length > 0;
-    })).then(results => results.filter(Boolean).length);
-
-    return runningTablesCount;
+    return data.runningTablesCount || 0;
   } catch (error) {
     console.error("Error loading tables: ", error);
     return 0;
@@ -132,28 +112,26 @@ export default function DashReport() {
   useEffect(() => {
     const fetchReport = async () => {
       try {
-        let query = `/api/bill?${selectedFilter}=true`;
-        const res = await fetch(query, { cache: "no-store" });
-        if (!res.ok) throw new Error("Failed to fetch report");
-        const data = await res.json();
-        setTotalFinalPrice(data.totalFinalPrice || 0);
+        // Run all fetches in parallel instead of sequentially
+        const [billRes, count] = await Promise.all([
+          fetch(`/api/bill?${selectedFilter}=true&totalsOnly=true`, { cache: "no-store" }).then(r => r.ok ? r.json() : Promise.reject("Failed to fetch report")),
+          getRunningTablesCount(),
+        ]);
 
-        const count = await getRunningTablesCount();
+        setTotalFinalPrice(billRes.totalFinalPrice || 0);
         setRunningTablesCount(count);
-
-        await checkInventoryUpdates();
-        await fetchTopItems();
       } catch (error) {
         console.error("Error loading report:", error);
         setTotalFinalPrice(0);
         setRunningTablesCount(0);
-        setTopItems([]);
       } finally {
         setIsLoadingTables(false);
       }
     };
 
     fetchReport();
+    checkInventoryUpdates();
+    fetchTopItems();
   }, [selectedFilter]);
 
   // Animation variants

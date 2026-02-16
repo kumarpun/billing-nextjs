@@ -68,8 +68,11 @@ export default function SalesReportClient() {
     };
 
     useEffect(() => {
-        fetchSalesReport();
         fetchCurrentUser();
+    }, []);
+
+    useEffect(() => {
+        fetchSalesReport();
     }, [selectedFilter, customStartDate, customEndDate]);
 
     const fetchSalesReport = async () => {

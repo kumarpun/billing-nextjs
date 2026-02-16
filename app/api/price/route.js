@@ -5,7 +5,7 @@ import { dbConnect } from "../dbConnect";
 export async function GET() {
     await dbConnect();
     try {
-        const price = await Price.find();
+        const price = await Price.find().lean();
         return NextResponse.json({price});
     } catch (error) {
         console.error("Error fetching tables:", error);
@@ -24,7 +24,7 @@ export async function PUT(request) {
     const { id, ...updateData } = await request.json();
     await dbConnect();
     try {
-        const updatedPrice = await Price.findByIdAndUpdate(id, updateData, { new: true });
+        const updatedPrice = await Price.findByIdAndUpdate(id, updateData, { new: true }).lean();
         if (!updatedPrice) {
             return NextResponse.json({ error: "Price not found" }, { status: 404 });
         }

@@ -1,9 +1,11 @@
 import EditOrderStatus from "../../components/EditOrderStatus";
 import Link from "next/link";
 
+const BASE_URL = process.env.NEXTAUTH_URL || 'http://localhost:3000';
+
 const getOrderById = async (id) => {
     try {
-      const res = await fetch(`https://billing-nextjs.vercel.app/api/orders/${id}`, {
+      const res = await fetch(`${BASE_URL}/api/orders/${id}`, {
         cache: "no-store",
       });
   

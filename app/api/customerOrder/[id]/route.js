@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { connectMongoDB } from "../../../../lib/mongodb";
 import CustomerOrder from "../../../../models/customerOrder";
 import { dbConnect } from "../../dbConnect";
 

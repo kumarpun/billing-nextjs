@@ -6,7 +6,7 @@ import { toNepalTime } from "../../utils/nepalTime";
 export async function GET() {
     await dbConnect();
     try {
-        const attendancelist = await Attendance.find();
+        const attendancelist = await Attendance.find().lean();
         return NextResponse.json({ attendancelist });
     } catch (error) {
         console.error("Error fetching attendancelist:", error);
@@ -135,18 +135,17 @@ export async function POST(request) {
       }
   
       await dbConnect();
-  
-      const existingAttendance = await Attendance.findById(id);
-      if (!existingAttendance) {
-        return NextResponse.json({ error: "Attendance not found" }, { status: 404 });
-      }
-  
-      // Simply update with whatever is sent
+
+      // Update directly - findByIdAndUpdate returns null if not found
       const updatedAttendance = await Attendance.findByIdAndUpdate(
         id,
         updateData,
         { new: true, runValidators: true }
-      );
+      ).lean();
+
+      if (!updatedAttendance) {
+        return NextResponse.json({ error: "Attendance not found" }, { status: 404 });
+      }
   
       return NextResponse.json({ 
         message: "Attendance updated successfully.", 

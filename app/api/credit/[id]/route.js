@@ -9,33 +9,34 @@ export async function PUT(request, { params }) {
         const { creditlist } = await request.json();
         await dbConnect();
 
-        const updatedCredits = [];
-        
-        for (const creditItem of creditlist) {
+        // Bulk update all credits in a single DB operation instead of looping
+        const bulkOps = creditlist.map(creditItem => {
             const { _id, paid, remarks, ...otherFields } = creditItem;
-
-            const updateData = {
-                ...otherFields,   // ✅ includes name, date, amount, etc.
-                paid,
-                remarks,
-                ...(paid && { paidDate: new Date() }),
-                updatedAt: new Date()
+            return {
+                updateOne: {
+                    filter: { _id },
+                    update: {
+                        $set: {
+                            ...otherFields,
+                            paid,
+                            remarks,
+                            ...(paid && { paidDate: new Date() }),
+                            updatedAt: new Date()
+                        }
+                    }
+                }
             };
+        });
 
-            const updatedCredit = await Credit.findOneAndUpdate(
-                { _id: _id },
-                updateData,
-                { new: true, runValidators: true }
-            );
-            
-            if (updatedCredit) {
-                updatedCredits.push(updatedCredit);
-            }
-        }
+        await Credit.bulkWrite(bulkOps);
 
-        return NextResponse.json({ 
+        // Fetch updated documents
+        const updatedIds = creditlist.map(c => c._id);
+        const updatedCredits = await Credit.find({ _id: { $in: updatedIds } }).lean();
+
+        return NextResponse.json({
             message: "Credits updated successfully",
-            updatedCredits 
+            updatedCredits
         }, { status: 200 });
         
     } catch (error) {

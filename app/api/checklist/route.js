@@ -6,7 +6,7 @@ export async function GET() {
     await dbConnect();
     try {
   
-        const checklist = await Checklist.find();
+        const checklist = await Checklist.find().lean();
         return NextResponse.json({checklist});
     } catch (error) {
         console.error("Error fetching checklist:", error);

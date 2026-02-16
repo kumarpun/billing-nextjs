@@ -93,8 +93,11 @@ export default function SalesReportFilter() {
 
 
    useEffect(() => {
-       fetchReport();
        fetchCurrentUser();
+   }, []);
+
+   useEffect(() => {
+       fetchReport();
    }, [selectedFilter, startDate, endDate]);
 
 

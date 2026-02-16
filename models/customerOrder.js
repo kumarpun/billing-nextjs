@@ -20,6 +20,9 @@ const customerOrderSchema = new Schema(
   }
 );
 
+customerOrderSchema.index({ createdAt: 1 });
+customerOrderSchema.index({ table_id: 1, customer_status: 1 });
+
 const CustomerOrder = mongoose.models.CustomerOrder || mongoose.model("CustomerOrder", customerOrderSchema);
 
 export default CustomerOrder;

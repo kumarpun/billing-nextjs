@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { connectMongoDB } from "../../../../lib/mongodb";
+import mongoose from "mongoose";
 import CustomerOrder from "../../../../models/customerOrder";
 import { dbConnect } from "../../dbConnect";
 
@@ -8,14 +8,48 @@ export async function GET(request, { params }) {
     await dbConnect(); // Reused MongoDB connection
 
     try {
-        // Fetch the customer order using table_id
-        const orderbyTableId = await CustomerOrder.find({
-            table_id: id,
-            customer_status: ["Customer accepted", "Bill paid"]
-        });
+        // Single aggregation: fetch orders, compute final_price, and sum totals in DB
+        const result = await CustomerOrder.aggregate([
+            {
+                $match: {
+                    table_id: new mongoose.Types.ObjectId(id),
+                    customer_status: { $in: ["Customer accepted", "Bill paid"] }
+                }
+            },
+            {
+                $addFields: {
+                    final_price: { $multiply: ["$order_price", "$order_quantity"] }
+                }
+            },
+            {
+                $facet: {
+                    orders: [{ $match: {} }],
+                    totals: [
+                        {
+                            $group: {
+                                _id: null,
+                                total_price: { $sum: { $multiply: ["$order_price", "$order_quantity"] } },
+                                totalKitchenPrice: {
+                                    $sum: {
+                                        $cond: [{ $eq: ["$order_type", "Kitchen"] }, { $multiply: ["$order_price", "$order_quantity"] }, 0]
+                                    }
+                                },
+                                totalBarPrice: {
+                                    $sum: {
+                                        $cond: [{ $eq: ["$order_type", "Bar"] }, { $multiply: ["$order_price", "$order_quantity"] }, 0]
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+        ]);
 
-        // If no orders are found, return an empty array
-        if (!orderbyTableId || orderbyTableId.length === 0) {
+        const orders = result[0].orders;
+        const totals = result[0].totals[0];
+
+        if (!orders || orders.length === 0) {
             return NextResponse.json({
                 orderbyTableId: [],
                 total_price: 0,
@@ -25,31 +59,13 @@ export async function GET(request, { params }) {
             }, { status: 200 });
         }
 
-        const ordersWithFinalPrice = orderbyTableId.map(order => ({
-            ...order._doc,
-            final_price: order.order_price * order.order_quantity
-        }));
-
-        const totalPrice = ordersWithFinalPrice.reduce((total, order) => total + order.final_price, 0);
-
-        // Calculate totalKitchenPrice and totalBarPrice
-        const totalKitchenPrice = ordersWithFinalPrice
-            .filter(order => order.order_type === 'Kitchen')
-            .reduce((total, order) => total + order.final_price, 0);
-
-        const totalBarPrice = ordersWithFinalPrice
-            .filter(order => order.order_type === 'Bar')
-            .reduce((total, order) => total + order.final_price, 0);
-
-        const response = {
-            orderbyTableId: ordersWithFinalPrice,
-            total_price: totalPrice,
-            totalKitchenPrice: totalKitchenPrice || 0,
-            totalBarPrice: totalBarPrice || 0,
+        return NextResponse.json({
+            orderbyTableId: orders,
+            total_price: totals?.total_price || 0,
+            totalKitchenPrice: totals?.totalKitchenPrice || 0,
+            totalBarPrice: totals?.totalBarPrice || 0,
             tablebill_id: id,
-        };
-
-        return NextResponse.json(response, { status: 200 });
+        }, { status: 200 });
     } catch (error) {
         console.error('Error fetching order:', error);
         return NextResponse.json({ error: 'Error fetching order' }, { status: 500 });
@@ -86,12 +102,8 @@ export async function PUT(request, { params }) {
 
         if (newCustomerStatus) {
             // const orders = await CustomerOrder.find({ table_id: id });
-            const invalidStatusOrder = await CustomerOrder.find({ table_id: id, customer_status: "Customer left" });
-            console.log("Checking for invalid status 'Customer left':", invalidStatusOrder);
-            console.log("Table ID of orders checked for 'Customer left' status:", invalidStatusOrder.table_id);
-            if (invalidStatusOrder && invalidStatusOrder.table_id) {
-                console.log("Checking for invalid status 'Customer left':", invalidStatusOrder);
-                console.log("Table ID of orders checked for 'Customer left' status:", invalidStatusOrder.table_id);
+            const invalidStatusOrder = await CustomerOrder.findOne({ table_id: id, customer_status: "Customer left" }).lean();
+            if (invalidStatusOrder) {
                 return NextResponse.json({ message: 'Order(s) cannot be updated as they are in the final state' }, { status: 400 });
             }
             // Update customer status for all orders with the given table_id

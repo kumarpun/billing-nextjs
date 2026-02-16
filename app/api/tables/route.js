@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { connectMongoDB } from "../../../lib/mongodb";
 import Table from "../../../models/table";
 import { dbConnect } from "../dbConnect";
 
@@ -15,7 +14,7 @@ export async function GET() {
     await dbConnect(); // Reused MongoDB connection
     try {
   
-        const tables = await Table.find();
+        const tables = await Table.find().lean();
         return NextResponse.json({tables});
     } catch (error) {
         console.error("Error fetching tables:", error);
@@ -26,7 +25,14 @@ export async function GET() {
 
 export async function DELETE(request) {
     const id = request.nextUrl.searchParams.get("id");
-    await dbConnect(); // Reused MongoDB connection
-    await Table.findByIdAndDelete(id);
-    return NextResponse.json({ message: "Table deleted." });
+    await dbConnect();
+    try {
+        const deleted = await Table.findByIdAndDelete(id);
+        if (!deleted) {
+            return NextResponse.json({ error: "Table not found" }, { status: 404 });
+        }
+        return NextResponse.json({ message: "Table deleted." });
+    } catch (error) {
+        return NextResponse.json({ error: "Error deleting table" }, { status: 500 });
+    }
 }

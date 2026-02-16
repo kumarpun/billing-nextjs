@@ -9,7 +9,7 @@ export default function RemoveBtn({ id }) {
     const removeTable = async () => {
         const confirmed = confirm("Are you sure?");
         if (confirmed) {
-            const res = await fetch(`https://billing-nextjs.vercel.app/api/tables?id=${id}`, {
+            const res = await fetch(`/api/tables?id=${id}`, {
               method: "DELETE",
             });
             if (res.ok) {

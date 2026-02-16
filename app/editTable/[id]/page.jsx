@@ -1,8 +1,10 @@
 import EditTableForm from "../../components/EditTableForm";
 
+const BASE_URL = process.env.NEXTAUTH_URL || 'http://localhost:3000';
+
 const getTableById = async (id) => {
     try {
-      const res = await fetch(`https://billing-nextjs.vercel.app/api/tables/${id}`, {
+      const res = await fetch(`${BASE_URL}/api/tables/${id}`, {
         cache: "no-store",
       });
   

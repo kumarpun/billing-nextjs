@@ -20,7 +20,7 @@ export default function AddOrder() {
           }
       
           try {
-            const res = await fetch("https://billing-nextjs.vercel.app/api/orders", {
+            const res = await fetch("/api/orders", {
               method: "POST",
               headers: {
                 "Content-type": "application/json",

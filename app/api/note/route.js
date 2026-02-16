@@ -6,7 +6,7 @@ export async function GET() {
     await dbConnect();
     try {
   
-        const noteList = await Note.find();
+        const noteList = await Note.find().lean();
         return NextResponse.json({noteList});
     } catch (error) {
         console.error("Error fetching noteList:", error);
@@ -35,7 +35,7 @@ export async function PUT(request) {
     const { id, ...updateData } = await request.json();
     await dbConnect();
     try {
-        const updatedNote = await Note.findByIdAndUpdate(id, updateData, { new: true });
+        const updatedNote = await Note.findByIdAndUpdate(id, updateData, { new: true }).lean();
         if (!updatedNote) {
             return NextResponse.json({ error: "Note not found" }, { status: 404 });
         }
@@ -47,7 +47,14 @@ export async function PUT(request) {
 
 export async function DELETE(request) {
     const id = request.nextUrl.searchParams.get("id");
-    await dbConnect(); // Reused MongoDB connection
-    await Note.findByIdAndDelete(id);
-    return NextResponse.json({ message: "Note deleted." });
+    await dbConnect();
+    try {
+        const deleted = await Note.findByIdAndDelete(id);
+        if (!deleted) {
+            return NextResponse.json({ error: "Note not found" }, { status: 404 });
+        }
+        return NextResponse.json({ message: "Note deleted." });
+    } catch (error) {
+        return NextResponse.json({ error: "Error deleting note" }, { status: 500 });
+    }
 }

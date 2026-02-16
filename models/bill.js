@@ -19,6 +19,8 @@ const billSchema = new Schema(
   }
 );
 
+billSchema.index({ createdAt: 1 });
+
 const Bill = mongoose.models.Bill || mongoose.model("Bill", billSchema);
 
 export default Bill;

@@ -6,7 +6,7 @@ export async function GET() {
     await dbConnect();
     try {
   
-        const menuList = await Menu.find();
+        const menuList = await Menu.find().lean();
         return NextResponse.json({menuList});
     } catch (error) {
         console.error("Error fetching menuList:", error);
@@ -35,7 +35,7 @@ export async function PUT(request) {
     const { id, ...updateData } = await request.json();
     await dbConnect();
     try {
-        const updatedMenu = await Menu.findByIdAndUpdate(id, updateData, { new: true });
+        const updatedMenu = await Menu.findByIdAndUpdate(id, updateData, { new: true }).lean();
         if (!updatedMenu) {
             return NextResponse.json({ error: "Menu not found" }, { status: 404 });
         }
@@ -47,7 +47,14 @@ export async function PUT(request) {
 
 export async function DELETE(request) {
     const id = request.nextUrl.searchParams.get("id");
-    await dbConnect(); // Reused MongoDB connection
-    await Menu.findByIdAndDelete(id);
-    return NextResponse.json({ message: "Menu deleted." });
+    await dbConnect();
+    try {
+        const deleted = await Menu.findByIdAndDelete(id);
+        if (!deleted) {
+            return NextResponse.json({ error: "Menu not found" }, { status: 404 });
+        }
+        return NextResponse.json({ message: "Menu deleted." });
+    } catch (error) {
+        return NextResponse.json({ error: "Error deleting menu" }, { status: 500 });
+    }
 }

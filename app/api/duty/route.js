@@ -5,7 +5,7 @@ import { dbConnect } from "../dbConnect";
 export async function GET() {
     await dbConnect(); // Reused MongoDB connection
     try {
-        const duty = await Duty.find();
+        const duty = await Duty.find().lean();
         return NextResponse.json({duty});
     } catch (error) {
         console.error("Error fetching duty:", error);
@@ -29,7 +29,7 @@ export async function PUT(req) {
             id,
             { shift, date, leave },
             { new: true }
-        );
+        ).lean();
 
         if (!updatedDuty) {
             return NextResponse.json({ error: "Staff not found" }, { status: 404 });

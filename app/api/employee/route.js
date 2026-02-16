@@ -6,7 +6,7 @@ export async function GET() {
     await dbConnect(); // Reused MongoDB connection
     try {
   
-        const employee = await Employee.find();
+        const employee = await Employee.find().lean();
         return NextResponse.json({employee});
     } catch (error) {
         console.error("Error fetching tables:", error);

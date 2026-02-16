@@ -13,7 +13,7 @@ export default function EditTableForm({ id, title, description }) {
         e.preventDefault();
 
         try {
-            const res = await fetch(`https://billing-nextjs.vercel.app/api/tables/${id}`, {
+            const res = await fetch(`/api/tables/${id}`, {
               method: "PUT",
               headers: {
                 "Content-type": "application/json",

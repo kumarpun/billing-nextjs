@@ -24,6 +24,8 @@ export default function Credit() {
   const [statusFilter, setStatusFilter] = useState("all");
   const [nameFilter, setNameFilter] = useState("");
   const [currentUserRole, setCurrentUserRole] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   const toggleSidebar = () => setIsSidebarCollapsed(!isSidebarCollapsed);
 
@@ -92,6 +94,7 @@ export default function Credit() {
     }
     
     setFilteredCredits(filtered);
+    setCurrentPage(1);
   }, [dateFilter, statusFilter, nameFilter, credits]);
 
   const handleInputChange = (e) => {
@@ -179,6 +182,9 @@ export default function Credit() {
   const totalAmount = filteredCredits.reduce((s,c)=>s+parseFloat(c.amount||0),0);
   const totalPaid = filteredCredits.filter(c=>c.paid).reduce((s,c)=>s+parseFloat(c.amount||0),0);
   const totalPending = totalAmount-totalPaid;
+
+  const totalPages = Math.ceil(filteredCredits.length / itemsPerPage);
+  const paginatedCredits = filteredCredits.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   return (
     <div className="flex bg-gradient-to-br from-gray-50 to-blue-50 min-h-screen w-full text-gray-800">
@@ -342,8 +348,8 @@ export default function Credit() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100">
-                    {filteredCredits.length > 0 ? (
-                      filteredCredits.map(c => (
+                    {paginatedCredits.length > 0 ? (
+                      paginatedCredits.map(c => (
                         <tr key={c._id} className="hover:bg-blue-50 transition-colors duration-150">
                           <td className="py-3 px-4 font-medium text-gray-800">{c.name}</td> {/* Reduced padding from py-4 px-6 to py-3 px-4 */}
                           <td className="py-3 px-4 text-gray-600">{formatDate(c.date)}</td>
@@ -422,6 +428,65 @@ export default function Credit() {
                   </tbody>
                 </table>
               </div>
+
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <div className="flex items-center justify-between px-4 py-3 border-t border-gray-200 bg-gray-50">
+                  <p className="text-sm text-gray-600">
+                    Showing {(currentPage - 1) * itemsPerPage + 1}-{Math.min(currentPage * itemsPerPage, filteredCredits.length)} of {filteredCredits.length}
+                  </p>
+                  <div className="flex items-center space-x-2">
+                    <button
+                      onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                      disabled={currentPage === 1}
+                      className="px-3 py-1.5 text-sm border border-gray-300 rounded-lg hover:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                    >
+                      Previous
+                    </button>
+                    {(() => {
+                      const pages = [];
+                      const showEllipsis = totalPages > 7;
+
+                      if (!showEllipsis) {
+                        for (let i = 1; i <= totalPages; i++) pages.push(i);
+                      } else {
+                        pages.push(1);
+                        if (currentPage > 3) pages.push("...");
+                        for (let i = Math.max(2, currentPage - 1); i <= Math.min(totalPages - 1, currentPage + 1); i++) {
+                          pages.push(i);
+                        }
+                        if (currentPage < totalPages - 2) pages.push("...");
+                        pages.push(totalPages);
+                      }
+
+                      return pages.map((page, idx) =>
+                        page === "..." ? (
+                          <span key={`ellipsis-${idx}`} className="px-2 py-1.5 text-sm text-gray-400">...</span>
+                        ) : (
+                          <button
+                            key={page}
+                            onClick={() => setCurrentPage(page)}
+                            className={`px-3 py-1.5 text-sm rounded-lg transition-colors ${
+                              currentPage === page
+                                ? "bg-blue-600 text-white"
+                                : "border border-gray-300 hover:bg-gray-100"
+                            }`}
+                          >
+                            {page}
+                          </button>
+                        )
+                      );
+                    })()}
+                    <button
+                      onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                      disabled={currentPage === totalPages}
+                      className="px-3 py-1.5 text-sm border border-gray-300 rounded-lg hover:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                    >
+                      Next
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           )}
         </div>

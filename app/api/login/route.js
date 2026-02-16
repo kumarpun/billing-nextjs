@@ -2,14 +2,13 @@ import { NextResponse } from "next/server";
 import User from "../../../models/user";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { connectMongoDB } from "../../../lib/mongodb";
+import { dbConnect } from "../dbConnect";
 
 export async function POST(request) {
-  console.log("login api");
   const { email, password } = await request.json();
 
   try {
-      await connectMongoDB();
+      await dbConnect();
      const user = await User.findOne({ email });
      if (!user) {
           throw new Error("User not found");

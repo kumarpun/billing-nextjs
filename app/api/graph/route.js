@@ -1,29 +1,45 @@
 import { NextResponse } from "next/server";
 import Bill from "../../../models/bill";
-import { connectMongoDB } from "../../../lib/mongodb";
+import { dbConnect } from "../dbConnect";
 import dayjs from "dayjs";
 
 export async function GET(request) {
-    await connectMongoDB();
+    await dbConnect();
 
-    // Get data for the last 5 days (including today)
+    const sevenDaysAgo = dayjs().subtract(6, 'day').startOf('day').toDate();
+    const endOfToday = dayjs().endOf('day').toDate();
+
+    // Single aggregation query instead of 7 separate queries
+    const results = await Bill.aggregate([
+        {
+            $match: {
+                createdAt: { $gte: sevenDaysAgo, $lte: endOfToday }
+            }
+        },
+        {
+            $group: {
+                _id: {
+                    $dateToString: { format: "%Y-%m-%d", date: "$createdAt" }
+                },
+                totalFinalPrice: { $sum: { $ifNull: ["$finalPrice", 0] } }
+            }
+        },
+        { $sort: { _id: 1 } }
+    ]);
+
+    // Build a map from aggregation results
+    const resultsMap = {};
+    results.forEach(r => { resultsMap[r._id] = r.totalFinalPrice; });
+
+    // Fill in all 7 days (including days with no sales)
     const dailyTotals = [];
-    
-    for (let i = 0; i < 7; i++) {
+    for (let i = 6; i >= 0; i--) {
         const date = dayjs().subtract(i, 'day');
-        const startOfDay = date.startOf('day').toDate();
-        const endOfDay = date.endOf('day').toDate();
-        
-        const bills = await Bill.find({
-            createdAt: { $gte: startOfDay, $lte: endOfDay }
-        });
-        
-        const totalFinalPrice = bills.reduce((sum, bill) => sum + (bill.finalPrice || 0), 0);
-        
+        const dateStr = date.format('YYYY-MM-DD');
         dailyTotals.push({
-            date: date.format('YYYY-MM-DD'), // Format date as string
-            dayName: date.format('dddd'),    // Day name (e.g., "Monday")
-            totalFinalPrice,
+            date: dateStr,
+            dayName: date.format('dddd'),
+            totalFinalPrice: resultsMap[dateStr] || 0,
         });
     }
 

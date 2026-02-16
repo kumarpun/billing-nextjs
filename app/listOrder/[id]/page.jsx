@@ -8,64 +8,52 @@ import AddBillForm from  "../../components/AddBillForm";
 import OrderListClient from "../../components/OrderListClient";
 import { cookies } from 'next/headers';
 
-const getOrdersByTableId = async(id) => {
+const BASE_URL = process.env.NEXTAUTH_URL || 'http://localhost:3000';
+
+const getDataByTableId = async (id) => {
     try {
-        // const res = await fetch(`http://localhost:3000/api/orders/${id}`, {
-        //     cache: 'no-store',
-        // });
-        // const authToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjA1MDI5MmQ4MWZmYjQ0YjU4OTI2ZmEiLCJuYW1lIjoia3VtYXIgcHVuIiwiZW1haWwiOiJ0ZXN0QGdtYWlsLmNvbSIsImlhdCI6MTcyNjk4Njg2OH0.BApSb0f4wdBm6RQLMasmIfWQk14BSuUq2AZIavl47ik';
-        const cookieStore = cookies(); // Access the cookie store
+        const cookieStore = cookies();
+        const authToken = cookieStore.get("authToken")?.value;
 
-        const authToken = cookieStore.get("authToken")?.value; 
-        console.log('Auth token:', authToken);
-
-        const [ordersRes, billRes] = await Promise.all([
-            fetch(`https://billing-nextjs.vercel.app/api/orders/${id}`, {
+        const [ordersRes, billRes, tableRes] = await Promise.all([
+            fetch(`${BASE_URL}/api/orders/${id}`, {
                 cache: 'no-store',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Cookie': `authToken=${authToken}`, // Manually set the Cookie header
-                },              
-                 }),
-            fetch(`https://billing-nextjs.vercel.app/api/bill/${id}`, {
-                cache: 'no-store',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Cookie': `authToken=${authToken}`, // Manually set the Cookie header
+                    'Cookie': `authToken=${authToken}`,
                 },
+            }),
+            fetch(`${BASE_URL}/api/bill/${id}`, {
+                cache: 'no-store',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Cookie': `authToken=${authToken}`,
+                },
+            }),
+            fetch(`${BASE_URL}/api/tables/${id}`, {
+                cache: 'no-store',
             })
         ]);
 
-        const ordersData = await ordersRes.json();
-        const billData = await billRes.json();
-
-        if(!ordersRes.ok || !billRes.ok) {
-            throw new Error("Failed to fetch orders");
-        }
-        return { ...ordersData, billById: billData.billById,
-             totalFinalbill:billData.totalFinalbill, 
-             billFinalStatus: billData.billFinalStatus,
-            };
-             
-    } catch (error) {
-        console.error("Error loading orders: ", error);
-    }
-}
-
-const getTableById = async (id) => {
-    try {
-        const res = await fetch(`https://billing-nextjs.vercel.app/api/tables/${id}`, {
-            cache: 'no-store'
-        });
-
-        if (!res.ok) {
-            throw new Error("Failed to fetch table");
+        if (!ordersRes.ok || !billRes.ok || !tableRes.ok) {
+            throw new Error("Failed to fetch data");
         }
 
-        const data = await res.json();
-        return data.table; // Assuming the response structure has a 'table' field
+        const [ordersData, billData, tableData] = await Promise.all([
+            ordersRes.json(),
+            billRes.json(),
+            tableRes.json(),
+        ]);
+
+        return {
+            ...ordersData,
+            billById: billData.billById,
+            totalFinalbill: billData.totalFinalbill,
+            billFinalStatus: billData.billFinalStatus,
+            table: tableData.table,
+        };
     } catch (error) {
-        console.error("Error fetching table: ", error);
+        console.error("Error loading data: ", error);
         return null;
     }
 }
@@ -74,11 +62,10 @@ export default async function ListOrder({ params }) {
     const { id } = params;
 
     try {
-    const table = await getTableById(id);
+    const data = await getDataByTableId(id);
+    if (!data) throw new Error("Failed to load data");
 
-    const { orderbyTableId, total_price, totalKitchenPrice, totalBarPrice, tablebill_id, billById, totalFinalbill, billFinalStatus, order_type } = await getOrdersByTableId(id);
- 
-    const { order_title, order_description } = orderbyTableId;
+    const { orderbyTableId, total_price, totalKitchenPrice, totalBarPrice, tablebill_id, billById, totalFinalbill, billFinalStatus, order_type, table } = data;
     return (
         <>
         <div className="min-h-screen bg-[#283141] flex flex-col">

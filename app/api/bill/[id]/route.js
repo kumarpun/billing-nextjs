@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import Bill from "../../../../models/bill";
+import CustomerOrder from "../../../../models/customerOrder";
 import jwt from "jsonwebtoken";
 import { ObjectId } from "mongodb";
 import { dbConnect } from "../../dbConnect";
@@ -75,6 +76,14 @@ export async function PUT(request, { params }) {
             { tablebill_id: id, billStatus: "pending" },
             { $set: { billStatus, finalPrice, billPaymentMode, qrAmount, cashAmount, remarks } }
         );
+
+        // When bill is paid, update customer_status to "Bill paid" on related orders
+        if (billStatus === "paid") {
+            await CustomerOrder.updateMany(
+                { table_id: id, customer_status: "Customer accepted" },
+                { $set: { customer_status: "Bill paid" } }
+            );
+        }
 
         const updatedBills = await Bill.find({ tablebill_id: id, billStatus }).lean();
 

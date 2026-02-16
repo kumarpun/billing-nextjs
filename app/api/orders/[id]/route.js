@@ -101,14 +101,9 @@ export async function PUT(request, { params }) {
         }
 
         if (newCustomerStatus) {
-            // const orders = await CustomerOrder.find({ table_id: id });
-            const invalidStatusOrder = await CustomerOrder.findOne({ table_id: id, customer_status: "Customer left" }).lean();
-            if (invalidStatusOrder) {
-                return NextResponse.json({ message: 'Order(s) cannot be updated as they are in the final state' }, { status: 400 });
-            }
             // Update customer status for all orders with the given table_id
             const updateResult = await CustomerOrder.updateMany(
-                { table_id: id, customer_status: { $in: ["Customer accepted", "Bill paid"] } },
+                { table_id: id, customer_status: { $in: ["Customer accepted", "Bill paid", "Customer left"] } },
                 { $set: { customer_status: newCustomerStatus } }
             );
 

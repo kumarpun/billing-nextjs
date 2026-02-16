@@ -16,7 +16,7 @@ export default function RootLayout({ children }) {
       <body className={inter.className}>
         <div>
           <div className="mt-8">
-          <Toaster className="toast-container" />
+          <Toaster position="top-right" />
         <AuthProvider>{children}</AuthProvider>
         </div>
         </div>

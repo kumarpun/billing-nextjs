@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import mongoose from "mongoose";
 import CustomerOrder from "../../../../models/customerOrder";
+import Bill from "../../../../models/bill";
 import { dbConnect } from "../../dbConnect";
 
 export async function GET(request, { params }) {
@@ -106,6 +107,14 @@ export async function PUT(request, { params }) {
                 { table_id: id, customer_status: { $in: ["Customer accepted", "Bill paid", "Customer left"] } },
                 { $set: { customer_status: newCustomerStatus } }
             );
+
+            // When customer leaves, archive bills so next session starts fresh
+            if (newCustomerStatus === "Customer left") {
+                await Bill.updateMany(
+                    { tablebill_id: id, billStatus: { $in: ["pending", "paid"] } },
+                    { $set: { billStatus: "completed" } }
+                );
+            }
 
             if (updateResult.matchedCount === 0) {
                 return NextResponse.json({ message: 'No orders found for this table' }, { status: 404 });

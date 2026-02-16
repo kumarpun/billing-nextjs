@@ -24,7 +24,7 @@ export async function GET(request, { params }) {
 
         const billById = await Bill.find({
             tablebill_id: id,
-            billStatus: "pending"
+            billStatus: { $in: ["pending", "paid"] }
         }).lean();
 
         if (!billById || billById.length === 0) {
@@ -71,21 +71,21 @@ export async function PUT(request, { params }) {
         
         await dbConnect();
 
-        // Update all matching bills in a single operation instead of looping
+        // Update all matching bills (pending or paid) so bills can be re-updated after payment
         await Bill.updateMany(
-            { tablebill_id: id, billStatus: "pending" },
+            { tablebill_id: id, billStatus: { $in: ["pending", "paid"] } },
             { $set: { billStatus, finalPrice, billPaymentMode, qrAmount, cashAmount, remarks } }
         );
 
         // When bill is paid, update customer_status to "Bill paid" on related orders
         if (billStatus === "paid") {
             await CustomerOrder.updateMany(
-                { table_id: id, customer_status: "Customer accepted" },
+                { table_id: id, customer_status: { $in: ["Customer accepted", "Bill paid"] } },
                 { $set: { customer_status: "Bill paid" } }
             );
         }
 
-        const updatedBills = await Bill.find({ tablebill_id: id, billStatus }).lean();
+        const updatedBills = await Bill.find({ tablebill_id: id, billStatus: { $in: ["pending", "paid"] } }).lean();
 
         return NextResponse.json(updatedBills, { status: 200 });
     } catch (error) {

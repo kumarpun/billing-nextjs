@@ -1,10 +1,4 @@
-import EditTableForm from "../../components/EditTableForm";
 import Link from "next/link";
-import RemoveOrderBtn from "../../components/RemoveOrderBtn";
-import EditOrderStatus from  "../../components/EditOrderStatus";
-import { HiPencilAlt } from "react-icons/hi";
-import EditCustomerForm from "../../components/EditCustomerForm";
-import AddBillForm from  "../../components/AddBillForm";
 import OrderListClient from "../../components/OrderListClient";
 import { cookies } from 'next/headers';
 
@@ -80,15 +74,7 @@ export default async function ListOrder({ params }) {
         </nav>
   
         <div>
-        {/* <hr className="separator" /> */}
-        {/* <div className="table-info">
-              <h1 className="font-bold text-3xl table-title">{table.title}</h1>
-        </div> */}
-
-        {/* <EditCustomerForm id={id} /> */}
-        {totalFinalbill <= 0 && <EditCustomerForm id={id} />}
-        <br></br>
-        <OrderListClient 
+        <OrderListClient
         orderbyTableId={orderbyTableId} 
         total_price={total_price} 
         totalKitchenPrice={totalKitchenPrice}

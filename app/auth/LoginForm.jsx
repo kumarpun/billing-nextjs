@@ -36,7 +36,7 @@ export default function LoginForm() {
          }),
     })
      if (res.ok) {
-      router.replace("/dashReport");
+      router.replace("/dashboard");
         return;
       }
       setError("Invalid Credentials");

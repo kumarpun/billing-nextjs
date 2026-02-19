@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import Link from "next/link";
 import { HiPencilAlt } from "react-icons/hi";
 import { FiPlus, FiMinus } from "react-icons/fi";
@@ -16,16 +16,16 @@ export default function OrderListClient({ orderbyTableId, total_price, totalKitc
     const [updating, setUpdating] = useState(null);
     const router = useRouter();
 
-    const handlePrint = () => {
+    const handlePrint = useCallback(() => {
         const discountElement = document.getElementById('discount-section');
         if (discount === '') {
             discountElement.style.display = 'none';
         }
         window.print();
         discountElement.style.display = '';
-    }
+    }, [discount]);
 
-    const handleQuantityChange = async (orderId, currentQuantity, change) => {
+    const handleQuantityChange = useCallback(async (orderId, currentQuantity, change) => {
         const newQuantity = currentQuantity + change;
         if (newQuantity < 1) return;
 
@@ -60,7 +60,7 @@ export default function OrderListClient({ orderbyTableId, total_price, totalKitc
         } finally {
             setUpdating(null);
         }
-    };
+    }, [router]);
 
     // Bill state detection
     const hasBillGenerated = totalFinalbill > 0;
@@ -104,11 +104,11 @@ export default function OrderListClient({ orderbyTableId, total_price, totalKitc
 
     return (
         <>
-            <div className="bg-gradient-to-br from-gray-900 to-gray-800 min-h-screen text-gray-100 p-4">
+            <div className="bg-gradient-to-br from-gray-900 to-gray-800 min-h-screen text-gray-100 p-2 sm:p-4">
                 {/* Header */}
-                <div className="flex justify-between items-center mb-4 p-3 bg-gray-800 rounded-lg shadow">
-                    <h1 className="text-xl font-bold table-title">{tableTitle} - Orders</h1>
-                    <span className="text-gray-400 text-sm">{orderbyTableId.length} items</span>
+                <div className="flex justify-between items-center mb-3 sm:mb-4 p-2 sm:p-3 bg-gray-800 rounded-lg shadow">
+                    <h1 className="text-base sm:text-xl font-bold table-title truncate">{tableTitle} - Orders</h1>
+                    <span className="text-gray-400 text-xs sm:text-sm shrink-0 ml-2">{orderbyTableId.length} items</span>
                 </div>
 
                 {/* Billing Stepper (collapsed by default, click step icon to expand) */}
@@ -134,58 +134,54 @@ export default function OrderListClient({ orderbyTableId, total_price, totalKitc
                         <p className="text-gray-400 text-sm">This table doesn't have any orders yet.</p>
                     </div>
                 ) : (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-4">
+                    <div className="grid grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3 mb-4">
                         {orderbyTableId.map(order => (
-                            <div key={order._id} className="bg-gray-800 rounded-lg p-3 shadow hover:shadow-md transition-all duration-200 border border-gray-700">
-                                <div className="flex justify-between items-start mb-2">
-                                    <h3 className="text-sm font-semibold text-white truncate">{order.order_title}</h3>
-                                    <span className={`ml-2 px-2 py-0.5 rounded-full text-xs font-medium shrink-0 ${order.order_type === 'kitchen' ? 'bg-amber-500/20 text-amber-300' : 'bg-blue-500/20 text-blue-300'}`}>
+                            <div key={order._id} className="bg-gray-800 rounded-lg p-2 sm:p-3 shadow hover:shadow-md transition-all duration-200 border border-gray-700">
+                                <div className="flex justify-between items-start mb-1.5 sm:mb-2">
+                                    <h3 className="text-xs sm:text-sm font-semibold text-white truncate">{order.order_title}</h3>
+                                    <span className={`ml-1 px-1.5 py-0.5 rounded-full text-[0.6rem] sm:text-xs font-medium shrink-0 ${order.order_type === 'kitchen' ? 'bg-amber-500/20 text-amber-300' : 'bg-blue-500/20 text-blue-300'}`}>
                                         {order.order_type}
                                     </span>
                                 </div>
 
                                 {order.order_description && (
-                                    <p className="text-gray-400 text-xs mb-2 truncate">{order.order_description}</p>
+                                    <p className="text-gray-400 text-[0.65rem] sm:text-xs mb-1.5 sm:mb-2 truncate">{order.order_description}</p>
                                 )}
 
-                                <div className="flex items-center justify-between mb-2">
-                                    <div className="flex items-center gap-2">
+                                <div className="flex items-center justify-between mb-1.5 sm:mb-2 flex-wrap gap-1">
+                                    <div className="flex items-center gap-1 sm:gap-2">
                                         <button
                                             onClick={() => handleQuantityChange(order._id, order.order_quantity, -1)}
                                             disabled={updating === order._id}
-                                            className={`p-1 rounded-md bg-gray-700 hover:bg-gray-600 transition-colors ${updating === order._id ? "opacity-50 cursor-not-allowed" : ""}`}
+                                            className={`p-0.5 sm:p-1 rounded-md bg-gray-700 hover:bg-gray-600 transition-colors ${updating === order._id ? "opacity-50 cursor-not-allowed" : ""}`}
                                         >
-                                            <FiMinus className="text-sm" />
+                                            <FiMinus className="text-xs sm:text-sm" />
                                         </button>
 
-                                        <span className="text-sm font-bold px-1 min-w-[1.5rem] text-center">
+                                        <span className="text-xs sm:text-sm font-bold px-0.5 min-w-[1.2rem] text-center">
                                             {order.order_quantity}
                                         </span>
 
                                         <button
                                             onClick={() => handleQuantityChange(order._id, order.order_quantity, 1)}
                                             disabled={updating === order._id}
-                                            className={`p-1 rounded-md bg-gray-700 hover:bg-gray-600 transition-colors ${updating === order._id ? "opacity-50 cursor-not-allowed" : ""}`}
+                                            className={`p-0.5 sm:p-1 rounded-md bg-gray-700 hover:bg-gray-600 transition-colors ${updating === order._id ? "opacity-50 cursor-not-allowed" : ""}`}
                                         >
-                                            <FiPlus className="text-sm" />
+                                            <FiPlus className="text-xs sm:text-sm" />
                                         </button>
                                     </div>
 
-                                    <div className="text-xs text-gray-400">
-                                        NRs. {order.order_price} x {order.order_quantity}
-                                    </div>
-
-                                    <div className="text-sm font-bold text-white">
+                                    <div className="text-xs sm:text-sm font-bold text-white">
                                         NRs. {order.final_price}
                                     </div>
                                 </div>
 
-                                <div className="flex justify-between items-center pt-2 border-t border-gray-700">
+                                <div className="flex justify-between items-center pt-1.5 sm:pt-2 border-t border-gray-700">
                                     <RemoveOrderBtn id={order._id} />
-                                    <span className={`text-xs ${order.order_status === 'completed' ? 'text-green-400' : 'text-gray-500'}`}>{order.order_status}</span>
+                                    <span className={`text-[0.6rem] sm:text-xs ${order.order_status === 'completed' ? 'text-green-400' : 'text-gray-500'}`}>{order.order_status}</span>
                                     <Link
                                         href={`/editOrder/${order._id}?order_quantity=${order.order_quantity}`}
-                                        className="p-1 rounded-md bg-gray-700 hover:bg-gray-600 transition-colors"
+                                        className="p-0.5 sm:p-1 rounded-md bg-gray-700 hover:bg-gray-600 transition-colors"
                                     >
                                         <HiPencilAlt size={14} />
                                     </Link>
@@ -196,54 +192,46 @@ export default function OrderListClient({ orderbyTableId, total_price, totalKitc
                 )}
 
                 {/* Bill Summary */}
-                <div className="bg-gray-800 rounded-lg p-4 shadow">
-                    <h2 className="text-lg font-semibold mb-4 pb-2 border-b border-gray-700">Bill Summary</h2>
+                <div className="bg-gray-800 rounded-lg p-2.5 sm:p-4 shadow">
+                    <h2 className="text-sm sm:text-lg font-semibold mb-2 sm:mb-4 pb-2 border-b border-gray-700">Bill Summary</h2>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                        <div className="bg-gray-900 p-3 rounded-md">
-                            <div className="text-gray-400 text-xs mb-1">Current Order Total</div>
-                            <div className="text-xl font-bold text-white">NRs. {total_price}</div>
-                            <div className="text-gray-500 text-xs mt-1">Sum of all orders</div>
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-2 sm:gap-4 mb-3 sm:mb-4">
+                        <div className="bg-gray-900 p-2 sm:p-3 rounded-md">
+                            <div className="text-gray-400 text-[0.6rem] sm:text-xs mb-0.5">Current Order Total</div>
+                            <div className="text-sm sm:text-xl font-bold text-white">NRs. {total_price}</div>
                         </div>
 
-                        <div className={`p-3 rounded-md ${finalAmountDisplay.bgColor}`}>
-                            <div className="text-xs text-white/80 mb-1">
+                        <div className={`p-2 sm:p-3 rounded-md ${finalAmountDisplay.bgColor}`}>
+                            <div className="text-[0.6rem] sm:text-xs text-white/80 mb-0.5">
                                 {finalAmountDisplay.title}
                             </div>
-                            <div className="text-2xl font-bold text-white">NRs. {finalAmountDisplay.displayAmount}</div>
+                            <div className="text-sm sm:text-2xl font-bold text-white">NRs. {finalAmountDisplay.displayAmount}</div>
                             {finalAmountDisplay.showStatus && (
-                                <div className="text-white/80 text-xs mt-1">
-                                    Status: {finalAmountDisplay.status}
-                                    {hasBillGenerated && !hasNewOrders && !hasDeletedOrders && (
-                                        <div className="text-green-300 mt-1">
-                                            ✓ Includes discount
-                                        </div>
-                                    )}
+                                <div className="text-white/80 text-[0.6rem] sm:text-xs mt-0.5">
+                                    {finalAmountDisplay.status}
                                 </div>
                             )}
                         </div>
 
                         {hasNewOrders && (
-                            <div className="bg-gradient-to-r from-amber-500 to-yellow-500 p-3 rounded-md">
-                                <div className="text-xs text-amber-100 mb-1">Pending Amount</div>
-                                <div className="text-xl font-bold text-white">+NRs. {pendingAmount}</div>
-                                <div className="text-amber-100 text-xs mt-1">New orders added after bill</div>
+                            <div className="bg-gradient-to-r from-amber-500 to-yellow-500 p-2 sm:p-3 rounded-md">
+                                <div className="text-[0.6rem] sm:text-xs text-amber-100 mb-0.5">Pending Amount</div>
+                                <div className="text-sm sm:text-xl font-bold text-white">+NRs. {pendingAmount}</div>
                             </div>
                         )}
 
                         {noOrderChanges && hasBillGenerated && (
-                            <div className="bg-gradient-to-r from-blue-500 to-indigo-500 p-3 rounded-md">
-                                <div className="text-xs text-blue-100 mb-1">Discount Applied</div>
-                                <div className="text-xl font-bold text-white">-NRs. {(originalBillTotal || total_price) - totalFinalbill}</div>
-                                <div className="text-blue-100 text-xs mt-1">Original: NRs. {originalBillTotal || total_price}</div>
+                            <div className="bg-gradient-to-r from-blue-500 to-indigo-500 p-2 sm:p-3 rounded-md">
+                                <div className="text-[0.6rem] sm:text-xs text-blue-100 mb-0.5">Discount Applied</div>
+                                <div className="text-sm sm:text-xl font-bold text-white">-NRs. {(originalBillTotal || total_price) - totalFinalbill}</div>
                             </div>
                         )}
                     </div>
 
                     {hasBillGenerated && (
-                        <div className="bg-gray-900/50 p-3 rounded-md border border-gray-700">
-                            <div className="text-xs text-gray-400 mb-2">Bill Status Summary</div>
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 text-sm">
+                        <div className="bg-gray-900/50 p-2 sm:p-3 rounded-md border border-gray-700">
+                            <div className="text-[0.6rem] sm:text-xs text-gray-400 mb-1.5">Bill Status Summary</div>
+                            <div className="grid grid-cols-2 lg:grid-cols-4 gap-1.5 sm:gap-3 text-xs sm:text-sm">
                                 <div>
                                     <span className="text-gray-400">Order Total: </span>
                                     <span className="font-medium">NRs. {originalBillTotal || total_price}</span>

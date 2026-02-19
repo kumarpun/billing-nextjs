@@ -9,7 +9,7 @@ export default function Employee() {
   const [employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(true);
 
   // Toggle sidebar collapse state
   const toggleSidebar = () => {
@@ -58,13 +58,13 @@ export default function Employee() {
   if (loading) {
     return (
       <div className="flex bg-gray-50 min-h-screen w-full">
-        <SideNav activeTab="employee" isCollapsed={isSidebarCollapsed} />
+        <SideNav activeTab="employee" isCollapsed={isSidebarCollapsed} toggleSidebar={toggleSidebar} />
         <div className="flex-1 flex flex-col">
           <TopNav 
             isSidebarCollapsed={isSidebarCollapsed} 
             toggleSidebar={toggleSidebar} 
           />
-          <div className={`flex-1 transition-all duration-300 ${isSidebarCollapsed ? "ml-20" : "ml-64"}`}>
+          <div className={`flex-1 transition-all duration-300 ml-0 md:ml-64 mt-12 sm:mt-14`}>
             <div className="flex items-center justify-center h-full w-full">
               <FiRefreshCw className="animate-spin h-12 w-12 text-blue-500" />
             </div>
@@ -77,13 +77,13 @@ export default function Employee() {
   if (error) {
     return (
       <div className="flex bg-gray-50 min-h-screen w-full">
-        <SideNav activeTab="employee" isCollapsed={isSidebarCollapsed} />
+        <SideNav activeTab="employee" isCollapsed={isSidebarCollapsed} toggleSidebar={toggleSidebar} />
         <div className="flex-1 flex flex-col">
           <TopNav 
             isSidebarCollapsed={isSidebarCollapsed} 
             toggleSidebar={toggleSidebar} 
           />
-          <div className={`flex-1 p-6 transition-all duration-300 ${isSidebarCollapsed ? "ml-20" : "ml-64"}`}>
+          <div className={`flex-1 p-3 sm:p-6 transition-all duration-300 ml-0 md:ml-64 mt-12 sm:mt-14`}>
             <div className="text-red-500 text-lg">{error}</div>
           </div>
         </div>
@@ -93,14 +93,14 @@ export default function Employee() {
 
   return (
     <div className="flex bg-gray-50 min-h-screen w-full">
-      <SideNav activeTab="employee" isCollapsed={isSidebarCollapsed} />
+      <SideNav activeTab="employee" isCollapsed={isSidebarCollapsed} toggleSidebar={toggleSidebar} />
       <div className="flex-1 flex flex-col">
         <TopNav 
           isSidebarCollapsed={isSidebarCollapsed} 
           toggleSidebar={toggleSidebar} 
         />
         <br />
-        <div className={`flex-1 p-6 transition-all duration-300 ${isSidebarCollapsed ? "ml-20" : "ml-64"}`}>
+        <div className={`flex-1 p-3 sm:p-6 transition-all duration-300 ml-0 md:ml-64 mt-12 sm:mt-14`}>
           <h1 className="text-2xl font-bold mb-6 text-gray-800">Employee Directory</h1>
           
           {employees.length === 0 ? (

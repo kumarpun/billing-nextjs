@@ -8,7 +8,7 @@ export default function SalesReportClient() {
     const [ordersWithTables, setOrdersWithTables] = useState([]);
     const [totalFinalPrice, setTotalFinalPrice] = useState(0);
     const [isOpen, setIsOpen] = useState(false);
-    const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+    const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(true);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [orderToDelete, setOrderToDelete] = useState(null);
     const [isDeleting, setIsDeleting] = useState(false);
@@ -243,9 +243,9 @@ export default function SalesReportClient() {
     const isAdmin = currentUserRole === 'admin';
 
     return (
-        <div className="flex min-h-screen bg-white text-black overflow-x-hidden">
+        <div className="flex min-h-screen bg-white text-black overflow-x-clip">
             {/* Side Navigation with collapse state */}
-            <SideNav activeTab="orders" isCollapsed={isSidebarCollapsed} />
+            <SideNav activeTab="orders" isCollapsed={isSidebarCollapsed} toggleSidebar={toggleSidebar} />
             
             {/* Main Content Area */}
             <div className="flex-1 flex flex-col">
@@ -256,15 +256,15 @@ export default function SalesReportClient() {
                 />
                 
                 {/* Content with dynamic margin */}
-                <div className={`flex-1 p-6 transition-all duration-300 relative z-50 ${isSidebarCollapsed ? "ml-20" : "ml-64"}`}>
+                <div className={`flex-1 p-3 sm:p-6 transition-all duration-300 relative z-10 ml-0 md:ml-64 mt-12 sm:mt-14`}>
                     {/* Filter and Export Section */}
-                    <div className="flex justify-between items-center mb-6">
-                        <div className="filter-options relative">
-                            <label className="mr-2 mt-2">Select Filter:</label>
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4 sm:mb-6">
+                        <div className="relative flex items-center">
+                            <label className="mr-2 text-xs sm:text-sm">Select Filter:</label>
                             <div className="inline-block">
-                                <button 
+                                <button
                                     onClick={() => setIsOpen(!isOpen)}
-                                    className="px-4 py-2 border border-gray-300 rounded-md bg-white hover:bg-gray-50 min-w-40 text-left flex justify-between items-center"
+                                    className="px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm border border-gray-300 rounded-md bg-white hover:bg-gray-50 min-w-32 sm:min-w-40 text-left flex justify-between items-center"
                                 >
                                     <span>{getFilterDisplayText()}</span>
                                     <span className="ml-2">▼</span>
@@ -272,10 +272,10 @@ export default function SalesReportClient() {
                                 {isOpen && (
                                     <ul className="absolute z-10 mt-1 w-40 bg-white border border-gray-300 rounded-md shadow-lg">
                                         {["today", "lastWeek", "lastMonth", "custom"].map((filter) => (
-                                            <li 
+                                            <li
                                                 key={filter}
                                                 onClick={() => handleFilterChange(filter)}
-                                                className="px-4 py-2 hover:bg-gray-100 cursor-pointer capitalize"
+                                                className="px-4 py-2 hover:bg-gray-100 cursor-pointer capitalize text-sm"
                                             >
                                                 {filter}
                                             </li>
@@ -286,39 +286,41 @@ export default function SalesReportClient() {
 
                             {/* Custom Date Picker */}
                             {showCustomDatePicker && (
-                                <div className="absolute z-20 mt-2 p-4 bg-white border border-gray-300 rounded-md shadow-lg">
-                                    <div className="mb-3">
-                                        <label className="block text-sm font-medium mb-1">Start Date</label>
-                                        <input
-                                            type="date"
-                                            value={customStartDate}
-                                            onChange={(e) => setCustomStartDate(e.target.value)}
-                                            className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                                        />
-                                    </div>
-                                    <div className="mb-3">
-                                        <label className="block text-sm font-medium mb-1">End Date</label>
-                                        <input
-                                            type="date"
-                                            value={customEndDate}
-                                            onChange={(e) => setCustomEndDate(e.target.value)}
-                                            className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                                        />
-                                    </div>
-                                    <div className="flex justify-end space-x-2">
-                                        <button
-                                            onClick={handleCustomDateCancel}
-                                            className="px-3 py-1 text-sm border border-gray-300 rounded-md hover:bg-gray-50"
-                                        >
-                                            Cancel
-                                        </button>
-                                        <button
-                                            onClick={handleCustomDateApply}
-                                            disabled={!customStartDate || !customEndDate}
-                                            className="px-3 py-1 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
-                                        >
-                                            Apply
-                                        </button>
+                                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 sm:bg-transparent sm:static sm:inset-auto sm:block sm:absolute sm:mt-2">
+                                    <div className="p-4 bg-white border border-gray-300 rounded-md shadow-lg w-[90vw] max-w-sm sm:w-auto">
+                                        <div className="mb-3">
+                                            <label className="block text-sm font-medium mb-1">Start Date</label>
+                                            <input
+                                                type="date"
+                                                value={customStartDate}
+                                                onChange={(e) => setCustomStartDate(e.target.value)}
+                                                className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                                            />
+                                        </div>
+                                        <div className="mb-3">
+                                            <label className="block text-sm font-medium mb-1">End Date</label>
+                                            <input
+                                                type="date"
+                                                value={customEndDate}
+                                                onChange={(e) => setCustomEndDate(e.target.value)}
+                                                className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                                            />
+                                        </div>
+                                        <div className="flex justify-end space-x-2">
+                                            <button
+                                                onClick={handleCustomDateCancel}
+                                                className="px-3 py-1 text-sm border border-gray-300 rounded-md hover:bg-gray-50"
+                                            >
+                                                Cancel
+                                            </button>
+                                            <button
+                                                onClick={handleCustomDateApply}
+                                                disabled={!customStartDate || !customEndDate}
+                                                className="px-3 py-1 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                                            >
+                                                Apply
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             )}
@@ -328,9 +330,9 @@ export default function SalesReportClient() {
                         <button
                             onClick={handleExportClick}
                             disabled={ordersWithTables.length === 0}
-                            className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
+                            className="px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm bg-green-600 text-white rounded-md hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                         >
-                            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                             </svg>
                             Export CSV
@@ -339,30 +341,30 @@ export default function SalesReportClient() {
 
                     {/* Export Confirmation Modal */}
                     {isExportModalOpen && (
-                        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                            <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-                                <h3 className="text-lg font-semibold mb-4 text-green-600">Confirm Export</h3>
-                                <p className="mb-4">
-                                    Are you sure you want to export the sales data to CSV? 
-                                    This will download a file containing {ordersWithTables.flatMap(group => group.orders).length} records.
+                        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+                            <div className="bg-white p-4 sm:p-6 rounded-lg shadow-lg w-full max-w-md">
+                                <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4 text-green-600">Confirm Export</h3>
+                                <p className="mb-3 sm:mb-4 text-sm sm:text-base">
+                                    Export sales data to CSV?
+                                    ({ordersWithTables.flatMap(group => group.orders).length} records)
                                 </p>
-                                <div className="mb-4 p-3 bg-gray-50 rounded">
+                                <div className="mb-3 sm:mb-4 p-3 bg-gray-50 rounded text-sm">
                                     <p><strong>Filter:</strong> {getFilterDisplayText()}</p>
                                     <p><strong>Total Records:</strong> {ordersWithTables.flatMap(group => group.orders).length}</p>
                                     <p><strong>Total Sales:</strong> NRs. {totalFinalPrice.toLocaleString()}</p>
                                 </div>
                                 <div className="flex justify-end space-x-3">
-                                    <button 
+                                    <button
                                         onClick={handleExportCancel}
                                         disabled={isExporting}
-                                        className="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50"
+                                        className="px-3 py-1.5 sm:px-4 sm:py-2 text-sm border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50"
                                     >
                                         Cancel
                                     </button>
-                                    <button 
+                                    <button
                                         onClick={handleExportConfirm}
                                         disabled={isExporting}
-                                        className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 disabled:opacity-50 flex items-center"
+                                        className="px-3 py-1.5 sm:px-4 sm:py-2 text-sm bg-green-600 text-white rounded-md hover:bg-green-700 disabled:opacity-50 flex items-center"
                                     >
                                         {isExporting ? (
                                             <>
@@ -383,14 +385,14 @@ export default function SalesReportClient() {
 
                     {/* Delete Confirmation Modal - Only show for admin */}
                     {isDeleteModalOpen && isAdmin && (
-                        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                            <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-                                <h3 className="text-lg font-semibold mb-4 text-red-600">Confirm Delete</h3>
-                                <p className="mb-4">
+                        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+                            <div className="bg-white p-4 sm:p-6 rounded-lg shadow-lg w-full max-w-md">
+                                <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4 text-red-600">Confirm Delete</h3>
+                                <p className="mb-3 sm:mb-4 text-sm sm:text-base">
                                     Are you sure you want to delete this order? This action cannot be undone.
                                 </p>
                                 {orderToDelete && (
-                                    <div className="mb-4 p-3 bg-gray-50 rounded">
+                                    <div className="mb-3 sm:mb-4 p-3 bg-gray-50 rounded text-sm">
                                         <p><strong>Order:</strong> {orderToDelete.order_title}</p>
                                         <p><strong>Table:</strong> {orderToDelete.table[0]?.title || "N/A"}</p>
                                         <p><strong>Quantity:</strong> {orderToDelete.order_quantity}</p>
@@ -399,17 +401,17 @@ export default function SalesReportClient() {
                                     </div>
                                 )}
                                 <div className="flex justify-end space-x-3">
-                                    <button 
+                                    <button
                                         onClick={handleDeleteCancel}
                                         disabled={isDeleting}
-                                        className="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50"
+                                        className="px-3 py-1.5 sm:px-4 sm:py-2 text-sm border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50"
                                     >
                                         Cancel
                                     </button>
-                                    <button 
+                                    <button
                                         onClick={handleDeleteConfirm}
                                         disabled={isDeleting}
-                                        className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 disabled:opacity-50 flex items-center"
+                                        className="px-3 py-1.5 sm:px-4 sm:py-2 text-sm bg-red-600 text-white rounded-md hover:bg-red-700 disabled:opacity-50 flex items-center"
                                     >
                                         {isDeleting ? (
                                             <>
@@ -429,12 +431,12 @@ export default function SalesReportClient() {
                     )}
 
                     {/* Total Sales Display */}
-                    <div className="bg-gray-50 p-4 rounded-lg shadow-sm mb-6">
-                        <h3 className="text-xl font-bold text-center text-black">
+                    <div className="bg-gray-50 p-3 sm:p-4 rounded-lg shadow-sm mb-4 sm:mb-6">
+                        <p className="text-sm sm:text-xl font-bold text-center text-gray-900">
                             Total Sales: NRs. {totalFinalPrice.toLocaleString()}
-                        </h3>
+                        </p>
                         {selectedFilter === "custom" && customStartDate && customEndDate && (
-                            <p className="text-center text-sm text-gray-600 mt-1">
+                            <p className="text-center text-xs sm:text-sm text-gray-600 mt-1">
                                 Period: {new Date(customStartDate).toLocaleDateString()} - {new Date(customEndDate).toLocaleDateString()}
                             </p>
                         )}
@@ -442,82 +444,80 @@ export default function SalesReportClient() {
 
                     {/* Sales Table */}
                     <div className="border rounded-lg overflow-hidden shadow-sm max-w-6xl mx-auto">
-                        <div className="overflow-x-auto">
-                            <table className="w-full divide-y divide-gray-200">
-                                <thead className="bg-gray-50">
-                                    <tr>
-                                        <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Sn</th>
-                                        <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Date</th>
-                                        <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Order Title</th>
-                                        <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Status</th>
-                                        <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Qty</th>
-                                        <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Price</th>
-                                        <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Table</th>
-                                        <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Total</th>
-                                        <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Remarks</th>
-                                        {isAdmin && (
-                                            <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Actions</th>
-                                        )}
-                                    </tr>
-                                </thead>
-                                <tbody className="bg-white divide-y divide-gray-200">
-                                    {ordersWithTables.length > 0 ? (
-                                        ordersWithTables.flatMap((salesGroup, groupIndex) =>
-                                            salesGroup.orders.map((sales, orderIndex) => (
-                                                <tr key={`${groupIndex}-${orderIndex}`} className="hover:bg-gray-50">
-                                                    <td className="px-4 py-3 whitespace-nowrap text-sm">
-                                                        {groupIndex * salesGroup.orders.length + orderIndex + 1}
-                                                    </td>
-                                                    <td className="px-4 py-3 whitespace-nowrap text-sm">
-                                                        {new Date(sales.createdAt).toLocaleDateString()}
-                                                    </td>
-                                                    <td className="px-4 py-3 whitespace-nowrap text-sm">
-                                                        {sales.order_title}
-                                                    </td>
-                                                    <td className="px-4 py-3 whitespace-nowrap text-sm">
-                                                        {sales.order_status}
-                                                    </td>
-                                                    <td className="px-4 py-3 whitespace-nowrap text-sm">
-                                                        {sales.order_quantity}
-                                                    </td>
-                                                    <td className="px-4 py-3 whitespace-nowrap text-sm">
-                                                        {sales.order_price}
-                                                    </td>
-                                                    <td className="px-4 py-3 whitespace-nowrap text-sm">
-                                                        {sales.table[0]?.title || "N/A"}
-                                                    </td>
-                                                    <td className="px-4 py-3 whitespace-nowrap text-sm">
-                                                        {sales.total_price}
-                                                    </td>
-                                                    <td className="px-4 py-3 whitespace-nowrap text-sm">
-                                                        {sales.order_description}
-                                                    </td>
-                                                    {isAdmin && (
-                                                        <td className="px-4 py-3 whitespace-nowrap text-sm">
-                                                            <button
-                                                                onClick={() => handleDeleteClick(sales)}
-                                                                className="text-red-600 hover:text-red-800 transition-colors duration-200"
-                                                                title="Delete Order"
-                                                            >
-                                                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                                                </svg>
-                                                            </button>
-                                                        </td>
-                                                    )}
-                                                </tr>
-                                            ))
-                                        )
-                                    ) : (
-                                        <tr>
-                                            <td colSpan={isAdmin ? "10" : "9"} className="px-6 py-4 text-center text-sm">
-                                                No sales records available
-                                            </td>
-                                        </tr>
+                        <table className="w-full divide-y divide-gray-200 sales-report-table">
+                            <thead className="bg-gray-50" style={{ color: '#374151' }}>
+                                <tr>
+                                    <th className="px-1.5 py-1.5 sm:px-4 sm:py-3 text-left text-xs font-medium uppercase tracking-wider">Sn</th>
+                                    <th className="px-1.5 py-1.5 sm:px-4 sm:py-3 text-left text-xs font-medium uppercase tracking-wider">Date</th>
+                                    <th className="px-1.5 py-1.5 sm:px-4 sm:py-3 text-left text-xs font-medium uppercase tracking-wider">Order</th>
+                                    <th className="hidden sm:table-cell px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Status</th>
+                                    <th className="hidden sm:table-cell px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Qty</th>
+                                    <th className="hidden sm:table-cell px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Price</th>
+                                    <th className="hidden sm:table-cell px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Table</th>
+                                    <th className="px-1.5 py-1.5 sm:px-4 sm:py-3 text-left text-xs font-medium uppercase tracking-wider">Total</th>
+                                    <th className="hidden sm:table-cell px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Remarks</th>
+                                    {isAdmin && (
+                                        <th className="px-1.5 py-1.5 sm:px-4 sm:py-3 text-left text-xs font-medium uppercase tracking-wider">Act</th>
                                     )}
-                                </tbody>
-                            </table>
-                        </div>
+                                </tr>
+                            </thead>
+                            <tbody className="bg-white divide-y divide-gray-200" style={{ color: '#111827' }}>
+                                {ordersWithTables.length > 0 ? (
+                                    ordersWithTables.flatMap((salesGroup, groupIndex) =>
+                                        salesGroup.orders.map((sales, orderIndex) => (
+                                            <tr key={`${groupIndex}-${orderIndex}`} className="hover:bg-gray-50">
+                                                <td className="px-1.5 py-1.5 sm:px-4 sm:py-3 whitespace-nowrap text-xs sm:text-sm">
+                                                    {groupIndex * salesGroup.orders.length + orderIndex + 1}
+                                                </td>
+                                                <td className="px-1.5 py-1.5 sm:px-4 sm:py-3 whitespace-nowrap text-xs sm:text-sm">
+                                                    {new Date(sales.createdAt).toLocaleDateString()}
+                                                </td>
+                                                <td className="px-1.5 py-1.5 sm:px-4 sm:py-3 whitespace-nowrap text-xs sm:text-sm">
+                                                    {sales.order_title}
+                                                </td>
+                                                <td className="hidden sm:table-cell px-4 py-3 whitespace-nowrap text-sm">
+                                                    {sales.order_status}
+                                                </td>
+                                                <td className="hidden sm:table-cell px-4 py-3 whitespace-nowrap text-sm">
+                                                    {sales.order_quantity}
+                                                </td>
+                                                <td className="hidden sm:table-cell px-4 py-3 whitespace-nowrap text-sm">
+                                                    {sales.order_price}
+                                                </td>
+                                                <td className="hidden sm:table-cell px-4 py-3 whitespace-nowrap text-sm">
+                                                    {sales.table[0]?.title || "N/A"}
+                                                </td>
+                                                <td className="px-1.5 py-1.5 sm:px-4 sm:py-3 whitespace-nowrap text-xs sm:text-sm">
+                                                    {sales.total_price}
+                                                </td>
+                                                <td className="hidden sm:table-cell px-4 py-3 whitespace-nowrap text-sm">
+                                                    {sales.order_description}
+                                                </td>
+                                                {isAdmin && (
+                                                    <td className="px-1.5 py-1.5 sm:px-4 sm:py-3 whitespace-nowrap text-xs sm:text-sm">
+                                                        <button
+                                                            onClick={() => handleDeleteClick(sales)}
+                                                            className="text-red-600 hover:text-red-800 transition-colors duration-200"
+                                                            title="Delete Order"
+                                                        >
+                                                            <svg className="w-3.5 h-3.5 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                            </svg>
+                                                        </button>
+                                                    </td>
+                                                )}
+                                            </tr>
+                                        ))
+                                    )
+                                ) : (
+                                    <tr>
+                                        <td colSpan={isAdmin ? "10" : "9"} className="px-6 py-4 text-center text-xs sm:text-sm">
+                                            No sales records available
+                                        </td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

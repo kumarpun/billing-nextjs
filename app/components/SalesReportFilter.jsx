@@ -13,7 +13,7 @@ export default function SalesReportFilter() {
    const [startDate, setStartDate] = useState("");
    const [endDate, setEndDate] = useState("");
    const [isModalOpen, setIsModalOpen] = useState(false);
-   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(true);
    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
    const [billToDelete, setBillToDelete] = useState(null);
    const [isDeleting, setIsDeleting] = useState(false);
@@ -273,9 +273,9 @@ export default function SalesReportFilter() {
 
 
    return (
-       <div className="flex min-h-screen bg-white text-black overflow-x-hidden">
+       <div className="flex min-h-screen bg-white text-black overflow-x-clip">
            {/* Side Navigation with collapse state */}
-           <SideNav activeTab="sales" isCollapsed={isSidebarCollapsed} />
+           <SideNav activeTab="sales" isCollapsed={isSidebarCollapsed} toggleSidebar={toggleSidebar} />
           
            {/* Main Content Area */}
            <div className="flex-1 flex flex-col">
@@ -286,15 +286,15 @@ export default function SalesReportFilter() {
                />
               
                {/* Content with dynamic margin */}
-               <div className={`flex-1 p-6 transition-all duration-300 ${isSidebarCollapsed ? "ml-20" : "ml-64"}`}>
+               <div className={`flex-1 p-3 sm:p-6 transition-all duration-300 ml-0 md:ml-64 mt-12 sm:mt-14`}>
                    {/* Filter and Export Section */}
-                   <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+                   <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 sm:mb-6 gap-3 sm:gap-4">
                        <div className="filter-options">
-                           <label htmlFor="filter" className="mr-2 mt-2">Select Filter:</label>
+                           <label htmlFor="filter" className="mr-2 mt-2 text-xs sm:text-sm">Select Filter:</label>
                            <select
                                id="filter"
                                value={selectedFilter}
-                               className="px-4 py-2 border border-gray-300 rounded-md bg-white"
+                               className="px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm border border-gray-300 rounded-md bg-white"
                                onChange={handleFilterChange}
                            >
                                <option value="today">Today</option>
@@ -303,12 +303,12 @@ export default function SalesReportFilter() {
                                <option value="lastMonth">Last Month</option>
                            </select>
                        </div>
-                      
+
                        {/* Export Button */}
                        <button
                            onClick={handleExportClick}
                            disabled={isExporting || bills.length === 0}
-                           className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                           className="px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm bg-green-600 text-white rounded-md hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                        >
                            {isExporting ? (
                                <>
@@ -470,87 +470,101 @@ export default function SalesReportFilter() {
                    )}
 
 
-                   {/* Sales Summary Cards */}
-                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                   {/* Sales Summary Cards - Mobile: stacked rows, Desktop: 3-column grid */}
+                   {/* Mobile layout */}
+                   <div className="sm:hidden bg-gray-50 rounded-lg shadow-sm p-3 mb-4 space-y-1.5">
+                       <p className="text-gray-900">
+                           <span className="text-xs font-semibold text-gray-600">Total Sales: </span>
+                           <span className="text-sm font-bold">NRs. {totalFinalPrice.toLocaleString()}</span>
+                       </p>
+                       <p className="text-gray-900">
+                           <span className="text-xs font-semibold text-gray-600">Kitchen Sales: </span>
+                           <span className="text-sm font-bold">NRs. {totalKitchenPrice.toLocaleString()}</span>
+                       </p>
+                       <p className="text-gray-900">
+                           <span className="text-xs font-semibold text-gray-600">Bar Sales: </span>
+                           <span className="text-sm font-bold">NRs. {totalBarPrice.toLocaleString()}</span>
+                       </p>
+                   </div>
+                   {/* Desktop layout */}
+                   <div className="hidden sm:grid grid-cols-3 gap-4 mb-6">
                        <div className="bg-gray-50 p-4 rounded-lg shadow-sm">
-                           <h3 className="font-semibold">Total Sales</h3>
-                           <p className="text-xl font-bold">NRs. {totalFinalPrice.toLocaleString()}</p>
+                           <h3 className="text-sm font-semibold" style={{ color: '#4b5563' }}>Total Sales</h3>
+                           <p className="text-xl font-bold" style={{ color: '#111827' }}>NRs. {totalFinalPrice.toLocaleString()}</p>
                        </div>
                        <div className="bg-gray-50 p-4 rounded-lg shadow-sm">
-                           <h3 className="font-semibold">Kitchen Sales</h3>
-                           <p className="text-xl font-bold">NRs. {totalKitchenPrice.toLocaleString()}</p>
+                           <h3 className="text-sm font-semibold" style={{ color: '#4b5563' }}>Kitchen Sales</h3>
+                           <p className="text-xl font-bold" style={{ color: '#111827' }}>NRs. {totalKitchenPrice.toLocaleString()}</p>
                        </div>
                        <div className="bg-gray-50 p-4 rounded-lg shadow-sm">
-                           <h3 className="font-semibold">Bar Sales</h3>
-                           <p className="text-xl font-bold">NRs. {totalBarPrice.toLocaleString()}</p>
+                           <h3 className="text-sm font-semibold" style={{ color: '#4b5563' }}>Bar Sales</h3>
+                           <p className="text-xl font-bold" style={{ color: '#111827' }}>NRs. {totalBarPrice.toLocaleString()}</p>
                        </div>
                    </div>
 
 
                    {/* Sales Table with Delete Actions */}
-                   <div className="border rounded-lg overflow-hidden shadow-sm max-w-6xl mx-auto">
-                       <div className="overflow-x-auto">
-                           <table className="w-full divide-y divide-gray-200">
-                               <thead className="bg-gray-50">
-                                   <tr>
-                                       <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Sn</th>
-                                       <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Date</th>
-                                       <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Original</th>
-                                       <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Discount %</th>
-                                       <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Final</th>
-                                       <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Payment</th>
-                                       <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">QR</th>
-                                       <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Cash</th>
-                                       <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Remarks</th>
-                                       <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Kitchen</th>
-                                       <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Bar</th>
-                                       {isAdmin && (
-                                           <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Actions</th>
-                                       )}
-                                   </tr>
-                               </thead>
-                               <tbody className="bg-white divide-y divide-gray-200">
-                                   {bills.length > 0 ? (
-                                       bills.map((sales, index) => (
-                                           <tr key={sales._id} className="hover:bg-gray-50">
-                                               <td className="px-4 py-3 whitespace-nowrap text-sm">{index + 1}</td>
-                                               <td className="px-4 py-3 whitespace-nowrap text-sm">
-                                                   {new Date(sales.createdAt).toLocaleDateString()}
-                                               </td>
-                                               <td className="px-4 py-3 whitespace-nowrap text-sm">{sales.originalPrice}</td>
-                                               <td className="px-4 py-3 whitespace-nowrap text-sm">{sales.discountPercent || '0'}</td>
-                                               <td className="px-4 py-3 whitespace-nowrap text-sm">{sales.finalPrice}</td>
-                                               <td className="px-4 py-3 whitespace-nowrap text-sm">{sales.billPaymentMode}</td>
-                                               <td className="px-4 py-3 whitespace-nowrap text-sm">{sales.qrAmount || '0'}</td>
-                                               <td className="px-4 py-3 whitespace-nowrap text-sm">{sales.cashAmount || '0'}</td>
-                                               <td className="px-4 py-3 whitespace-nowrap text-sm">{sales.remarks || ''}</td>
-                                               <td className="px-4 py-3 whitespace-nowrap text-sm">{sales.kitchenPrice}</td>
-                                               <td className="px-4 py-3 whitespace-nowrap text-sm">{sales.barPrice}</td>
-                                               {isAdmin && (
-                                                   <td className="px-4 py-3 whitespace-nowrap text-sm">
-                                                       <button
-                                                           onClick={() => handleDeleteClick(sales)}
-                                                           className="text-red-600 hover:text-red-800 transition-colors duration-200"
-                                                           title="Delete Bill"
-                                                       >
-                                                           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                                           </svg>
-                                                       </button>
-                                                   </td>
-                                               )}
-                                           </tr>
-                                       ))
-                                   ) : (
-                                       <tr>
-                                           <td colSpan={isAdmin ? "12" : "11"} className="px-6 py-4 text-center text-sm">
-                                               No sales records available
-                                           </td>
-                                       </tr>
+                   <div className="border rounded-lg shadow-sm max-w-6xl mx-auto overflow-hidden">
+                       <table className="w-full divide-y divide-gray-200 sales-report-table">
+                           <thead className="bg-gray-50" style={{ color: '#374151' }}>
+                               <tr>
+                                   <th className="px-1.5 py-1.5 sm:px-4 sm:py-3 text-left text-xs font-medium uppercase tracking-wider">Sn</th>
+                                   <th className="px-1.5 py-1.5 sm:px-4 sm:py-3 text-left text-xs font-medium uppercase tracking-wider">Date</th>
+                                   <th className="hidden sm:table-cell px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Original</th>
+                                   <th className="hidden sm:table-cell px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Disc%</th>
+                                   <th className="px-1.5 py-1.5 sm:px-4 sm:py-3 text-left text-xs font-medium uppercase tracking-wider">Final</th>
+                                   <th className="px-1.5 py-1.5 sm:px-4 sm:py-3 text-left text-xs font-medium uppercase tracking-wider">Pay</th>
+                                   <th className="hidden sm:table-cell px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">QR</th>
+                                   <th className="hidden sm:table-cell px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Cash</th>
+                                   <th className="hidden sm:table-cell px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Remarks</th>
+                                   <th className="hidden sm:table-cell px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Kitchen</th>
+                                   <th className="hidden sm:table-cell px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Bar</th>
+                                   {isAdmin && (
+                                       <th className="px-1.5 py-1.5 sm:px-4 sm:py-3 text-left text-xs font-medium uppercase tracking-wider">Act</th>
                                    )}
-                               </tbody>
-                           </table>
-                       </div>
+                               </tr>
+                           </thead>
+                           <tbody className="bg-white divide-y divide-gray-200" style={{ color: '#111827' }}>
+                               {bills.length > 0 ? (
+                                   bills.map((sales, index) => (
+                                       <tr key={sales._id} className="hover:bg-gray-50">
+                                           <td className="px-1.5 py-1.5 sm:px-4 sm:py-3 whitespace-nowrap text-xs sm:text-sm">{index + 1}</td>
+                                           <td className="px-1.5 py-1.5 sm:px-4 sm:py-3 whitespace-nowrap text-xs sm:text-sm">
+                                               {new Date(sales.createdAt).toLocaleDateString()}
+                                           </td>
+                                           <td className="hidden sm:table-cell px-4 py-3 whitespace-nowrap text-sm">{sales.originalPrice}</td>
+                                           <td className="hidden sm:table-cell px-4 py-3 whitespace-nowrap text-sm">{sales.discountPercent || '0'}</td>
+                                           <td className="px-1.5 py-1.5 sm:px-4 sm:py-3 whitespace-nowrap text-xs sm:text-sm">{sales.finalPrice}</td>
+                                           <td className="px-1.5 py-1.5 sm:px-4 sm:py-3 whitespace-nowrap text-xs sm:text-sm">{sales.billPaymentMode}</td>
+                                           <td className="hidden sm:table-cell px-4 py-3 whitespace-nowrap text-sm">{sales.qrAmount || '0'}</td>
+                                           <td className="hidden sm:table-cell px-4 py-3 whitespace-nowrap text-sm">{sales.cashAmount || '0'}</td>
+                                           <td className="hidden sm:table-cell px-4 py-3 whitespace-nowrap text-sm">{sales.remarks || ''}</td>
+                                           <td className="hidden sm:table-cell px-4 py-3 whitespace-nowrap text-sm">{sales.kitchenPrice}</td>
+                                           <td className="hidden sm:table-cell px-4 py-3 whitespace-nowrap text-sm">{sales.barPrice}</td>
+                                           {isAdmin && (
+                                               <td className="px-1.5 py-1.5 sm:px-4 sm:py-3 whitespace-nowrap text-xs sm:text-sm">
+                                                   <button
+                                                       onClick={() => handleDeleteClick(sales)}
+                                                       className="text-red-600 hover:text-red-800 transition-colors duration-200"
+                                                       title="Delete Bill"
+                                                   >
+                                                       <svg className="w-3.5 h-3.5 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                       </svg>
+                                                   </button>
+                                               </td>
+                                           )}
+                                       </tr>
+                                   ))
+                               ) : (
+                                   <tr>
+                                       <td colSpan={isAdmin ? "12" : "11"} className="px-6 py-4 text-center text-xs sm:text-sm">
+                                           No sales records available
+                                       </td>
+                                   </tr>
+                               )}
+                           </tbody>
+                       </table>
                    </div>
                </div>
            </div>

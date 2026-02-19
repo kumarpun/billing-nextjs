@@ -12,7 +12,7 @@ export default function DutyRoster() {
   const [selectedStaff, setSelectedStaff] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(true);
   const [missingStaff, setMissingStaff] = useState([]); // New state for missing staff
 
   const toggleSidebar = () => {
@@ -182,12 +182,12 @@ export default function DutyRoster() {
 
   return (
     <div className="flex min-h-screen bg-white">
-      <SideNav isCollapsed={isSidebarCollapsed} />
+      <SideNav isCollapsed={isSidebarCollapsed} toggleSidebar={toggleSidebar} />
       
       <TopNav isSidebarCollapsed={isSidebarCollapsed} toggleSidebar={toggleSidebar} />
 
-      <div className={`flex-1 ${isSidebarCollapsed ? "ml-24" : "ml-64"} transition-all duration-300`}>
-        <div className="p-6 bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
+      <div className={`flex-1 ml-0 md:ml-64 mt-12 sm:mt-14 transition-all duration-300`}>
+        <div className="p-3 sm:p-6 bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
           <br></br>
           <div className="max-w-6xl mx-auto">
             <header className="mb-8">

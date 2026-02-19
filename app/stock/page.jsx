@@ -9,7 +9,7 @@ import { motion } from "framer-motion";
 export default function Stock() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(true);
   const [hoveredCard, setHoveredCard] = useState(null);
 
   const toggleSidebar = () => {
@@ -27,13 +27,13 @@ export default function Stock() {
   if (loading) {
     return (
       <div className="flex bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen w-full">
-        <SideNav activeTab="employee" isCollapsed={isSidebarCollapsed} />
+        <SideNav activeTab="employee" isCollapsed={isSidebarCollapsed} toggleSidebar={toggleSidebar} />
         <div className="flex-1 flex flex-col">
           <TopNav 
             isSidebarCollapsed={isSidebarCollapsed} 
             toggleSidebar={toggleSidebar} 
           />
-          <div className={`flex-1 transition-all duration-300 ${isSidebarCollapsed ? "ml-20" : "ml-64"}`}>
+          <div className={`flex-1 transition-all duration-300 ml-0 md:ml-64 mt-12 sm:mt-14`}>
             <div className="flex items-center justify-center h-full w-full">
               <motion.div
                 animate={{ rotate: 360 }}
@@ -51,13 +51,13 @@ export default function Stock() {
   if (error) {
     return (
       <div className="flex bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen w-full">
-        <SideNav activeTab="employee" isCollapsed={isSidebarCollapsed} />
+        <SideNav activeTab="employee" isCollapsed={isSidebarCollapsed} toggleSidebar={toggleSidebar} />
         <div className="flex-1 flex flex-col">
           <TopNav 
             isSidebarCollapsed={isSidebarCollapsed} 
             toggleSidebar={toggleSidebar} 
           />
-          <div className={`flex-1 p-6 transition-all duration-300 ${isSidebarCollapsed ? "ml-20" : "ml-64"}`}>
+          <div className={`flex-1 p-3 sm:p-6 transition-all duration-300 ml-0 md:ml-64 mt-12 sm:mt-14`}>
             <div className="text-red-500 text-lg bg-white p-4 rounded-xl shadow-lg">{error}</div>
           </div>
         </div>
@@ -67,7 +67,7 @@ export default function Stock() {
 
   return (
     <div className="flex bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen w-full">
-      <SideNav activeTab="stock" isCollapsed={isSidebarCollapsed} />
+      <SideNav activeTab="stock" isCollapsed={isSidebarCollapsed} toggleSidebar={toggleSidebar} />
       <div className="flex-1 flex flex-col">
         <TopNav 
           isSidebarCollapsed={isSidebarCollapsed} 
@@ -77,7 +77,7 @@ export default function Stock() {
         <br></br>
         <br></br> 
         <br></br> 
-        <div className={`flex-1 p-6 transition-all duration-300 ${isSidebarCollapsed ? "ml-20" : "ml-64"}`}>
+        <div className={`flex-1 p-3 sm:p-6 transition-all duration-300 ml-0 md:ml-64 mt-12 sm:mt-14`}>
           <div className="max-w-7xl mx-auto">
             <motion.div 
               initial={{ opacity: 0, y: -20 }}

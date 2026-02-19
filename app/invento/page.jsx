@@ -4,7 +4,7 @@ import SideNav from "../components/sidenav";
 import TopNav from "../components/topnav";
 
 export default function Inventory() {
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(true);
   const [inventoryData, setInventoryData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -89,13 +89,13 @@ export default function Inventory() {
   if (loading) {
     return (
       <div className="flex bg-white min-h-screen w-full">
-        <SideNav activeTab="inventory" isCollapsed={isSidebarCollapsed} />
+        <SideNav activeTab="inventory" isCollapsed={isSidebarCollapsed} toggleSidebar={toggleSidebar} />
         <div className="flex-1 flex flex-col">
           <TopNav 
             isSidebarCollapsed={isSidebarCollapsed} 
             toggleSidebar={toggleSidebar} 
           />
-          <div className={`flex-1 p-6 transition-all duration-300 ${isSidebarCollapsed ? "ml-20" : "ml-64"}`}>
+          <div className={`flex-1 p-3 sm:p-6 transition-all duration-300 ml-0 md:ml-64 mt-12 sm:mt-14`}>
             <div className="flex justify-center items-center h-64">
               <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
             </div>
@@ -108,13 +108,13 @@ export default function Inventory() {
   if (error) {
     return (
       <div className="flex bg-white min-h-screen w-full">
-        <SideNav activeTab="inventory" isCollapsed={isSidebarCollapsed} />
+        <SideNav activeTab="inventory" isCollapsed={isSidebarCollapsed} toggleSidebar={toggleSidebar} />
         <div className="flex-1 flex flex-col">
           <TopNav 
             isSidebarCollapsed={isSidebarCollapsed} 
             toggleSidebar={toggleSidebar} 
           />
-          <div className={`flex-1 p-6 transition-all duration-300 ${isSidebarCollapsed ? "ml-20" : "ml-64"}`}>
+          <div className={`flex-1 p-3 sm:p-6 transition-all duration-300 ml-0 md:ml-64 mt-12 sm:mt-14`}>
             <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
               <strong>Error:</strong> {error}
             </div>
@@ -126,13 +126,13 @@ export default function Inventory() {
 
   return (
     <div className="flex bg-white min-h-screen w-full">
-      <SideNav activeTab="inventory" isCollapsed={isSidebarCollapsed} />
+      <SideNav activeTab="inventory" isCollapsed={isSidebarCollapsed} toggleSidebar={toggleSidebar} />
       <div className="flex-1 flex flex-col">
         <TopNav 
           isSidebarCollapsed={isSidebarCollapsed} 
           toggleSidebar={toggleSidebar} 
         />
-        <div className={`flex-1 p-6 transition-all duration-300 ${isSidebarCollapsed ? "ml-20" : "ml-64"}`}>
+        <div className={`flex-1 p-3 sm:p-6 transition-all duration-300 ml-0 md:ml-64 mt-12 sm:mt-14`}>
           <div className="mb-6">
             <h1 className="text-2xl font-bold text-gray-800">Monthly Inventory Summary</h1>
             <p className="text-gray-600">Overview of inventory performance for the selected period</p>

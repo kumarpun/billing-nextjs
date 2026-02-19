@@ -20,7 +20,7 @@ export default function Inventory() {
   const [sales, setSales] = useState(0);
   const [title, setTitle] = useState(0);
   const [manualOrderAdjustment, setManualOrderAdjustment] = useState(0);
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(true);
   const [isAddLoading, setIsAddLoading] = useState(false);
   const [dateFilter, setDateFilter] = useState('today');
   const [customStartDate, setCustomStartDate] = useState('');
@@ -367,13 +367,13 @@ export default function Inventory() {
   if (loading) {
     return (
       <div className="flex bg-white min-h-screen w-full">
-        <SideNav activeTab="inventory" isCollapsed={isSidebarCollapsed} />
+        <SideNav activeTab="inventory" isCollapsed={isSidebarCollapsed} toggleSidebar={toggleSidebar} />
         <div className="flex-1 flex flex-col">
           <TopNav 
             isSidebarCollapsed={isSidebarCollapsed} 
             toggleSidebar={toggleSidebar} 
           />
-          <div className={`flex-1 transition-all duration-300 ${isSidebarCollapsed ? "ml-20" : "ml-64"} flex items-center justify-center`}>
+          <div className={`flex-1 transition-all duration-300 ml-0 md:ml-64 mt-12 sm:mt-14 flex items-center justify-center`}>
             <FiRefreshCw className="animate-spin h-12 w-12 text-blue-500" />
           </div>
         </div>
@@ -383,13 +383,13 @@ export default function Inventory() {
 
   return (
     <div className="flex bg-white min-h-screen w-full">
-      <SideNav activeTab="inventory" isCollapsed={isSidebarCollapsed} />
+      <SideNav activeTab="inventory" isCollapsed={isSidebarCollapsed} toggleSidebar={toggleSidebar} />
       <div className="flex-1 flex flex-col">
         <TopNav 
           isSidebarCollapsed={isSidebarCollapsed} 
           toggleSidebar={toggleSidebar} 
         />
-        <div className={`flex-1 p-4 transition-all duration-300 ${isSidebarCollapsed ? "ml-20" : "ml-64"}`}>
+        <div className={`flex-1 p-3 sm:p-4 transition-all duration-300 ml-0 md:ml-64 mt-12 sm:mt-14`}>
           {/* Edit Modal */}
           {isEditModalOpen && (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">

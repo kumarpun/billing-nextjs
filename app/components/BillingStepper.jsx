@@ -44,28 +44,28 @@ function StepIndicator({ step, status, onClick, onDisabledClick }) {
     };
 
     return (
-        <div className="flex flex-col items-center min-w-[80px]">
+        <div className="flex flex-col items-center min-w-[60px] sm:min-w-[80px]">
             <button
                 type="button"
                 onClick={handleClick}
-                className={`w-10 h-10 rounded-full flex items-center justify-center border-2 transition-all duration-300 ${s.circle} ${isClickable ? 'cursor-pointer hover:scale-110' : 'cursor-not-allowed'}`}
+                className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center border-2 transition-all duration-300 ${s.circle} ${isClickable ? 'cursor-pointer hover:scale-110' : 'cursor-not-allowed'}`}
             >
                 {status === 'completed' ? (
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
                     </svg>
                 ) : (
-                    <Icon className="text-lg" />
+                    <Icon className="text-sm sm:text-lg" />
                 )}
             </button>
-            <span className={`mt-1.5 text-xs text-center ${s.label}`}>{step.label}</span>
+            <span className={`mt-1 sm:mt-1.5 text-[0.6rem] sm:text-xs text-center leading-tight ${s.label}`}>{step.label}</span>
         </div>
     );
 }
 
 function StepConnector({ completed }) {
     return (
-        <div className={`flex-1 h-0.5 mx-1 mt-5 transition-all duration-500 ${completed ? 'bg-green-500' : 'bg-gray-700'}`} />
+        <div className={`flex-1 h-0.5 mx-0.5 sm:mx-1 mt-4 sm:mt-5 transition-all duration-500 ${completed ? 'bg-green-500' : 'bg-gray-700'}`} />
     );
 }
 
@@ -128,10 +128,10 @@ export default function BillingStepper({
 
     return (
         <>
-            <div className="bg-gray-800/90 border border-gray-700 rounded-xl p-4 mb-4">
+            <div className="bg-gray-800/90 border border-gray-700 rounded-xl p-2.5 sm:p-4 mb-3 sm:mb-4">
                 {/* Header with Print button */}
-                <div className="flex justify-between items-center mb-3">
-                    <h2 className="text-sm font-semibold text-gray-300">Billing</h2>
+                <div className="flex justify-between items-center mb-2 sm:mb-3">
+                    <h2 className="text-xs sm:text-sm font-semibold text-gray-300">Billing</h2>
                     <button
                         onClick={onPrintBill}
                         className="flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-green-500 to-teal-500 hover:from-green-600 hover:to-teal-600 rounded-md font-medium text-xs transition-all duration-200 shadow hover:shadow-md"
@@ -142,7 +142,7 @@ export default function BillingStepper({
                 </div>
 
                 {/* Step indicators bar */}
-                <div className="flex items-start justify-center px-2">
+                <div className="flex items-start justify-center px-0 sm:px-2">
                     {STEPS.map((step, index) => (
                         <div key={step.number} className="contents">
                             <StepIndicator

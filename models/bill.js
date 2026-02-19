@@ -20,6 +20,7 @@ const billSchema = new Schema(
 );
 
 billSchema.index({ createdAt: 1 });
+billSchema.index({ tablebill_id: 1, billStatus: 1 });
 
 const Bill = mongoose.models.Bill || mongoose.model("Bill", billSchema);
 

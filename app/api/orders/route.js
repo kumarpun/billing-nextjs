@@ -63,12 +63,20 @@ export async function GET(request) {
                     from: "tables",
                     localField: "table_id",
                     foreignField: "_id",
-                    as: "table"
+                    as: "table",
+                    pipeline: [{ $project: { title: 1 } }]
                 }
             },
             {
                 $addFields: {
                     total_price: { $multiply: ["$order_price", "$order_quantity"] }
+                }
+            },
+            {
+                $project: {
+                    order_title: 1, order_price: 1, order_quantity: 1,
+                    order_type: 1, customer_status: 1, table_id: 1,
+                    table: 1, total_price: 1, createdAt: 1
                 }
             },
             {

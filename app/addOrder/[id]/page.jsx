@@ -1,9 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Select from 'react-select';
+import PageNav from "../../components/PageNav";
 
 // Cache key constant
 const MENU_CACHE_KEY = 'menu_items_cache';
@@ -240,33 +240,6 @@ export default function AddOrder({ params }) {
 
     const ClearIndicator = () => null;
 
-    // Logout function with API call
-    const handleLogout = async (e) => {
-        e.preventDefault();
-    
-        try {
-            // Clear menu cache
-            localStorage.removeItem(MENU_CACHE_KEY);
-            
-            const res = await fetch("/api/logout", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                }
-            });
-            
-            if (res.ok) {
-                router.replace("/");
-                return;
-            }
-        } catch (error) {
-            console.log(error);
-            // Fallback: clear local storage and redirect even if API call fails
-            localStorage.removeItem(MENU_CACHE_KEY);
-            router.replace("/");
-        }
-    };
-
     // Calculate total price
     const totalPrice = selectedItems.reduce((total, item) => {
         return total + (item.price * (item.quantity || 1));
@@ -276,20 +249,13 @@ export default function AddOrder({ params }) {
         return (
             <>
                 <div className="min-h-screen" style={{ backgroundColor: "#1a202c" }}>
-                <nav className="flex justify-between items-center px-4 py-2 navbar" style={{ backgroundColor: "#232b38" }}>
-                    <Link className="hover:text-gray-300 text-sm transition-colors duration-200 nav-button" href={`/listOrder/${id}`}>
-                    く
-                    </Link>
-                    <Link className="absolute left-1/2 transform -translate-x-1/2 font-bold text-lg page-title" href={"/tables"}>
-                        HYBE Food & Drinks
-                    </Link>
-                    <button
-                        onClick={(e) => handleLogout(e)} 
-                        className="hover:text-gray-300 text-sm transition-colors duration-200 nav-button"
-                    >
-                        Logout
-                    </button>
-                </nav>
+                <PageNav
+                    titleHref="/tables"
+                    centerTitle
+                    leftButton={{ label: "く", href: `/listOrder/${id}` }}
+                    showLogout
+                    onBeforeLogout={() => localStorage.removeItem(MENU_CACHE_KEY)}
+                />
                     
                     <div className="max-w-6xl mx-auto p-4 mt-4">
                         <div className="bg-gray-800 rounded-lg shadow-lg p-6 border border-gray-700">

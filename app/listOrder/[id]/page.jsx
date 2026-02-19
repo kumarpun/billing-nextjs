@@ -1,4 +1,4 @@
-import Link from "next/link";
+import PageNav from "../../components/PageNav";
 import OrderListClient from "../../components/OrderListClient";
 import { cookies } from 'next/headers';
 
@@ -63,15 +63,10 @@ export default async function ListOrder({ params }) {
     return (
         <>
         <div className="min-h-screen bg-[#283141] flex flex-col">
-        <nav className="flex justify-between items-center px-8 py-3 navbar" style={{ backgroundColor: "#232b38" }}>
-            <div style={{ flex: 0.4 }}></div>
-      <Link className="absolute left-1/2 transform -translate-x-1/2 font-bold page-title" href={"/tables"}>
-      HYBE Food & Drinks
-      </Link>
-        <Link className="hover:text-gray-300 font-medium transition-colors duration-200 nav-button" href={`/addOrder/${id}`}>
-        Place Order
-      </Link>
-        </nav>
+        <PageNav
+          titleHref="/tables"
+          buttons={[{ label: "Place Order", href: `/addOrder/${id}` }]}
+        />
   
         <div>
         <OrderListClient

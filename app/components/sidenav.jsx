@@ -1,16 +1,13 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
-import { 
-  FaChartBar, 
-  FaUsers, 
-  FaHome, 
-  FaSignOutAlt, 
-  FaReceipt, 
-  FaBars, 
-  FaTimes, 
-  FaDollarSign, 
-  FaClipboardList, 
+import {
+  FaChartBar,
+  FaUsers,
+  FaHome,
+  FaSignOutAlt,
+  FaReceipt,
+  FaClipboardList,
   FaWineBottle,
   FaChevronDown,
   FaChevronRight
@@ -57,16 +54,30 @@ export default function SideNav({ activeTab, onLogout, isCollapsed, toggleSideba
 
   const isSectionOpen = (sectionKey) => openSections.has(sectionKey);
 
+  const handleNavClick = () => {
+    if (typeof window !== 'undefined' && window.innerWidth < 768) {
+      toggleSidebar();
+    }
+  };
+
   return (
-    <div className="flex fixed left-0 top-0 h-screen">
+    <>
+      {/* Mobile backdrop */}
+      {!isCollapsed && (
+        <div
+          className="fixed inset-0 bg-black/50 z-30 md:hidden"
+          onClick={toggleSidebar}
+        />
+      )}
+
       {/* Sidebar */}
-      <div 
-        className={`bg-[#283141] h-full pt-16 transition-all duration-300 ease-in-out flex flex-col ${
-          isCollapsed ? "w-20" : "w-64"
-        }`}
+      <div
+        className={`fixed left-0 top-12 sm:top-14 bottom-0 z-40 bg-[#283141] transition-[width,transform] duration-300 ease-in-out flex flex-col
+          w-64 ${isCollapsed ? '-translate-x-full' : 'translate-x-0'}
+          md:translate-x-0 md:w-64
+        `}
       >
-        <br></br>
-        
+
         {/* Scrollable Navigation Area */}
         <div className="flex-1 overflow-y-auto overflow-x-hidden custom-scrollbar">
           <nav className="space-y-2 px-4 pb-4">
@@ -75,15 +86,13 @@ export default function SideNav({ activeTab, onLogout, isCollapsed, toggleSideba
               <Link
                 key={key}
                 href={path}
+                onClick={handleNavClick}
                 className={`flex items-center p-3 rounded-lg hover:bg-[#3a4659] transition ${
                   activeTab === key ? "bg-[#3a4659] text-white" : "text-gray-300"
                 }`}
-                title={isCollapsed ? label : ""}
               >
-                <Icon className={`${isCollapsed ? "mx-auto" : "mr-3"}`} />
-                {!isCollapsed && (
-                  <span className="truncate">{label}</span>
-                )}
+                <Icon className="shrink-0 mr-3" />
+                <span className="truncate">{label}</span>
               </Link>
             ))}
 
@@ -93,31 +102,28 @@ export default function SideNav({ activeTab, onLogout, isCollapsed, toggleSideba
                 {/* Accordion header */}
                 <button
                   onClick={() => toggleSection(section.key)}
-                  className={`flex items-center w-full p-3 rounded-lg hover:bg-[#3a4659] transition text-gray-300 hover:text-white ${
-                    isCollapsed ? "justify-center" : "justify-between"
-                  }`}
-                  title={isCollapsed ? section.label : ""}
+                  className="flex items-center w-full p-3 rounded-lg hover:bg-[#3a4659] transition text-gray-300 hover:text-white justify-between"
                 >
                   <div className="flex items-center">
-                    <section.icon className={isCollapsed ? "" : "mr-3"} />
-                    {!isCollapsed && (
-                      <span className="truncate">{section.label}</span>
-                    )}
+                    <section.icon className="shrink-0 mr-3" />
+                    <span className="truncate">{section.label}</span>
                   </div>
-                  {!isCollapsed && (
-                    isSectionOpen(section.key) ? 
-                      <FaChevronDown className="text-sm flex-shrink-0" /> : 
+                  <span>
+                    {isSectionOpen(section.key) ?
+                      <FaChevronDown className="text-sm flex-shrink-0" /> :
                       <FaChevronRight className="text-sm flex-shrink-0" />
-                  )}
+                    }
+                  </span>
                 </button>
 
-                {/* Accordion content */}
-                {!isCollapsed && isSectionOpen(section.key) && (
+                {/* Accordion content - expanded view */}
+                {isSectionOpen(section.key) && (
                   <div className="ml-4 space-y-1 border-l border-gray-600 pl-2">
                     {section.items.map((item) => (
                       <Link
                         key={item.key}
                         href={item.path}
+                        onClick={handleNavClick}
                         className={`flex items-center p-2 rounded-lg hover:bg-[#3a4659] transition ${
                           activeTab === item.key ? "bg-[#3a4659] text-white" : "text-gray-300"
                         }`}
@@ -128,23 +134,6 @@ export default function SideNav({ activeTab, onLogout, isCollapsed, toggleSideba
                   </div>
                 )}
 
-                {/* Collapsed view - show items directly when collapsed */}
-                {isCollapsed && isSectionOpen(section.key) && (
-                  <div className="space-y-1">
-                    {section.items.map((item) => (
-                      <Link
-                        key={item.key}
-                        href={item.path}
-                        className={`flex items-center justify-center p-2 rounded-lg hover:bg-[#3a4659] transition ${
-                          activeTab === item.key ? "bg-[#3a4659] text-white" : "text-gray-300"
-                        }`}
-                        title={item.label}
-                      >
-                        •
-                      </Link>
-                    ))}
-                  </div>
-                )}
               </div>
             ))}
           </nav>
@@ -154,26 +143,13 @@ export default function SideNav({ activeTab, onLogout, isCollapsed, toggleSideba
         <div className="flex-shrink-0 pt-4 border-t border-gray-700 px-4 pb-4">
           <button
             onClick={onLogout}
-            className={`flex items-center w-full p-3 rounded-lg hover:bg-[#3a4659] transition text-gray-300 hover:text-white ${
-              isCollapsed ? "justify-center" : ""
-            }`}
-            title={isCollapsed ? "Logout" : ""}
+            className="flex items-center w-full p-3 rounded-lg hover:bg-[#3a4659] transition text-gray-300 hover:text-white"
           >
-            <FaSignOutAlt className={isCollapsed ? "" : "mr-3"} />
-            {!isCollapsed && "Logout"}
+            <FaSignOutAlt className="shrink-0 mr-3" />
+            <span>Logout</span>
           </button>
         </div>
       </div>
-
-      {/* Toggle Button */}
-      <button
-        onClick={toggleSidebar}
-        className={`self-start mt-4 ml-2 p-2 rounded-md bg-[#283141] text-white hover:bg-[#3a4659] transition z-50 ${
-          isCollapsed ? "ml-2" : "ml-0"
-        }`}
-      >
-        {isCollapsed ? <FaBars size={20} /> : <FaTimes size={20} />}
-      </button>
 
       {/* Custom Scrollbar Styles */}
       <style jsx>{`
@@ -192,6 +168,6 @@ export default function SideNav({ activeTab, onLogout, isCollapsed, toggleSideba
           background: #718096;
         }
       `}</style>
-    </div>
+    </>
   );
 }

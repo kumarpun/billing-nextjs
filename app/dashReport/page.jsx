@@ -158,10 +158,11 @@ export default function DashReport() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex flex-col">
       {/* Side Navigation */}
-      <SideNav 
-        activeTab={activeTab} 
-        onLogout={handleLogout} 
+      <SideNav
+        activeTab={activeTab}
+        onLogout={handleLogout}
         isCollapsed={isSidebarCollapsed}
+        toggleSidebar={toggleSidebar}
       />
       
       {/* Top Navigation */}
@@ -201,7 +202,7 @@ export default function DashReport() {
       {/* <DutyRosterWarning /> */}
 
       {/* Main Content Area */}
-      <div className={`flex-1 p-4 transition-all duration-300 ${isSidebarCollapsed ? "ml-20" : "ml-64"} mt-16`}>
+      <div className={`flex-1 p-3 sm:p-4 transition-all duration-300 ml-0 md:ml-64 mt-12 sm:mt-14`}>
         {activeTab === "dashboard" && (
           <motion.div 
             initial="hidden"
@@ -210,110 +211,107 @@ export default function DashReport() {
             className="space-y-4"
           >
             {/* Stats Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <motion.div 
+            <div className="grid grid-cols-2 gap-2 sm:gap-4">
+              <motion.div
                 variants={itemVariants}
                 whileHover={cardHover}
-                className="bg-white p-4 rounded-lg shadow border-l-4 border-blue-500"
+                className="bg-white p-2.5 sm:p-4 rounded-lg shadow border-l-4 border-blue-500"
               >
-                <div className="flex items-center space-x-3">
-                  <div className="p-2 rounded-full bg-blue-100 text-blue-600">
-                    <FaMoneyBillWave className="text-lg" />
+                <div className="flex items-center space-x-2 sm:space-x-3">
+                  <div className="p-1.5 sm:p-2 rounded-full bg-blue-100 text-blue-600 shrink-0">
+                    <FaMoneyBillWave className="text-sm sm:text-lg" />
                   </div>
-                  <div>
-                    <h3 className="text-md font-semibold text-gray-800">Today's Revenue</h3>
-                    <p className="text-xl font-bold text-black">Rs. {totalFinalPrice.toLocaleString("en-IN")}</p>
+                  <div className="min-w-0">
+                    <h3 className="text-xs sm:text-sm font-semibold text-gray-800">Today's Revenue</h3>
+                    <p className="text-sm sm:text-xl font-bold text-black truncate">Rs. {totalFinalPrice.toLocaleString("en-IN")}</p>
                   </div>
                 </div>
               </motion.div>
 
-              <motion.div 
+              <motion.div
                 variants={itemVariants}
                 whileHover={cardHover}
-                className="bg-white p-4 rounded-lg shadow border-l-4 border-green-500"
+                className="bg-white p-2.5 sm:p-4 rounded-lg shadow border-l-4 border-green-500"
               >
-                <div className="flex items-center space-x-3">
-                  <div className="p-2 rounded-full bg-green-100 text-green-600">
-                    <FaUtensils className="text-lg" />
+                <div className="flex items-center space-x-2 sm:space-x-3">
+                  <div className="p-1.5 sm:p-2 rounded-full bg-green-100 text-green-600 shrink-0">
+                    <FaUtensils className="text-sm sm:text-lg" />
                   </div>
-                  <div>
-                    <h3 className="text-md font-semibold text-gray-800">Running Tables</h3>
+                  <div className="min-w-0">
+                    <h3 className="text-xs sm:text-sm font-semibold text-gray-800">Running Tables</h3>
                     {isLoadingTables ? (
-                      <div className="flex items-center space-x-2">
-                        <div className="w-5 h-5 border-2 border-gray-300 border-t-black rounded-full animate-spin"></div>
+                      <div className="flex items-center">
+                        <div className="w-4 h-4 sm:w-5 sm:h-5 border-2 border-gray-300 border-t-black rounded-full animate-spin"></div>
                       </div>
                     ) : (
-                      <p className="text-xl font-bold text-black">{runningTablesCount}</p>
+                      <p className="text-sm sm:text-xl font-bold text-black">{runningTablesCount}</p>
                     )}
                   </div>
                 </div>
               </motion.div>
             </div>
-            
+
             {/* Half Row Sections */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 sm:gap-4">
               {/* Compact Top Selling Items */}
-              <motion.div 
+              <motion.div
                 variants={itemVariants}
                 whileHover={cardHover}
-                className="bg-white p-4 rounded-lg shadow border-l-4 border-purple-500"
+                className="bg-white p-3 sm:p-4 rounded-lg shadow border-l-4 border-purple-500"
               >
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-md font-semibold text-gray-800 flex items-center space-x-2">
-                    <FaFire className="text-orange-500 text-sm" />
+                <div className="flex items-center justify-between mb-2 sm:mb-3">
+                  <h3 className="text-xs sm:text-sm font-semibold text-gray-800 flex items-center space-x-1.5 sm:space-x-2">
+                    <FaFire className="text-orange-500 text-xs sm:text-sm" />
                     <span>Top Selling Items</span>
                   </h3>
-                  <span className="px-2 py-0.5 bg-purple-100 text-purple-800 text-xs font-medium rounded-full">
+                  <span className="px-1.5 sm:px-2 py-0.5 bg-purple-100 text-purple-800 text-[0.6rem] sm:text-xs font-medium rounded-full">
                     Today
                   </span>
                 </div>
-                
+
                 {isLoadingTopItems ? (
                   <div className="flex justify-center py-2">
-                    <div className="w-5 h-5 border-2 border-gray-300 border-t-black rounded-full animate-spin"></div>
+                    <div className="w-4 h-4 sm:w-5 sm:h-5 border-2 border-gray-300 border-t-black rounded-full animate-spin"></div>
                   </div>
                 ) : topItems.length > 0 ? (
-                  <div className="space-y-2">
+                  <div className="space-y-1 sm:space-y-2">
                     {topItems.map((item, index) => (
-                      <motion.div 
+                      <motion.div
                         key={index}
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: index * 0.05 }}
-                        className="flex items-center justify-between py-1.5 px-2 text-sm hover:bg-gray-50 rounded"
+                        className="flex items-center justify-between py-1 sm:py-1.5 px-1.5 sm:px-2 text-xs sm:text-sm hover:bg-gray-50 rounded"
                       >
-                        <div className="flex items-center space-x-2 truncate">
+                        <div className="flex items-center space-x-1.5 sm:space-x-2 truncate">
                           <span className={`font-medium ${
-                            index === 0 ? 'text-yellow-600' : 
-                            index === 1 ? 'text-gray-600' : 
+                            index === 0 ? 'text-yellow-600' :
+                            index === 1 ? 'text-gray-600' :
                             index === 2 ? 'text-amber-600' : 'text-blue-600'
                           }`}>
                             {index + 1}.
                           </span>
                           <span className="truncate text-black">{item.name}</span>
                         </div>
-                        <span className="font-medium text-black">{item.quantity}</span>
+                        <span className="font-medium text-black shrink-0 ml-2">{item.quantity}</span>
                       </motion.div>
                     ))}
                   </div>
                 ) : (
-                  <p className="text-center text-sm text-gray-500 py-3">No sales data available</p>
+                  <p className="text-center text-xs sm:text-sm text-gray-500 py-2 sm:py-3">No sales data available</p>
                 )}
               </motion.div>
 
               {/* Sales Trend */}
-              <motion.div 
+              <motion.div
                 variants={itemVariants}
                 whileHover={cardHover}
-                className="bg-white p-4 rounded-lg shadow border-l-4 border-teal-500"
+                className="bg-white p-3 sm:p-4 rounded-lg shadow border-l-4 border-teal-500"
               >
-                <div className="flex items-center space-x-2 mb-3">
-                  <FaChartLine className="text-teal-500 text-sm" />
-                  <h3 className="text-md font-semibold text-gray-800">Sales Trend</h3>
+                <div className="flex items-center space-x-1.5 sm:space-x-2 mb-2 sm:mb-3">
+                  <FaChartLine className="text-teal-500 text-xs sm:text-sm" />
+                  <h3 className="text-xs sm:text-sm font-semibold text-gray-800">Sales Trend</h3>
                 </div>
-                {/* <div className="flex items-center justify-center h-28 bg-gray-50 rounded">
-                  <p className="text-sm text-gray-500">Chart visualization coming soon</p>
-                </div> */}
                 <SalesTrendChart />
               </motion.div>
             </div>

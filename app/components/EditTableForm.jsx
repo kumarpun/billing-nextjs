@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
+import PageNav from "./PageNav";
 
 export default function EditTableForm({ id, title, description }) {
     const [newTitle, setNewTitle] = useState(title);
@@ -20,11 +20,11 @@ export default function EditTableForm({ id, title, description }) {
               },
               body: JSON.stringify({ newTitle, newDescription }),
             });
-      
+
             if (!res.ok) {
               throw new Error("Failed to update tables");
             }
-      
+
             router.push("/");
             router.refresh();
           } catch (error) {
@@ -34,22 +34,12 @@ export default function EditTableForm({ id, title, description }) {
 
     return (
         <>
-     <nav className="flex justify-between items-center px-8 py-3 navbar" style={{ backgroundColor: "#232b38" }}>
-            <div style={{ flex: 0.4 }}></div>
-      <Link className="absolute left-1/2 transform -translate-x-1/2 font-bold page-title" href={"/tables"}>
-      HYBE Food & Drinks
-      </Link>
-      <div style={{ display: 'flex', gap: '12px' }}>
-      <Link className="hover:text-gray-300 font-medium transition-colors duration-200 nav-button" href={"/tables"}>
-         Table List
-      </Link>
-      <button
-        onClick={(e) => handleLogout(e)} className="hover:text-gray-300 font-medium transition-colors duration-200 nav-button">
-            Logout
-        </button>
-      </div>
-        </nav>
-        {/* <hr className="separator" /> */}
+        <PageNav
+            titleHref="/tables"
+            centerTitle
+            buttons={[{ label: "Table List", href: "/tables" }]}
+            showLogout
+        />
         <br/>
         <form onSubmit={handleSubmit} className="flex flex-col gap-3">
         <input

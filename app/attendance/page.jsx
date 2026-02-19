@@ -4,7 +4,7 @@ import SideNav from "../components/sidenav";
 import TopNav from "../components/topnav";
 
 export default function Dashboard() {
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);  
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(true);
   const [attendances, setAttendances] = useState([]);
   const [showCheckInForm, setShowCheckInForm] = useState(false);
   const [editingAttendance, setEditingAttendance] = useState(null);
@@ -520,21 +520,21 @@ export default function Dashboard() {
 
   return (
     <div className="flex bg-gradient-to-br from-gray-50 to-blue-50 min-h-screen w-full text-gray-800">
-      <SideNav activeTab="attendance" isCollapsed={isSidebarCollapsed} />
+      <SideNav activeTab="attendance" isCollapsed={isSidebarCollapsed} toggleSidebar={toggleSidebar} />
       <div className="flex-1 flex flex-col">
         <TopNav isSidebarCollapsed={isSidebarCollapsed} toggleSidebar={toggleSidebar} />
-        <div className={`flex-1 p-6 transition-all duration-300 ${isSidebarCollapsed ? "ml-20" : "ml-64"}`}>
+        <div className={`flex-1 p-3 sm:p-6 transition-all duration-300 ml-0 md:ml-64 mt-12 sm:mt-14`}>
           {/* Header Section */}
           <br></br>
-          <div className="flex justify-between items-center mb-6">
-            <h1 className="text-2xl font-bold text-gray-800">Staff Attendance</h1>
-            <div className="flex items-center space-x-4">
-              <span className="text-gray-600">Date:</span>
-              <input 
-                type="date" 
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 sm:gap-0 mb-4 sm:mb-6">
+            <h1 className="text-lg sm:text-2xl font-bold text-gray-800">Staff Attendance</h1>
+            <div className="flex items-center space-x-2 sm:space-x-4">
+              <span className="text-sm sm:text-base text-gray-600">Date:</span>
+              <input
+                type="date"
                 value={selectedDate}
                 onChange={(e) => setSelectedDate(e.target.value)}
-                className="border rounded-md px-3 py-2 text-sm"
+                className="border rounded-md px-2 sm:px-3 py-1.5 sm:py-2 text-sm"
               />
             </div>
           </div>
@@ -591,8 +591,8 @@ export default function Dashboard() {
 
           {/* Summary Section - Only shown when toggled */}
           {showSummarySection && (
-            <div className="bg-white p-4 rounded-lg shadow-sm mb-6 transition-all duration-300">
-              <h2 className="text-lg font-bold mb-4">Attendance Summary</h2>
+            <div className="bg-white p-3 sm:p-4 rounded-lg shadow-sm mb-4 sm:mb-6 transition-all duration-300">
+              <h2 className="text-base sm:text-lg font-bold mb-3 sm:mb-4">Attendance Summary</h2>
               <div className="flex flex-col md:flex-row md:items-center space-y-4 md:space-y-0 md:space-x-4">
                 <div className="flex-1">
                   <label className="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
@@ -626,28 +626,28 @@ export default function Dashboard() {
           )}
 
           {showSummary && summaryData.length > 0 && (
-            <div className="bg-white rounded-lg shadow-sm overflow-hidden mb-6 transition-all duration-300">
-              <div className="p-4 border-b">
-                <h3 className="text-lg font-semibold">
+            <div className="bg-white rounded-lg shadow-sm overflow-hidden mb-4 sm:mb-6 transition-all duration-300">
+              <div className="p-3 sm:p-4 border-b">
+                <h3 className="text-sm sm:text-lg font-semibold">
                   Deduction Summary ({new Date(startDate).toLocaleDateString()} - {new Date(endDate).toLocaleDateString()})
                 </h3>
               </div>
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead className="bg-gray-50">
+              <div className="overflow-hidden">
+                <table className="w-full sales-report-table">
+                  <thead className="bg-gray-50" style={{ color: '#374151' }}>
                     <tr>
-                      <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Staff Name</th>
-                      <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Records Count</th>
-                      <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Average Deduction %</th>
+                      <th className="py-2 px-2 sm:py-3 sm:px-4 text-left text-xs font-medium uppercase tracking-wider">Name</th>
+                      <th className="py-2 px-2 sm:py-3 sm:px-4 text-left text-xs font-medium uppercase tracking-wider">Count</th>
+                      <th className="py-2 px-2 sm:py-3 sm:px-4 text-left text-xs font-medium uppercase tracking-wider">Avg Deduction %</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-gray-200">
+                  <tbody className="divide-y divide-gray-200" style={{ color: '#111827' }}>
                     {summaryData.map((item, index) => (
                       <tr key={index} className="hover:bg-gray-50">
-                        <td className="py-3 px-4">{item.name}</td>
-                        <td className="py-3 px-4">{item.count}</td>
-                        <td className="py-3 px-4">
-                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                        <td className="py-2 px-2 sm:py-3 sm:px-4 text-xs sm:text-sm">{item.name}</td>
+                        <td className="py-2 px-2 sm:py-3 sm:px-4 text-xs sm:text-sm">{item.count}</td>
+                        <td className="py-2 px-2 sm:py-3 sm:px-4">
+                          <span className={`px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full text-xs font-medium ${
                             item.averageDeduction > 0 ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'
                           }`}>
                             {item.averageDeduction.toFixed(2)}%
@@ -680,22 +680,24 @@ export default function Dashboard() {
 
           {/* Filter Section */}
           {!loading && (
-            <div className="bg-white p-4 rounded-lg shadow-sm mb-6">
-              <div className="flex items-center">
-                <span className="mr-3 text-gray-600">Filter by status:</span>
-                <select 
-                  value={filter}
-                  onChange={(e) => setFilter(e.target.value)}
-                  className="border rounded-md px-3 py-2 text-sm"
-                >
-                  <option value="all">All Status</option>
-                  <option value="present">Present</option>
-                  <option value="late">Late</option>
-                  <option value="absent">Absent</option>
-                </select>
-                <div className="ml-auto">
-                  <span className="text-gray-600">
-                    Showing records for: {new Date(selectedDate).toLocaleDateString()}
+            <div className="bg-white p-3 sm:p-4 rounded-lg shadow-sm mb-4 sm:mb-6">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-0">
+                <div className="flex items-center">
+                  <span className="mr-2 sm:mr-3 text-sm sm:text-base text-gray-600">Filter:</span>
+                  <select
+                    value={filter}
+                    onChange={(e) => setFilter(e.target.value)}
+                    className="border rounded-md px-2 sm:px-3 py-1.5 sm:py-2 text-sm"
+                  >
+                    <option value="all">All Status</option>
+                    <option value="present">Present</option>
+                    <option value="late">Late</option>
+                    <option value="absent">Absent</option>
+                  </select>
+                </div>
+                <div className="sm:ml-auto">
+                  <span className="text-xs sm:text-sm text-gray-600">
+                    Showing: {new Date(selectedDate).toLocaleDateString()}
                   </span>
                 </div>
               </div>
@@ -705,34 +707,34 @@ export default function Dashboard() {
           {/* Attendance Table */}
           {!loading && (
             <div className="bg-white rounded-lg shadow-sm overflow-hidden">
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead className="bg-gray-50">
+              <div className="overflow-hidden">
+                <table className="w-full sales-report-table">
+                  <thead className="bg-gray-50" style={{ color: '#374151' }}>
                     <tr>
-                      <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Staff Name</th>
-                      <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Shift</th>
-                      <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Check In</th>
-                      <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Check Out</th>
-                      <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                      <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Time Lost</th>
-                      <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Deduction %</th>
-                      <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                      <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Remarks</th>
-                      <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                      <th className="py-1.5 px-1.5 sm:py-3 sm:px-4 text-left text-xs font-medium uppercase tracking-wider">Name</th>
+                      <th className="hidden sm:table-cell py-3 px-4 text-left text-xs font-medium uppercase tracking-wider">Shift</th>
+                      <th className="py-1.5 px-1.5 sm:py-3 sm:px-4 text-left text-xs font-medium uppercase tracking-wider">In</th>
+                      <th className="hidden sm:table-cell py-3 px-4 text-left text-xs font-medium uppercase tracking-wider">Out</th>
+                      <th className="py-1.5 px-1.5 sm:py-3 sm:px-4 text-left text-xs font-medium uppercase tracking-wider">Status</th>
+                      <th className="hidden sm:table-cell py-3 px-4 text-left text-xs font-medium uppercase tracking-wider">Time Lost</th>
+                      <th className="hidden sm:table-cell py-3 px-4 text-left text-xs font-medium uppercase tracking-wider">Deduction %</th>
+                      <th className="hidden sm:table-cell py-3 px-4 text-left text-xs font-medium uppercase tracking-wider">Date</th>
+                      <th className="hidden sm:table-cell py-3 px-4 text-left text-xs font-medium uppercase tracking-wider">Remarks</th>
+                      <th className="py-1.5 px-1.5 sm:py-3 sm:px-4 text-left text-xs font-medium uppercase tracking-wider">Act</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-gray-200">
+                  <tbody className="divide-y divide-gray-200" style={{ color: '#111827' }}>
                     {filteredDailyAttendance().length > 0 ? (
                       filteredDailyAttendance().map((item, index) => (
                         <tr key={index} className="hover:bg-gray-50">
-                          <td className="py-3 px-4">{item.staff.name}</td>
-                          <td className="py-3 px-4">
+                          <td className="py-1.5 px-1.5 sm:py-3 sm:px-4 text-xs sm:text-sm">{item.staff.name}</td>
+                          <td className="hidden sm:table-cell py-3 px-4 text-sm">
                             {item.attendance ? item.attendance.shiftTime : "-"}
                           </td>
-                          <td className="py-3 px-4">
+                          <td className="py-1.5 px-1.5 sm:py-3 sm:px-4 text-xs sm:text-sm">
                             {item.attendance && item.attendance.status !== "absent" ? formatTime(item.attendance.checkInTime) : "-"}
                           </td>
-                          <td className="py-3 px-4">
+                          <td className="hidden sm:table-cell py-3 px-4 text-sm">
                             {item.attendance && item.attendance.status !== "absent" ? (
                               item.attendance.checkOutTime ? (
                                 formatTime(item.attendance.checkOutTime)
@@ -746,9 +748,9 @@ export default function Dashboard() {
                               )
                             ) : "-"}
                           </td>
-                          <td className="py-3 px-4">
+                          <td className="py-1.5 px-1.5 sm:py-3 sm:px-4">
                             {item.attendance ? (
-                              <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                              <span className={`px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full text-xs font-medium ${
                                 item.attendance.status === 'present' ? 'bg-green-100 text-green-800' :
                                 item.attendance.status === 'late' ? 'bg-yellow-100 text-yellow-800' :
                                 'bg-red-100 text-red-800'
@@ -756,12 +758,12 @@ export default function Dashboard() {
                                 {item.attendance.status}
                               </span>
                             ) : (
-                              <span className="px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                                Not Checked
+                              <span className="px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                N/A
                               </span>
                             )}
                           </td>
-                          <td className="py-3 px-4">
+                          <td className="hidden sm:table-cell py-3 px-4">
                             {item.attendance && item.attendance.status !== "absent" ? (
                               <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                                 item.attendance.timeLost > 0 ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'
@@ -770,7 +772,7 @@ export default function Dashboard() {
                               </span>
                             ) : "-"}
                           </td>
-                          <td className="py-3 px-4">
+                          <td className="hidden sm:table-cell py-3 px-4">
                             {item.attendance && item.attendance.deductionPercentage && item.attendance.status !== "absent" ? (
                               <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                                 item.attendance.deductionPercentage > 0 ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'
@@ -779,32 +781,32 @@ export default function Dashboard() {
                               </span>
                             ) : "-"}
                           </td>
-                          <td className="py-3 px-4">
+                          <td className="hidden sm:table-cell py-3 px-4 text-sm">
                             {new Date(selectedDate).toLocaleDateString()}
                           </td>
-                          <td className="py-3 px-4">
+                          <td className="hidden sm:table-cell py-3 px-4 text-sm">
                             {item.attendance ? item.attendance.remarks : "-"}
                           </td>
-                          <td className="py-3 px-4">
+                          <td className="py-1.5 px-1.5 sm:py-3 sm:px-4">
                             <div className="flex space-x-2">
                               {!item.attendance ? (
-                                <button 
+                                <button
                                   onClick={() => {
                                     setSelectedStaff(item.staff);
                                     setShowCheckInForm(true);
                                   }}
-                                  className="text-green-600 hover:text-green-800 px-2 py-1 bg-green-100 rounded text-sm"
+                                  className="text-green-600 hover:text-green-800 px-1.5 sm:px-2 py-0.5 sm:py-1 bg-green-100 rounded text-xs sm:text-sm"
                                   title="Check In"
                                 >
-                                  <i className="fas fa-sign-in-alt mr-1"></i> Check In
+                                  <span className="hidden sm:inline"><i className="fas fa-sign-in-alt mr-1"></i> </span>Check In
                                 </button>
                               ) : (
-                                <button 
+                                <button
                                   onClick={() => setEditingAttendance(item.attendance)}
-                                  className="text-blue-600 hover:text-blue-800 px-2 py-1 bg-blue-100 rounded text-sm"
+                                  className="text-blue-600 hover:text-blue-800 px-1.5 sm:px-2 py-0.5 sm:py-1 bg-blue-100 rounded text-xs sm:text-sm"
                                   title="Edit"
                                 >
-                                  <i className="fas fa-edit mr-1"></i> Edit
+                                  <span className="hidden sm:inline"><i className="fas fa-edit mr-1"></i> </span>Edit
                                 </button>
                               )}
                             </div>

@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import Link from "next/link";
+import PageNav from "../components/PageNav";
 
 export default function SalesCalculation() {
     const [orderTitle, setOrderTitle] = useState("");
@@ -31,17 +31,11 @@ export default function SalesCalculation() {
 
     return (
         <>
-            <nav className="flex justify-between items-center px-8 py-3 navbar" style={{ backgroundColor: "#232b38" }}>
-            <div style={{ flex: 0.4 }}></div>
-      <Link className="absolute left-1/2 transform -translate-x-1/2 font-bold page-title" href={"/orderQuantity"}>
-      HYBE Food & Drinks
-      </Link>
-                <div style={{ display: 'flex', gap: '12px' }}>
-                <Link className="hover:text-gray-300 font-medium transition-colors duration-200 nav-button" href={"/tables"}>
-         Tables
-      </Link>
-                </div>
-            </nav>
+            <PageNav
+                titleHref="/orderQuantity"
+                centerTitle
+                buttons={[{ label: "Tables", href: "/tables" }]}
+            />
 
             <div className="search-container p-8">
                 <h2 className="text-lg font-bold mb-4">Search Order Count by Title</h2>

@@ -1,34 +1,48 @@
 "use client";
+import { useState } from "react";
 import Link from "next/link";
-import { FaBars, FaTimes } from "react-icons/fa";
+import { useRouter } from "next/navigation";
+import { FiMenu, FiX } from "react-icons/fi";
 
 export default function TopNav({ isSidebarCollapsed, toggleSidebar }) {
+  const [isNavigating, setIsNavigating] = useState(false);
+  const router = useRouter();
+
+  const handleTablesClick = () => {
+    setIsNavigating(true);
+    router.push("/dashboard");
+  };
+
   return (
-    <div>
-         <nav className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-8 py-3 bg-[#232b38]">  
-         <button
-        onClick={toggleSidebar}
-        className="p-2 rounded-md text-gray-300 hover:bg-[#3a4659] transition"
-        aria-label={isSidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
-      >
-        {isSidebarCollapsed ? <FaBars size={20} /> : <FaTimes size={20} />}
-      </button>          
-            <div style={{ flex: 0.4 }}></div>
-      <Link className="absolute left-1/2 transform -translate-x-1/2 font-bold page-title" href={"/dashReport"}>
-      HYBE Food & Drinks
-      </Link>
-        {/* {Array.from("HYBE Food & Drinks").map((char, index) => (
-        <span key={index} className={`char-${index}`}>{char}</span>
-    ))}     */}
-      <div style={{ display: 'flex', gap: '12px' }}>
-      {/* <Link className="px-6 py-2 mt-3 add-table" href={"/listReport"}>
-        Sales Report
-      </Link> */}
-       <Link className="hover:text-gray-300 font-medium transition-colors duration-200 nav-button" href={"/tables"}>
-         Tables
-      </Link>
+    <nav className="fixed top-0 left-0 right-0 z-50 px-3 sm:px-8 py-2 sm:py-3" style={{ backgroundColor: "#232b38" }}>
+      <div className="flex justify-between items-center">
+        <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+          <button
+            onClick={toggleSidebar}
+            className="text-gray-200 p-1 shrink-0 md:hidden"
+            aria-label={isSidebarCollapsed ? "Open sidebar" : "Close sidebar"}
+          >
+            {isSidebarCollapsed ? <FiMenu size={22} /> : <FiX size={22} />}
+          </button>
+          <Link className="font-bold page-title text-sm sm:text-base truncate" href="/dashboard">
+            HYBE Food & Drinks
+          </Link>
+        </div>
+        <button
+          onClick={handleTablesClick}
+          disabled={isNavigating}
+          className="shrink-0 ml-2 px-5 py-1.5 text-sm font-semibold tracking-wide uppercase rounded-full border border-purple-400/50 bg-gradient-to-r from-violet-600 via-purple-500 to-fuchsia-500 text-white shadow-lg shadow-purple-600/40 hover:from-violet-500 hover:via-purple-400 hover:to-fuchsia-400 hover:shadow-xl hover:shadow-purple-500/50 hover:scale-105 active:scale-95 transition-all duration-300 disabled:opacity-80 disabled:hover:scale-100"
+        >
+          {isNavigating ? (
+            <span className="flex items-center gap-2">
+              <span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+              Loading
+            </span>
+          ) : (
+            "Tables"
+          )}
+        </button>
       </div>
-        </nav>
-    </div>
+    </nav>
   );
 }

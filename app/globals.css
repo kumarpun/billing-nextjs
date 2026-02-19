@@ -286,9 +286,15 @@ margin-top: -32px;
 }
 
 .page-title{
-  font-size: 1.2rem;
+  font-size: 1rem;
   font-family: 'Monaco';
   color: #E0E0E0;
+}
+
+@media (min-width: 640px) {
+  .page-title {
+    font-size: 1.2rem;
+  }
 }
 
 .nav-button{
@@ -296,10 +302,17 @@ margin-top: -32px;
   color: #E0E0E0;
   border: 1px solid rgba(229, 231, 235, 0.3);
   border-radius: 4px;
-  padding: 0.4rem 1rem;
-  font-size: 0.9rem;
+  padding: 0.3rem 0.75rem;
+  font-size: 0.8rem;
   display: flex;
-  justify-content: flex-end;
+  align-items: center;
+}
+
+@media (min-width: 640px) {
+  .nav-button {
+    padding: 0.4rem 1rem;
+    font-size: 0.9rem;
+  }
 }
 
 .nav-button:hover {
@@ -417,6 +430,11 @@ tbody tr.hide td img {
       min-width: 12.1rem;
   }
 }
+@media (max-width: 1000px) {
+  table.sales-report-table td:not(:first-of-type) {
+      min-width: auto;
+  }
+}
 thead th:hover {
   color: #6c00bd;
 }
@@ -437,13 +455,24 @@ tbody tr {
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  padding: 16px;
 }
 
 .modal-content {
   background: white;
-  padding: 40px;
+  padding: 20px;
   border-radius: 8px;
   position: relative;
+  width: 100%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+@media (min-width: 640px) {
+  .modal-content {
+    padding: 40px;
+  }
 }
 
 .modal-close {

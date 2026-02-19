@@ -19,7 +19,7 @@ const BASE_URL = process.env.NEXTAUTH_URL || 'http://localhost:3000';
 
 const getTables = async () => {
   try {
-    const res = await fetch(`${BASE_URL}/api/tables`, {
+    const res = await fetch(`${BASE_URL}/api/tables?withOrders=true`, {
       cache: "no-store",
     });
 
@@ -30,23 +30,7 @@ const getTables = async () => {
 
     if (!Array.isArray(tables)) return [];
 
-    const tablesWithOrders = await Promise.all(
-      tables.map(async (table) => {
-        const orderRes = await fetch(
-          `${BASE_URL}/api/orders/${table._id}`,
-          { cache: "no-store" }
-        );
-        const orders = await orderRes.json();
-        const totalPrice =
-          orders.orderbyTableId?.reduce((sum, order) => {
-            return sum + (order.final_price || 0);
-          }, 0) || 0;
-
-        return { ...table, orders, totalPrice };
-      })
-    );
-
-    return tablesWithOrders;
+    return tables;
   } catch (error) {
     console.error("Error loading tables: ", error);
     return [];
@@ -78,7 +62,7 @@ export default async function TableList() {
   const terraceTables = tables.slice(10);
 
   return (
-    <div className="min-h-screen px-4 py-6 sm:px-8 transition-colors duration-300 relative" style={{backgroundColor: '#283141'}}>
+    <div className="min-h-screen px-2 py-4 sm:px-8 sm:py-6 transition-colors duration-300 relative" style={{backgroundColor: '#283141'}}>
       {/* Background Layer */}
       <div className="fixed inset-0 -z-10" style={{backgroundColor: '#283141'}} />
       
@@ -127,12 +111,12 @@ function TableSection({ title, tables, icon, gradient, isTerrace = false }) {
         {icon && React.cloneElement(icon, { className: `${icon.props.className} w-full h-full` })}
       </div>
     
-      <h2 className={`text-3xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r ${gradient} inline-flex items-center gap-3`}>
-        {icon && React.cloneElement(icon, { size: 28 })}
+      <h2 className={`text-xl sm:text-3xl font-bold mb-3 sm:mb-6 bg-clip-text text-transparent bg-gradient-to-r ${gradient} inline-flex items-center gap-2 sm:gap-3`}>
+        {icon && React.cloneElement(icon, { size: 22 })}
         {title}
       </h2>
     
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:mx-auto">
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 sm:gap-4 lg:mx-auto">
         {tables.map((t) => (
           <LuxuryTableCard
             key={t._id}
@@ -173,23 +157,23 @@ function LuxuryTableCard({ table, gradient, isTerrace = false }) {
         <div className="absolute top-0 right-0 w-32 h-32 -mr-10 -mt-10 rounded-full" style={{background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.1) 100%)'}}></div>
       
         {/* Header */}
-        <div className="relative z-20 flex justify-between items-start mb-4">
-          <div>
-            <h3 className={`text-xl p-1 font-bold mb-1 ${isTerrace ? 'text-amber-200' : 'text-white'}`}>
+        <div className="relative z-20 flex justify-between items-start mb-2 sm:mb-4">
+          <div className="min-w-0 flex-1">
+            <h3 className={`text-base sm:text-xl p-0.5 sm:p-1 font-bold mb-0.5 truncate ${isTerrace ? 'text-amber-200' : 'text-white'}`}>
               {table.title}
             </h3>
-            <p className={`text-sm ${isTerrace ? 'text-amber-100/80' : 'text-gray-100/80'}`}>
+            <p className={`text-xs sm:text-sm truncate ${isTerrace ? 'text-amber-100/80' : 'text-gray-100/80'}`}>
               {table.description}
             </p>
           </div>
-        
-          <div className="flex space-x-3">
+
+          <div className="flex space-x-1.5 sm:space-x-3 shrink-0 ml-1">
             <Link href={`/listOrder/${table._id}`}>
               <ActionBtn className="hover:scale-110 transition-transform" />
             </Link>
             <Link href={`/editTable/${table._id}`}>
               <HiPencilAlt
-                className={`text-2xl p-1 rounded-full transition-all
+                className={`text-xl sm:text-2xl p-0.5 sm:p-1 rounded-full transition-all
                   ${isTerrace ?
                     'text-amber-200 hover:bg-amber-500/30' :
                     'text-gray-200 hover:bg-gray-500/30'}
@@ -200,40 +184,39 @@ function LuxuryTableCard({ table, gradient, isTerrace = false }) {
         </div>
 
         {/* Status indicator */}
-        <div className="relative z-20 mb-5 -mt-3">
+        <div className="relative z-20 mb-3 sm:mb-5 -mt-1 sm:-mt-3">
           {isRunning ? (
-            <div className="inline-flex items-center px-4 py-2 rounded-full border shadow-inner" style={{background: 'linear-gradient(to right, rgba(6, 90, 8, 0.94) 0%, rgba(167, 243, 208, 0.3) 100%)', borderColor: 'rgba(6, 90, 8, 0.94)'}}>
-              <span className="relative flex h-3 w-3 mr-2">
+            <div className="inline-flex items-center px-2.5 py-1 sm:px-4 sm:py-2 rounded-full border shadow-inner" style={{background: 'linear-gradient(to right, rgba(6, 90, 8, 0.94) 0%, rgba(167, 243, 208, 0.3) 100%)', borderColor: 'rgba(6, 90, 8, 0.94)'}}>
+              <span className="relative flex h-2 w-2 sm:h-3 sm:w-3 mr-1.5 sm:mr-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-100"></span>
-                <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 sm:h-3 sm:w-3 bg-green-500"></span>
               </span>
-              <span className="text-sm font-medium text-green-400 ">Active</span>
-              <span className="ml-1 text-[0.65rem] text-green-400">Running</span>
+              <span className="text-xs sm:text-sm font-medium text-green-400">Active</span>
             </div>
           ) : (
-            <div className="inline-flex items-center px-4 py-2 rounded-full border shadow-inner" style={{background: 'linear-gradient(to right, rgba(255, 255, 255, 0.2) 0%, rgba(243, 244, 246, 0.2) 100%)', borderColor: 'rgba(255, 255, 255, 0.3)'}}>
-              <span className="w-2 h-2 mr-2 bg-gray-300 rounded-full"></span>
-              <span className="text-sm font-medium text-gray-100">Available</span>
+            <div className="inline-flex items-center px-2.5 py-1 sm:px-4 sm:py-2 rounded-full border shadow-inner" style={{background: 'linear-gradient(to right, rgba(255, 255, 255, 0.2) 0%, rgba(243, 244, 246, 0.2) 100%)', borderColor: 'rgba(255, 255, 255, 0.3)'}}>
+              <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 mr-1.5 sm:mr-2 bg-gray-300 rounded-full"></span>
+              <span className="text-xs sm:text-sm font-medium text-gray-100">Available</span>
             </div>
           )}
         </div>
 
         {/* Total Bill - appears only when table is running */}
         {isRunning && (
-          <div className="relative z-20 p-2 rounded-xl border shadow-inner overflow-hidden -mt-3" style={{background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(243, 244, 246, 0.15) 100%)', borderColor: 'rgba(255, 255, 255, 0.2)'}}>
+          <div className="relative z-20 p-1.5 sm:p-2 rounded-lg sm:rounded-xl border shadow-inner overflow-hidden -mt-1 sm:-mt-3" style={{background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(243, 244, 246, 0.15) 100%)', borderColor: 'rgba(255, 255, 255, 0.2)'}}>
             {/* Decorative accent */}
             <div className="absolute top-0 left-0 w-1 h-full" style={{background: 'linear-gradient(to bottom, rgb(245, 158, 11) 0%, rgb(252, 211, 77) 100%)'}}></div>
-          
+
             <div className="flex justify-between items-center">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-wider text-gray-200 mb-1">
+                <p className="text-[0.6rem] sm:text-xs font-semibold uppercase tracking-wider text-gray-200 mb-0.5">
                   Current Bill
                 </p>
-                <p className="text-sm font-bold text-white">
+                <p className="text-xs sm:text-sm font-bold text-white">
                   रू {table.totalPrice.toLocaleString()}
                 </p>
               </div>
-              <div className="text-xs px-2 py-1 rounded border" style={{backgroundColor: 'rgba(253, 230, 138, 0.2)', borderColor: 'rgba(253, 230, 138, 0.3)', color: '#fef3c7'}}>
+              <div className="text-[0.6rem] sm:text-xs px-1.5 py-0.5 sm:px-2 sm:py-1 rounded border" style={{backgroundColor: 'rgba(253, 230, 138, 0.2)', borderColor: 'rgba(253, 230, 138, 0.3)', color: '#fef3c7'}}>
                 {table.orders.orderbyTableId.length} items
               </div>
             </div>

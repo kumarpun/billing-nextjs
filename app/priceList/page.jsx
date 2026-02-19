@@ -18,7 +18,7 @@ export default function PriceList() {
   const [isEditing, setIsEditing] = useState(false);
   const [currentId, setCurrentId] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(true);
 
   const toggleSidebar = () => {
     setIsSidebarCollapsed(!isSidebarCollapsed);
@@ -134,13 +134,14 @@ export default function PriceList() {
 
   return (
     <div className="flex bg-white text-black min-h-screen">
-      <SideNav 
-        activeTab={activeTab} 
+      <SideNav
+        activeTab={activeTab}
         isCollapsed={isSidebarCollapsed}
+        toggleSidebar={toggleSidebar}
       />
       <TopNav isSidebarCollapsed={isSidebarCollapsed} toggleSidebar={toggleSidebar} />
 
-      <div className={`flex-1 ${isSidebarCollapsed ? "ml-12" : "ml-64"} p-8 bg-white transition-all duration-300`}>
+      <div className={`flex-1 ml-0 md:ml-64 mt-12 sm:mt-14 p-3 sm:p-6 bg-white transition-all duration-300`}>
         <div className="max-w-6xl mx-auto">
           <div className="flex justify-between items-center mb-8 border-b border-gray-200 pb-4">
             <h1 className="text-3xl font-bold font-serif tracking-tight text-black">Price List</h1>

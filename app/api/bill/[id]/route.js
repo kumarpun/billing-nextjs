@@ -10,12 +10,10 @@ export async function GET(request, { params }) {
 
     // Extract and verify the token
     try {
-        console.log('Request body:', request);
-        const authToken = request.cookies.get("authToken")?.value; 
-        console.log('Auth token:', authToken);
+        const authToken = request.cookies.get("authToken")?.value;
 
         try {
-            const decoded = jwt.verify(authToken, process.env.NEXTAUTH_SECRET);
+            jwt.verify(authToken, process.env.NEXTAUTH_SECRET);
         } catch (error) {
             return NextResponse.json({ error: 'Error verifying token' }, { status: 500 });
         }
@@ -57,12 +55,10 @@ export async function PUT(request, { params }) {
     const { id } = params;
     
     try {
-        console.log('Request body:', request);
-        const authToken = request.cookies.get("authToken")?.value; 
-        console.log('Auth token:', authToken);
+        const authToken = request.cookies.get("authToken")?.value;
 
         try {
-            const decoded = jwt.verify(authToken, process.env.NEXTAUTH_SECRET);
+            jwt.verify(authToken, process.env.NEXTAUTH_SECRET);
         } catch (error) {
             return NextResponse.json({ error: 'Error verifying token' }, { status: 500 });
         }

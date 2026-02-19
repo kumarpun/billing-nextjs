@@ -53,7 +53,7 @@ export default function AddOrder({ params }) {
 
                 // If no valid cache, fetch from API
                 const response = await fetch('/api/menu');
-                
+
                 if (!response.ok) {
                     throw new Error('Failed to fetch menu');
                 }
@@ -109,7 +109,7 @@ export default function AddOrder({ params }) {
             
             const response = await fetch('/api/menu');
             const data = await response.json();
-            
+
             if (data.menuList && Array.isArray(data.menuList)) {
                 const options = data.menuList.map(item => ({
                     value: item.value,
@@ -117,9 +117,9 @@ export default function AddOrder({ params }) {
                     price: item.price,
                     order_type: item.order_type
                 }));
-                
+
                 setMenuOptions(options);
-                
+
                 const cacheData = {
                     menuOptions: options,
                     timestamp: Date.now()

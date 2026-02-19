@@ -5,7 +5,7 @@ export default function ListComplement() {
     return (
         <>
             <PageNav
-                titleHref="/listSales"
+                titleHref="/dashboard"
                 centerTitle
                 buttons={[{ label: "Back", href: "/listSales" }]}
             />

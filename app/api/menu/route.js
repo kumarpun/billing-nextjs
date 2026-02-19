@@ -2,12 +2,30 @@ import { NextResponse } from "next/server";
 import Menu from "../../../models/menu";
 import { dbConnect } from "../dbConnect";
 
-export async function GET() {
+export async function GET(request) {
     await dbConnect();
     try {
-  
-        const menuList = await Menu.find().lean();
-        return NextResponse.json({menuList});
+        const { searchParams } = new URL(request.url);
+        const page = parseInt(searchParams.get("page")) || 1;
+        const limit = parseInt(searchParams.get("limit")) || 10;
+        const search = searchParams.get("search") || "";
+        const skip = (page - 1) * limit;
+
+        const filter = search
+            ? { value: { $regex: search, $options: "i" } }
+            : {};
+
+        const [menuList, total] = await Promise.all([
+            Menu.find(filter).skip(skip).limit(limit).lean(),
+            Menu.countDocuments(filter),
+        ]);
+
+        return NextResponse.json({
+            menuList,
+            total,
+            page,
+            totalPages: Math.ceil(total / limit),
+        });
     } catch (error) {
         console.error("Error fetching menuList:", error);
         return NextResponse.json({ error: "Error fetching menuList" }, { status: 500 });

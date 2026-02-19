@@ -250,7 +250,7 @@ export default function AddOrder({ params }) {
             <>
                 <div className="min-h-screen" style={{ backgroundColor: "#1a202c" }}>
                 <PageNav
-                    titleHref="/tables"
+                    titleHref="/dashboard"
                     centerTitle
                     leftButton={{ label: "く", href: `/listOrder/${id}` }}
                     showLogout

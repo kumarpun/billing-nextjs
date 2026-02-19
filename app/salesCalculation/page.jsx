@@ -32,7 +32,7 @@ export default function SalesCalculation() {
     return (
         <>
             <PageNav
-                titleHref="/orderQuantity"
+                titleHref="/dashboard"
                 centerTitle
                 buttons={[{ label: "Tables", href: "/tables" }]}
             />

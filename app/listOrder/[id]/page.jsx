@@ -64,7 +64,7 @@ export default async function ListOrder({ params }) {
         <>
         <div className="min-h-screen bg-[#283141] flex flex-col">
         <PageNav
-          titleHref="/tables"
+          titleHref="/dashboard"
           buttons={[{ label: "Place Order", href: `/addOrder/${id}` }]}
         />
   

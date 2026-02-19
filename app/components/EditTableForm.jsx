@@ -35,7 +35,7 @@ export default function EditTableForm({ id, title, description }) {
     return (
         <>
         <PageNav
-            titleHref="/tables"
+            titleHref="/dashboard"
             centerTitle
             buttons={[{ label: "Table List", href: "/tables" }]}
             showLogout

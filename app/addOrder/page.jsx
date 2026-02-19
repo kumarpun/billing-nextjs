@@ -47,10 +47,14 @@ export default function AddOrder() {
 
     return (
         <div>
- <nav className="flex justify-between items-center bg-slate-800 px-8 py-3 navbar">
-      <Link className="text-white font-bold" href={"/dashReport"}>
-    HYBE Food & Drinks
-      </Link></nav>
+ <nav className="flex items-center relative bg-slate-800 px-3 sm:px-8 py-2 sm:py-3 navbar">
+      <Link className="text-white font-bold page-title text-sm sm:text-base md:hidden" href="/dashboard">
+        HYBE Food & Drinks
+      </Link>
+      <Link className="hidden md:block absolute left-1/2 -translate-x-1/2 text-white font-bold page-title text-base whitespace-nowrap" href="/dashboard">
+        HYBE Food & Drinks
+      </Link>
+    </nav>
               <form onSubmit={handleSubmit} className="flex flex-col gap-3">
               <input
             onChange={(e) => setTableId(e.target.value)} 

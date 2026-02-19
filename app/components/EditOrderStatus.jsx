@@ -77,7 +77,7 @@ export default function EditOrderStatus({ id, order_title, order_description, or
     return (
         <div className="min-h-screen bg-[#283141]">
             <PageNav
-                titleHref="/tables"
+                titleHref="/dashboard"
                 buttons={[{ label: "Back", onClick: handleBack, icon: FiArrowLeft }]}
             />
 

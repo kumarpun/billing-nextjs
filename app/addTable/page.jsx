@@ -44,7 +44,7 @@ export default function AddTable() {
     return (
         <div>
       <PageNav
-        titleHref="/tables"
+        titleHref="/dashboard"
         centerTitle
         buttons={[{ label: "Back", onClick: handleBack }]}
       />

@@ -108,9 +108,17 @@ export default function PageNav({
       className="navbar px-3 sm:px-8 py-2 sm:py-3"
       style={{ backgroundColor: "#232b38" }}
     >
-      <div className="flex justify-between items-center">
+      <div className="flex items-center relative">
+        {/* Title: left-aligned on mobile */}
         <Link
-          className="font-bold page-title text-sm sm:text-base truncate"
+          className="font-bold page-title text-sm sm:text-base truncate md:hidden"
+          href={titleHref}
+        >
+          HYBE Food & Drinks
+        </Link>
+        {/* Title: centered on desktop */}
+        <Link
+          className="hidden md:block absolute left-1/2 -translate-x-1/2 font-bold page-title text-base whitespace-nowrap"
           href={titleHref}
         >
           HYBE Food & Drinks
@@ -118,25 +126,25 @@ export default function PageNav({
 
         {showMobileMenu ? (
           <>
-            <div className="hidden sm:flex gap-3">
+            <div className="hidden sm:flex gap-3 ml-auto">
               {allButtons.map((btn, i) => (
                 <NavButton key={i} btn={btn} className={BTN_CLASS} />
               ))}
             </div>
             <button
               onClick={() => setMenuOpen(!menuOpen)}
-              className="sm:hidden text-gray-200 p-1"
+              className="sm:hidden text-gray-200 p-1 ml-auto"
             >
               {menuOpen ? <FiX size={22} /> : <FiMenu size={22} />}
             </button>
           </>
         ) : (
-          <div className="flex gap-3">
+          <div className="flex gap-3 ml-auto">
             {allButtons.map((btn, i) => (
               <NavButton
                 key={i}
                 btn={btn}
-                className={`shrink-0 ml-2 ${BTN_CLASS}`}
+                className={`shrink-0 ${BTN_CLASS}`}
               />
             ))}
           </div>

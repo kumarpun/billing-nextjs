@@ -39,7 +39,7 @@ export default function Dashboard() {
   return (
     <div>
       <PageNav
-        titleHref="/dashReport"
+        titleHref="/dashboard"
         buttons={[{ label: "Dashboard", href: "/dashReport" }]}
         showLogout
       />
